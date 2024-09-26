@@ -1,0 +1,13 @@
+"# A mapping of GCAM ""Primary Energy Consumption"" query sectors to aggregate fuel types",
+fuel,agg_fuel
+a oil,Oil
+b natural gas,Natural Gas
+c coal,Coal
+d biomass,Biomass
+e nuclear,Nuclear
+f hydro,Hydro
+g wind,Wind
+h solar,Solar
+i geothermal,Geothermal
+wind -elect,Wind
+solar -elect,Solar

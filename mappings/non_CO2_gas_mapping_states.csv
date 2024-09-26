@@ -1,0 +1,32 @@
+GHG,Gas,Sector
+C2F6,C2F6,
+CF4,CF4,
+CH4,CH4 Energy,Energy
+CH4_AGR,CH4 Agriculture,Agriculture
+CH4_AWB,CH4 Agriculture,Agriculture
+HFC125,HFCs,
+HFC134a,HFCs,
+HFC143a,HFCs,
+HFC152a,HFCs,
+HFC227ea,HFCs,
+HFC23,HFCs,
+HFC236fa,HFCs,
+HFC245fa,HFCs,
+HFC32,HFCs,
+HFC365mfc,HFCs,
+HFC43,HFCs,
+N2O,N2O Energy,Energy
+N2O_AGR,N2O Agriculture,Agriculture
+N2O_AWB,N2O Agriculture,Agriculture
+SF6,SF6,
+CO2,CO2 Energy,Energy
+CO2_LUC,CO2 Land,Land
+BC,BC Energy,Energy
+CO,CO Energy,Energy
+NH3,NH3 Energy,Energy
+NMVOC,NMVOC Energy,Energy
+NOx,NOx Energy,Energy
+OC,OC Energy,Energy
+PM10,PM10 Energy,Energy
+PM2.5,PM2.5 Energy,Energy
+SO2_1,SO2 Energy,Energy

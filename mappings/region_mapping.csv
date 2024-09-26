@@ -1,0 +1,99 @@
+﻿region,Region
+Canada,ROW_A1
+EU-12,ROW_A1
+EU-15,ROW_A1
+Australia_NZ,ROW_A1
+Europe_Eastern,ROW_A1
+Europe_Non_EU,ROW_A1
+European Free Trade Association,ROW_A1
+Japan,ROW_A1
+Russia,ROW_A1
+Brazil,ROW_non_A1
+China,ROW_non_A1
+Africa_Eastern,ROW_non_A1
+Africa_Northern,ROW_non_A1
+Africa_Southern,ROW_non_A1
+Africa_Western,ROW_non_A1
+Argentina,ROW_non_A1
+Central America and Caribbean,ROW_non_A1
+Central Asia,ROW_non_A1
+Colombia,ROW_non_A1
+Middle East,ROW_non_A1
+Pakistan,ROW_non_A1
+South Africa,ROW_non_A1
+South America_Northern,ROW_non_A1
+South America_Southern,ROW_non_A1
+South Asia,ROW_non_A1
+Southeast Asia,ROW_non_A1
+India,ROW_non_A1
+Indonesia,ROW_non_A1
+Mexico,ROW_non_A1
+South Korea,ROW_non_A1
+Taiwan,ROW_non_A1
+USA,USA
+AK,USA
+AL,USA
+AR,USA
+AZ,USA
+CA,USA
+CO,USA
+CT,USA
+DC,USA
+DE,USA
+FL,USA
+GA,USA
+HI,USA
+IA,USA
+ID,USA
+IL,USA
+IN,USA
+KS,USA
+KY,USA
+LA,USA
+MA,USA
+MD,USA
+ME,USA
+MI,USA
+MN,USA
+MO,USA
+MS,USA
+MT,USA
+NC,USA
+ND,USA
+NE,USA
+NH,USA
+NJ,USA
+NM,USA
+NV,USA
+NY,USA
+OH,USA
+OK,USA
+OR,USA
+PA,USA
+RI,USA
+SC,USA
+SD,USA
+TN,USA
+TX,USA
+UT,USA
+VA,USA
+VT,USA
+WA,USA
+WI,USA
+WV,USA
+WY,USA
+Alaska grid,USA
+California grid,USA
+Central East grid,USA
+Central Northeast grid,USA
+Central Northwest grid,USA
+Central Southwest grid,USA
+Florida grid,USA
+Hawaii grid,USA
+Mid-Atlantic grid,USA
+New England grid,USA
+New York grid,USA
+Northwest grid,USA
+Southeast grid,USA
+Southwest grid,USA
+Texas grid,USA

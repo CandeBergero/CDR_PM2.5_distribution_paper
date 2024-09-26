@@ -1,0 +1,85 @@
+sector,agg_sector
+comm cooking,Buildings
+comm cooling,Buildings
+comm heating,Buildings
+comm hot water,Buildings
+comm other,Buildings
+comm others,Buildings
+resid appliances,Buildings
+resid clothes dryers,Buildings
+resid cooking,Buildings
+resid cooling,Buildings
+resid heating,Buildings
+resid hot water,Buildings
+resid other,Buildings
+resid others,Buildings
+airCO2,DAC
+process heat dac,DAC
+backup_electricity,Backup Electricity
+base load generation,Electricity
+csp_backup,Electricity
+elec_biomass (conv),Electricity
+elec_biomass (IGCC),Electricity
+elec_coal (conv pul),Electricity
+elec_coal (IGCC),Electricity
+elec_gas (CC),Electricity
+elec_gas (steam/CT),Electricity
+elec_refined liquids (CC),Electricity
+elec_refined liquids (steam/CT),Electricity
+electricity,Electricity
+intermediate generation,Electricity
+peak generation,Electricity
+subpeak generation,Electricity
+elec_biomass (conv CCS),Electricity CCS
+elec_biomass (IGCC CCS),Electricity CCS
+elec_coal (conv pul CCS),Electricity CCS
+elec_coal (IGCC CCS),Electricity CCS
+elec_gas (CC CCS),Electricity CCS
+elec_refined liquids (CC CCS),Electricity CCS
+H2 central production,Industry
+H2 forecourt production,Industry
+H2 wholesale dispensing,Industry
+agricultural energy use,Industry
+alumina,Industry
+cement,Industry
+chemical energy use,Industry
+chemical feedstocks,Industry
+construction energy use,Industry
+delivered biomass,Industry
+delivered gas,Industry
+desalinated water,Industry
+district heat,Industry
+gas pipeline,Industry
+gas processing,Industry
+industrial energy use,Industry
+industrial feedstocks,Industry
+iron and steel,Industry
+mining energy use,Industry
+N fertilizer,Industry
+other industrial energy use,Industry
+other industrial feedstocks,Industry
+process heat cement,Industry
+refined liquids enduse,Industry
+refined liquids industrial,Industry
+unconventional oil production,Industry
+wholesale gas,Industry
+biomass liquids,Refining
+coal to liquids,Refining
+gas to liquids,Refining
+oil refining,Refining
+refining,Refining
+regional biomass,Regional Biomass
+regional biomassOil,Regional Biomass
+regional corn for ethanol,Regional Biomass
+regional sugar for ethanol,Regional Biomass
+offroad,Transport
+trn_aviation_intl,Transport
+trn_freight,Transport
+trn_freight_road,Transport
+trn_pass,Transport
+trn_pass_road,Transport
+trn_pass_road_LDV,Transport
+trn_pass_road_LDV_2W,Transport
+trn_pass_road_LDV_4W,Transport
+trn_shipping_intl,Transport
+gas pipeline / gas processing,Industry

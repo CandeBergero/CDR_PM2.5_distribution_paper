@@ -1,0 +1,40 @@
+land-allocation,aggregated
+CornC4,Agriculture
+FiberCrop,Agriculture
+FodderGrass,Fodder
+FodderHerb,Fodder
+FodderHerbC4,Fodder
+Forest,Forest
+Fruits,Agriculture
+FruitsTree,Agriculture
+Grassland,Grassland
+Legumes,Agriculture
+MiscCrop,Agriculture
+MiscCropTree,Agriculture
+NutsSeeds,Agriculture
+NutsSeedsTree,Agriculture
+OilCrop,Oil Crop
+OilCropTree,Oil Crop
+OtherArableLand,Other arable
+OtherGrain,Agriculture
+OtherGrainC4,Agriculture
+Pasture,Pasture
+ProtectedGrassland,Protected Land
+ProtectedShrubland,Protected Land
+ProtectedUnmanagedForest,Protected Land
+ProtectedUnmanagedPasture,Protected Land
+Rice,Agriculture
+RockIceDesert,RockIceDesert
+RootTuber,Agriculture
+Shrubland,Shrubland
+Soybean,Soybean
+SugarCrop,Sugar Crop
+SugarCropC4,Sugar Crop
+Tundra,Tundra
+UnmanagedForest,Forest
+UnmanagedPasture,Pasture
+UrbanLand,Urban land
+Vegetables,Agriculture
+Wheat,Agriculture
+biomassGrass,Biomass
+biomassTree,Biomass

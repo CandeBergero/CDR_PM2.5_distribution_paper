@@ -1,0 +1,25 @@
+sector,agg_sector
+alumina,Industry
+base load generation,Electricity
+biomass liquids,Refining
+cement,Industry
+chemical energy use,Industry
+chemical feedstocks,Feedstocks
+CO2 removal,DAC
+coal to liquids,Refining
+construction feedstocks,Feedstocks
+elec_biomass (conv CCS),Electricity CCS
+elec_biomass (IGCC CCS),Electricity CCS
+elec_coal (conv pul CCS),Electricity CCS
+elec_coal (IGCC CCS),Electricity CCS
+elec_gas (CC CCS),Electricity CCS
+elec_refined liquids (CC CCS),Electricity CCS
+H2 central production,H2 Production
+intermediate generation,Electricity
+iron and steel,Industry
+N fertilizer,Industry
+other industrial feedstocks,Feedstocks
+peak generation,Electricity
+process heat dac,DAC heat
+refining,Refining
+subpeak generation,Electricity

@@ -1,0 +1,28 @@
+GHG,Gas,Sector
+BC_AWB,BC Agriculture,Agriculture
+CH4_AGR,CH4 Agriculture,Agriculture
+CH4_AWB,CH4 Agriculture,Agriculture
+CO_AWB,CO Agriculture,Agriculture
+H2_AWB,H2 Agriculture,Agriculture
+N2O_AGR,N2O Agriculture,Agriculture
+N2O_AWB,N2O Agriculture,Agriculture
+NH3_AWB,NH3 Agriculture,Agriculture
+NH3_AGR,NH3 Agriculture,Agriculture
+NMVOC_AGR,NMVOC Agriculture,Agriculture
+NMVOC_AWB,NMVOC Agriculture,Agriculture
+NOx_AGR,NOx Agriculture,Agriculture
+NOx_AWB,NOx Agriculture,Agriculture
+OC_AWB,OC Agriculture,Agriculture
+SO2_1_AWB,SO2 Agriculture,Agriculture
+CO2,CO2 Energy,Energy
+CO2_LUC,CO2 Land,Land
+BC,BC Unmanaged Land,Unmanaged Land
+CH4,CH4 Unmanaged Land,Unmanaged Land
+CO,CO Unmanaged Land,Unmanaged Land
+H2,H2 Unmanaged Land,Unmanaged Land
+N2O,N2O Unmanaged Land,Unmanaged Land
+NH3,NH3 Unmanaged Land,Unmanaged Land
+NMVOC,NMVOC Unmanaged Land,Unmanaged Land
+NOx,NOx Unmanaged Land,Unmanaged Land
+OC,OC Unmanaged Land,Unmanaged Land
+SO2_1,SO2 Unmanaged Land,Unmanaged Land

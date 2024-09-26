@@ -1,0 +1,69 @@
+sector,technology,agg_tech
+base load generation,biomass (conv CCS) (dry cooling),Electricity BECCS
+intermediate generation,biomass (conv CCS) (dry cooling),Electricity BECCS
+base load generation,biomass (conv CCS) (once through),Electricity BECCS
+intermediate generation,biomass (conv CCS) (once through),Electricity BECCS
+base load generation,biomass (conv CCS) (recirculating),Electricity BECCS
+intermediate generation,biomass (conv CCS) (recirculating),Electricity BECCS
+base load generation,biomass (conv CCS) (seawater),Electricity BECCS
+intermediate generation,biomass (conv CCS) (seawater),Electricity BECCS
+base load generation,biomass (IGCC CCS) (dry cooling),Electricity BECCS
+intermediate generation,biomass (IGCC CCS) (dry cooling),Electricity BECCS
+base load generation,biomass (IGCC CCS) (once through),Electricity BECCS
+intermediate generation,biomass (IGCC CCS) (once through),Electricity BECCS
+base load generation,biomass (IGCC CCS) (recirculating),Electricity BECCS
+intermediate generation,biomass (IGCC CCS) (recirculating),Electricity BECCS
+base load generation,biomass (IGCC CCS) (seawater),Electricity BECCS
+intermediate generation,biomass (IGCC CCS) (seawater),Electricity BECCS
+H2 central production,biomass to H2 CCS,Hydrogen BECCS
+biomass liquids,cellulosic ethanol CCS level 1,Refining BECCS
+biomass liquids,cellulosic ethanol CCS level 2,Refining BECCS
+cement,cement CCS,Cement CCS
+base load generation,coal (conv pul CCS) (dry cooling),Electricity CCS
+intermediate generation,coal (conv pul CCS) (dry cooling),Electricity CCS
+base load generation,coal (conv pul CCS) (recirculating),Electricity CCS
+intermediate generation,coal (conv pul CCS) (recirculating),Electricity CCS
+base load generation,coal (conv pul CCS) (seawater),Electricity CCS
+intermediate generation,coal (conv pul CCS) (seawater),Electricity CCS
+base load generation,coal (IGCC CCS) (dry cooling),Electricity CCS
+intermediate generation,coal (IGCC CCS) (dry cooling),Electricity CCS
+base load generation,coal (IGCC CCS) (recirculating),Electricity CCS
+intermediate generation,coal (IGCC CCS) (recirculating),Electricity CCS
+base load generation,coal (IGCC CCS) (seawater),Electricity CCS
+intermediate generation,coal (IGCC CCS) (seawater),Electricity CCS
+H2 central production,coal chemical CCS,Hydrogen CCS
+coal to liquids,coal to liquids CCS level 1,Refining CCS
+coal to liquids,coal to liquids CCS level 2,Refining CCS
+biomass liquids,FT biofuels CCS level 1,Refining BECCS
+biomass liquids,FT biofuels CCS level 2,Refining BECCS
+base load generation,gas (CC CCS) (dry cooling),Electricity CCS
+intermediate generation,gas (CC CCS) (dry cooling),Electricity CCS
+peak generation,gas (CC CCS) (dry cooling),Electricity CCS
+subpeak generation,gas (CC CCS) (dry cooling),Electricity CCS
+base load generation,gas (CC CCS) (recirculating),Electricity CCS
+intermediate generation,gas (CC CCS) (recirculating),Electricity CCS
+peak generation,gas (CC CCS) (recirculating),Electricity CCS
+subpeak generation,gas (CC CCS) (recirculating),Electricity CCS
+base load generation,gas (CC CCS) (seawater),Electricity CCS
+intermediate generation,gas (CC CCS) (seawater),Electricity CCS
+peak generation,gas (CC CCS) (seawater),Electricity CCS
+subpeak generation,gas (CC CCS) (seawater),Electricity CCS
+CO2 removal,hightemp DAC elec,DAC
+CO2 removal,hightemp DAC NG,DAC
+CO2 removal,lowtemp DAC heatpump,DAC
+H2 central production,natural gas steam reforming CCS,Hydrogen CCS
+other industrial feedstocks,refined liquids,Feedstocks
+base load generation,refined liquids (CC CCS) (dry cooling),Electricity CCS
+intermediate generation,refined liquids (CC CCS) (dry cooling),Electricity CCS
+peak generation,refined liquids (CC CCS) (dry cooling),Electricity CCS
+subpeak generation,refined liquids (CC CCS) (dry cooling),Electricity CCS
+base load generation,refined liquids (CC CCS) (recirculating),Electricity CCS
+intermediate generation,refined liquids (CC CCS) (recirculating),Electricity CCS
+peak generation,refined liquids (CC CCS) (recirculating),Electricity CCS
+subpeak generation,refined liquids (CC CCS) (recirculating),Electricity CCS
+base load generation,refined liquids (CC CCS) (seawater),Electricity CCS
+intermediate generation,refined liquids (CC CCS) (seawater),Electricity CCS
+peak generation,refined liquids (CC CCS) (seawater),Electricity CCS
+subpeak generation,refined liquids (CC CCS) (seawater),Electricity CCS
+N fertilizer,gas CCS,Fertilizer CCS
+process heat dac,gas CCS,DAC heat

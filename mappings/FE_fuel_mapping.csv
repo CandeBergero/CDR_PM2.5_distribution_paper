@@ -1,0 +1,15 @@
+input,Fuel
+delivered biomass,Biomass
+delivered coal,Coal
+delivered gas,Gas
+elect_td_bld,Electricity
+elect_td_ind,Electricity
+elect_td_trn,Electricity
+H2 enduse,Hydrogen
+refined liquids enduse,Liquids
+refined liquids industrial,Liquids
+wholesale gas,Gas
+H2 industrial,Hydrogen
+H2 wholesale delivery,Hydrogen
+H2 retail dispensing,Hydrogen
+H2 wholesale dispensing,Hydrogen

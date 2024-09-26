@@ -1,0 +1,17 @@
+technology,Fuel
+biodiesel,Biodiesel
+cellulosic ethanol,Cellulosic ethanol (no CCS)
+cellulosic ethanol CCS level 1,Cellulosic ethanol (with CCS)
+cellulosic ethanol CCS level 2,Cellulosic ethanol (with CCS)
+coal to liquids,Coal (no CCS)
+coal to liquids CCS level 1,Coal (with CCS)
+coal to liquids CCS level 2,Coal (with CCS)
+corn ethanol,Corn Ethanol (no CCS)
+FT biofuels,FT biofuel (no CCS)
+FT biofuels CCS level 1,FT biofuel (with CCS)
+FT biofuels CCS level 2,FT biofuel (with CCS)
+gas to liquids,Gas (no CCS)
+oil refining,Oil (no CCS)
+corn ethanol CCS,Corn Ethanol (with CCS)
+sugar cane ethanol,Sugar cane ethanol (no CCS)
+BTL with hydrogen,BTL with H2 (no CCS)

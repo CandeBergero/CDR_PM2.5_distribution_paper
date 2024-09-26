@@ -1,0 +1,51 @@
+﻿sector,Sector
+Beef,Agriculture
+Corn,Agriculture
+Dairy,Agriculture
+FiberCrop,Agriculture
+FodderGrass,Agriculture
+FodderHerb,Agriculture
+Fruits,Agriculture
+Legumes,Agriculture
+MiscCrop,Agriculture
+NutsSeeds,Agriculture
+OilCrop,Agriculture
+OtherGrain,Agriculture
+Pork,Agriculture
+Poultry,Agriculture
+Rice,Agriculture
+RootTuber,Agriculture
+SheepGoat,Agriculture
+Soybean,Agriculture
+SugarCrop,Agriculture
+Vegetables,Agriculture
+Wheat,Agriculture
+comm cooking,Buildings
+comm cooling,Buildings
+comm heating,Buildings
+comm hot water,Buildings
+comm other,Buildings
+resid clothes dryers,Buildings
+resid cooking,Buildings
+resid heating,Buildings
+resid hot water,Buildings
+resid other,Buildings
+base load generation,Electricity
+intermediate generation,Electricity
+peak generation,Electricity
+subpeak generation,Electricity
+cement,Industry
+industrial processes,Industry
+other industrial energy use,Industry
+biomass liquids,Refining
+oil refining,Refining
+trn_aviation_intl,Transportation
+trn_freight,Transportation
+trn_freight_road,Transportation
+trn_pass,Transportation
+trn_pass_road,Transportation
+trn_pass_road_LDV,Transportation
+trn_pass_road_LDV_4W,Transportation
+trn_shipping_intl,Transportation
+UnmanagedLand,Unmanaged Land
+urban processes,Urban processes

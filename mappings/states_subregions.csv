@@ -1,0 +1,52 @@
+state,state_name,grid_region
+AK,Alaska,Alaska grid
+AL,Alabama,Southeast grid
+AR,Arkansas,Southeast grid
+AZ,Arizona,Southwest grid
+CA,California,California grid
+CO,Colorado,Southwest grid
+CT,Connecticut,New England grid
+DC,District of Columbia,Mid-Atlantic grid
+DE,Delaware,Mid-Atlantic grid
+FL,Florida,Florida grid
+GA,Georgia,Southeast grid
+HI,Hawaii,Hawaii grid
+IA,Iowa,Central Northwest grid
+ID,Idaho,Northwest grid
+IL,Illinois,Central Northeast grid
+IN,Indiana,Central East grid
+KS,Kansas,Central Southwest grid
+KY,Kentucky,Central East grid
+LA,Louisiana,Southeast grid
+MA,Massachusetts,New England grid
+MD,Maryland,Mid-Atlantic grid
+ME,Maine,New England grid
+MI,Michigan,Central East grid
+MN,Minnesota,Central Northwest grid
+MO,Missouri,Central Northeast grid
+MS,Mississippi,Southeast grid
+MT,Montana,Northwest grid
+NC,North Carolina,Southeast grid
+ND,North Dakota,Central Northwest grid
+NE,Nebraska,Central Northwest grid
+NH,New Hampshire,New England grid
+NJ,New Jersey,Mid-Atlantic grid
+NM,New Mexico,Southwest grid
+NV,Nevada,Northwest grid
+NY,New York,New York grid
+OH,Ohio,Central East grid
+OK,Oklahoma,Central Southwest grid
+OR,Oregon,Northwest grid
+PA,Pennsylvania,Mid-Atlantic grid
+RI,Rhode Island,New England grid
+SC,South Carolina,Southeast grid
+SD,South Dakota,Central Northwest grid
+TN,Tennessee,Southeast grid
+TX,Texas,Texas grid
+UT,Utah,Northwest grid
+VA,Virginia,Southeast grid
+VT,Vermont,New England grid
+WA,Washington,Northwest grid
+WI,Wisconsin,Central Northeast grid
+WV,West Virginia,Central East grid
+WY,Wyoming,Southwest grid
