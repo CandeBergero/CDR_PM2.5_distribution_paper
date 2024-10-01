@@ -1,0 +1,19 @@
+ghg,POLLUTANT,Pollutant
+NH3,Ammonia,NH3
+NH3_AGR,Ammonia,NH3
+NH3_AWB,Ammonia,NH3
+CO,Carbon Monoxide,CO
+CO_AWB,Carbon Monoxide,CO
+NOx,Nitrogen Oxides,NOx
+NOx_AGR,Nitrogen Oxides,NOx
+NOx_AWB,Nitrogen Oxides,NOx
+PM10,PM10 Primary (Filt + Cond),PM10
+PM2.5,PM2.5 Primary (Filt + Cond),PM2.5
+SO2_1,Sulfur Dioxide,SO2
+SO2_1_AWB,Sulfur Dioxide,SO2
+NMVOC,Volatile Organic Compounds,NMVOC
+NMVOC_AWB,Volatile Organic Compounds,NMVOC
+NMVOC_AGR,Volatile Organic Compounds,NMVOC
+PM10_AGG,PM10 Aggregate (PM10 + BC + OC),PM10_AGG
+PM2.5_AGG,PM2.5 Aggregate (PM2.5 + BC + OC),PM2.5_AGG
+PM,Particulate Matter (BC + OC),AGG

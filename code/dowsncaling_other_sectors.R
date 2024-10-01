@@ -21,24 +21,13 @@ library(usmap)
 library(forcats)
 
 #### 1.2. Load GCAM scenarios ####
-#Set working directory
-setwd("~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition")
-
-#Connect to the database
-#conn <- localDBConn('/Users/mariacandelariabergero/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output', 'database_basexdb_FINAL')
-
-#Load the scenario
-#prj <- addScenario(conn, 'dat/GCAM_analysis.dat', 'GCAM-USA_REF', 'queries/queries.xml') #Reference
-#prj <- addScenario(conn, 'dat/GCAM_analysis.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF', 'queries/queries.xml') #Net-zero + high CDR
-#prj <- addScenario(conn, 'dat/GCAM_analysis.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF', 'queries/queries.xml') #Net-zero + lowCDR
-
 #Load the project
-prj <- loadProject('dat/GCAM_analysis.dat')
+prj <- loadProject('data/GCAM/GCAM_analysis.dat')
 listScenarios(prj)
 listQueries(prj)
 
 #Get color schemes
-source( "~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition/code/color_schemes.R" ) # some predefined color schemes
+source( "code/color_schemes.R" ) # some predefined color schemes
 
 #### 1.3. Load mapping files ####
 NEI_GCAM_mapping_nonpoint_mobile <- read_csv("mappings/NEI_GCAM_mapping_nonpoint_mobile.csv") %>% distinct
@@ -54,18 +43,18 @@ states_abb_mapping <- read_csv("mappings/states_abbreviation.csv")
 
 #### 1.4. Load data files ####
 #This corresponds to mobile and non-point data
-NEI_CO_2020 <- read_csv("data/NEI_CO_2020.csv")
-NEI_NH3_2020 <- read_csv("data/NEI_NH3_2020.csv")
-NEI_NOx_2020 <- read_csv("data/NEI_NOx_2020.csv")
-NEI_PM_2020 <- read_csv("data/NEI_PM_2020.csv")
-NEI_SO2_2020 <- read_csv("data/NEI_SO2_2020.csv")
-NEI_VOC_2020 <- read_csv("data/NEI_VOC_2020.csv")
+NEI_CO_2020 <- read_csv("data/downscaling/NEI_CO_2020.csv")
+NEI_NH3_2020 <- read_csv("data/downscaling/NEI_NH3_2020.csv")
+NEI_NOx_2020 <- read_csv("data/downscaling/NEI_NOx_2020.csv")
+NEI_PM_2020 <- read_csv("data/downscaling/NEI_PM_2020.csv")
+NEI_SO2_2020 <- read_csv("data/downscaling/NEI_SO2_2020.csv")
+NEI_VOC_2020 <- read_csv("data/downscaling/NEI_VOC_2020.csv")
 
 NEI_nonpoint_mobile_2020 <- bind_rows(NEI_CO_2020, NEI_NH3_2020, NEI_NOx_2020, 
                                       NEI_PM_2020, NEI_SO2_2020, NEI_VOC_2020)
 
 #This corresponds to NEI point-source data
-NEI_point_source_2020 <- read_csv("data/NEI_2020_point.csv")
+NEI_point_source_2020 <- read_csv("data/downscaling/NEI_2020_point.csv")
 
 #### 1.5. General parameters ####
 # Conversions
@@ -452,18 +441,18 @@ my_theme <- theme(panel.background = element_blank(),
     # Get unique scenarios
     scenarios <- unique(air_pollution_multipliers_mobile_nonpoint_final$Scenario)
     
-    # Loop through each scenario for 2030
-    for (scenario in scenarios) {
-      # Filter data for the current scenario
-      filtered_data <- air_pollution_multipliers_mobile_nonpoint_final_2030 %>%
-        filter(Scenario == scenario)
-      
-      # Define the file name
-      file_name <- paste("output_data/downscaling/mobile_nonpoint_2030_", scenario, ".csv", sep = "")
-      
-      # Save the filtered data as a CSV file
-      write.csv(filtered_data, file_name, row.names = FALSE)
-    }
+    # # Loop through each scenario for 2030
+    # for (scenario in scenarios) {
+    #   # Filter data for the current scenario
+    #   filtered_data <- air_pollution_multipliers_mobile_nonpoint_final_2030 %>%
+    #     filter(Scenario == scenario)
+    #   
+    #   # Define the file name
+    #   file_name <- paste("output_data/downscaling/mobile_nonpoint_2030_", scenario, ".csv", sep = "")
+    #   
+    #   # Save the filtered data as a CSV file
+    #   write.csv(filtered_data, file_name, row.names = FALSE)
+    # }
     
     # Loop through each scenario for 2050
     for (scenario in scenarios) {
@@ -1064,17 +1053,17 @@ my_theme <- theme(panel.background = element_blank(),
     scenarios <- unique(air_pollution_multipliers_point_final$Scenario)
     
     # Loop through each scenario for 2030
-    for (scenario in scenarios) {
-      # Filter data for the current scenario
-      filtered_data <- air_pollution_multipliers_point_final_2030 %>%
-        filter(Scenario == scenario)
-      
-      # Define the file name
-      file_name <- paste("output_data/downscaling/point_2030_", scenario, ".csv", sep = "")
-      
-      # Save the filtered data as a CSV file
-      write.csv(filtered_data, file_name, row.names = FALSE)
-    }
+    # for (scenario in scenarios) {
+    #   # Filter data for the current scenario
+    #   filtered_data <- air_pollution_multipliers_point_final_2030 %>%
+    #     filter(Scenario == scenario)
+    #   
+    #   # Define the file name
+    #   file_name <- paste("output_data/downscaling/point_2030_", scenario, ".csv", sep = "")
+    #   
+    #   # Save the filtered data as a CSV file
+    #   write.csv(filtered_data, file_name, row.names = FALSE)
+    # }
     
     # Loop through each scenario for 2050
     for (scenario in scenarios) {
@@ -1202,7 +1191,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Sector") +
       ylab("Tg")+
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/0.national_emissions_NEI.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/0.national_emissions_NEI.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #----------------------------------------------- SECTION 5: GRAPHS  -------------------------------------------------------      
 #### 5.1. Prepare GCAM data ####
@@ -1277,7 +1266,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Sector") +
       ylab("Tg")+
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.2.national_emissions_GCAM.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.2.national_emissions_GCAM.png", dpi=600/2, width=6000/300, height=3000/300)
     
     #Here we compare NEI and GCAM side by side, by gas and sector
     air_pollution_tech_graphs_final_sector %>%
@@ -1293,7 +1282,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Sector") +
       ylab("Tg")+
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.2.national_emissions_GCAM_NEI_comparison.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.2.national_emissions_GCAM_NEI_comparison.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.3. National level ####
     air_pollution_tech_graphs_final %>%
@@ -1317,7 +1306,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.3.national_gases_NEI_GCAM.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.3.national_gases_NEI_GCAM.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.4. Resource production ####
     air_pollution_tech_graphs_final %>%
@@ -1342,7 +1331,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.4.resource_prod.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.4.resource_prod.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.5. Agriculture ####
     air_pollution_tech_graphs_final %>%
@@ -1367,7 +1356,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.5.agriculture.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.5.agriculture.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.6. Refining (biomass) ####
     air_pollution_tech_graphs_final %>%
@@ -1392,7 +1381,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.6.refining_biomass.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.6.refining_biomass.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.7. Refining (oil) ####
     air_pollution_tech_graphs_final %>%
@@ -1417,7 +1406,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.7.refining_oil.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.7.refining_oil.png", dpi=600/2, width=6000/300, height=3000/300)
 
 #### 5.8. Cement ####
     air_pollution_tech_graphs_final %>%
@@ -1442,7 +1431,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.8.cement.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.8.cement.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.9. Commercial ####
     air_pollution_tech_graphs_final %>%
@@ -1467,7 +1456,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.9.Commercial.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.9.Commercial.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.10. Industrial ####
     air_pollution_tech_graphs_final %>%
@@ -1492,7 +1481,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.10.Industrial.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.10.Industrial.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.11. Residential ####
     air_pollution_tech_graphs_final %>%
@@ -1517,7 +1506,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.11.Residential.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.11.Residential.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.12. Transportation ####
     air_pollution_tech_graphs_final %>%
@@ -1542,7 +1531,7 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.12.Transportation.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.12.Transportation.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #### 5.13. Urban ####
     air_pollution_tech_graphs_final %>%
@@ -1567,12 +1556,12 @@ my_theme <- theme(panel.background = element_blank(),
       xlab("Year") +
       ylab("Tg") +
       my_theme
-    ggsave("figures/downscaling_nonpoint_mobile/5.13.Urban.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/downscaling_nonpoint_mobile/5.13.Urban.png", dpi=600/2, width=6000/300, height=3000/300)
     
 #----------------------------------------------- SECTION 6: NEIGHBOR REGIONS ------------------------------------------------
   #To run WRF-CMAQ we will need emission changes in neighboring regions. We will apply multipiers from GCAM at a pollutant level, per scenairo and peirod.
 #### 6.1 Process GCAM data ####
-    neighbor_pollutant <- read_csv("data/GCAM_neighbor_emissions.csv", skip = 1)
+    neighbor_pollutant <- read_csv("data/downscaling/GCAM_neighbor_emissions.csv", skip = 1)
     
     neighbor_pollutant%>%
       gather(year, value, -scenario, -region, -GHG, -Units) %>%
@@ -1620,18 +1609,18 @@ my_theme <- theme(panel.background = element_blank(),
     # Get unique scenarios
     scenarios <- unique(neighbor_pollutant_final_multiplier$Scenario)
     
-    # Loop through each scenario for 2030
-    for (scenario in scenarios) {
-      # Filter data for the current scenario
-      filtered_data <- neighbor_pollutant_final_multiplier_2030 %>%
-        filter(Scenario == scenario)
-      
-      # Define the file name
-      file_name <- paste("output_data/downscaling/neighbor_multiplier_2030_", scenario, ".csv", sep = "")
-      
-      # Save the filtered data as a CSV file
-      write.csv(filtered_data, file_name, row.names = FALSE)
-    }
+    # # Loop through each scenario for 2030
+    # for (scenario in scenarios) {
+    #   # Filter data for the current scenario
+    #   filtered_data <- neighbor_pollutant_final_multiplier_2030 %>%
+    #     filter(Scenario == scenario)
+    #   
+    #   # Define the file name
+    #   file_name <- paste("output_data/downscaling/neighbor_multiplier_2030_", scenario, ".csv", sep = "")
+    #   
+    #   # Save the filtered data as a CSV file
+    #   write.csv(filtered_data, file_name, row.names = FALSE)
+    # }
     
     # Loop through each scenario for 2050
     for (scenario in scenarios) {

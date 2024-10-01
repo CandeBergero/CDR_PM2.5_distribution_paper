@@ -1,0 +1,81 @@
+sector,agg_sector
+comm cooking,Buildings
+comm cooling,Buildings
+comm heating,Buildings
+comm hot water,Buildings
+comm other,Buildings
+comm others,Buildings
+resid appliances,Buildings
+resid clothes dryers,Buildings
+resid cooking,Buildings
+resid cooling,Buildings
+resid heating,Buildings
+resid hot water,Buildings
+resid other,Buildings
+resid others,Buildings
+airCO2,DAC
+backup_electricity,Electricity
+base load generation,Electricity
+csp_backup,Electricity
+elec_biomass (conv CCS),Electricity
+elec_biomass (conv),Electricity
+elec_biomass (IGCC CCS),Electricity
+elec_biomass (IGCC),Electricity
+elec_coal (conv pul CCS),Electricity
+elec_coal (conv pul),Electricity
+elec_coal (IGCC CCS),Electricity
+elec_coal (IGCC),Electricity
+elec_gas (CC CCS),Electricity
+elec_gas (CC),Electricity
+elec_gas (steam/CT),Electricity
+elec_refined liquids (CC CCS),Electricity
+elec_refined liquids (CC),Electricity
+elec_refined liquids (steam/CT),Electricity
+electricity,Electricity
+intermediate generation,Electricity
+peak generation,Electricity
+subpeak generation,Electricity
+industrial feedstocks,Industrial feedstocks
+other industrial feedstocks,Industrial feedstocks
+agricultural energy use,Industry
+alumina,Industry
+cement,Industry
+chemical energy use,Industry
+chemical feedstocks,Industry
+construction energy use,Industry
+delivered biomass,Industry
+delivered gas,Industry
+desalinated water,Industry
+district heat,Industry
+industrial energy use,Industry
+iron and steel,Industry
+mining energy use,Industry
+N fertilizer,Industry
+other industrial energy use,Industry
+process heat cement,Industry
+process heat dac,Industry
+refined liquids enduse,Industry
+refined liquids industrial,Industry
+wholesale gas,Industry
+gas pipeline,Other energy processing
+gas pipeline / gas processing,Other energy processing
+gas processing,Other energy processing
+H2 central production,Other energy processing
+H2 forecourt production,Other energy processing
+H2 wholesale dispensing,Other energy processing
+unconventional oil production,Other energy processing
+coal to liquids,Refining
+gas to liquids,Refining
+oil refining,Refining
+refining,Refining
+biomass liquids,Refining BECCS
+offroad,Transport
+trn_aviation_intl,Transport
+trn_freight,Transport
+trn_freight_road,Transport
+trn_pass,Transport
+trn_pass_road,Transport
+trn_pass_road_LDV,Transport
+trn_pass_road_LDV_2W,Transport
+trn_pass_road_LDV_4W,Transport
+trn_shipping_intl,Transport

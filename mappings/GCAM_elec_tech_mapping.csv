@@ -1,0 +1,80 @@
+technology,Technology
+biomass (conv CCS) (dry cooling),biomass (conv CCS)
+biomass (conv CCS) (recirculating),biomass (conv CCS)
+biomass (conv CCS) (seawater),biomass (conv CCS)
+biomass (conv) (cooling pond),biomass (conv)
+biomass (conv) (dry cooling),biomass (conv)
+biomass (conv) (once through),biomass (conv)
+biomass (conv) (recirculating),biomass (conv)
+biomass (conv) (seawater),biomass (conv)
+biomass (IGCC CCS) (dry cooling),biomass (IGCC CCS)
+biomass (IGCC CCS) (recirculating),biomass (IGCC CCS)
+biomass (IGCC CCS) (seawater),biomass (IGCC CCS)
+biomass (IGCC) (dry cooling),biomass (IGCC)
+biomass (IGCC) (recirculating),biomass (IGCC)
+biomass (IGCC) (seawater),biomass (IGCC)
+coal (conv pul CCS) (dry cooling),coal (conv pul CCS)
+coal (conv pul CCS) (recirculating),coal (conv pul CCS)
+coal (conv pul CCS) (seawater),coal (conv pul CCS)
+coal (conv pul) (cooling pond),coal (conv pul)
+coal (conv pul) (dry cooling),coal (conv pul)
+coal (conv pul) (once through),coal (conv pul)
+coal (conv pul) (recirculating),coal (conv pul)
+coal (conv pul) (seawater),coal (conv pul)
+coal (IGCC CCS) (dry cooling),coal (IGCC CCS)
+coal (IGCC CCS) (recirculating),coal (IGCC CCS)
+coal (IGCC CCS) (seawater),coal (IGCC CCS)
+coal (IGCC) (dry cooling),coal (IGCC)
+coal (IGCC) (seawater),coal (IGCC)
+coal (IGCC) (once through),coal (IGCC)
+coal (IGCC) (recirculating),coal (IGCC)
+gas (CC CCS) (dry cooling),gas (CC CCS)
+gas (CC CCS) (recirculating),gas (CC CCS)
+gas (CC CCS) (seawater),gas (CC CCS)
+gas (CC) (cooling pond),gas (CC)
+gas (CC) (dry cooling),gas (CC)
+gas (CC) (once through),gas (CC)
+gas (CC) (recirculating),gas (CC)
+gas (CC) (seawater),gas (CC)
+gas (steam/CT) (cooling pond),gas (steam/CT)
+gas (steam/CT) (dry cooling),gas (steam/CT)
+gas (steam/CT) (once through),gas (steam/CT)
+gas (steam/CT) (recirculating),gas (steam/CT)
+gas (steam/CT) (seawater),gas (steam/CT)
+refined liquids (steam/CT) (cooling pond),refined liquids (steam/CT)
+refined liquids (steam/CT) (dry cooling),refined liquids (steam/CT)
+refined liquids (steam/CT) (once through),refined liquids (steam/CT)
+refined liquids (steam/CT) (recirculating),refined liquids (steam/CT)
+refined liquids (steam/CT) (seawater),refined liquids (steam/CT)
+refined liquids (CC) (dry cooling),refined liquids (CC)
+refined liquids (CC) (recirculating),refined liquids (CC)
+refined liquids (CC) (seawater),refined liquids (CC)
+refined liquids (CC CCS) (dry cooling),refined liquids (CC CCS)
+refined liquids (CC CCS) (recirculating),refined liquids (CC CCS)
+refined liquids (CC CCS) (seawater),refined liquids (CC CCS)
+hydro_base,hydropower
+PV_base_storage,solar
+wind_base,wind
+wind_base_offshore,wind
+wind_base_storage,wind
+rooftop_pv,solar
+PV_int,solar
+PV_subpeak,solar
+Gen_II_LWR (once through),nuclear
+Gen_II_LWR (recirculating),nuclear
+Gen_III (recirculating),nuclear
+CSP_base_storage,solar
+CSP_int (dry_hybrid),solar
+CSP_int (recirculating),solar
+CSP_peak (dry_hybrid),solar
+CSP_peak (recirculating),solar
+CSP_subpeak (dry_hybrid),solar
+CSP_subpeak (recirculating),solar
+geothermal (recirculating),geothermal
+Gen_II_LWR (seawater),nuclear
+Gen_III (seawater),nuclear
+wind_int,wind
+wind_subpeak,wind
+Gen_II_LWR (cooling pond),nuclear
+Gen_III (cooling pond),nuclear
+PV_peak,solar

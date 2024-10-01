@@ -24,22 +24,19 @@ library(tidyr)
 library(ggpubr)
 library(ggspatial)
 
-#Set working directory
-setwd("~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition")
-
 # Get today's date
 today_date <- Sys.Date()
 
 #General files
-source( "~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition/code/color_schemes.R" ) # some predefined color schemes
+source( "code/color_schemes.R" ) # some predefined color schemes
 state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
   mutate( state_ID = gsub("^_", "", state_ID))
 cbsa_shapefile <- st_read("shapefiles/cb_2019_us_cbsa_500k/cb_2019_us_cbsa_500k.shp") %>% dplyr::select(AFFGEOID, NAME, geometry)
 colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
 
-#------------------------------------------------- BENMAP INPUTS --------------------------------------------------
+#------------------------------------------------- A. BENMAP INPUTS --------------------------------------------------
 
-#------------------------------------------------- SECTION 1: 1 KM GRID -------------------------------------------------
+#------------------------------------------------- SECTION A1: 1 KM GRID -------------------------------------------------
 #Work with 1 km grid from air pollution results
 #### 1. SEATTLE ####
   #### 1.1. Assign numbers ####
@@ -84,7 +81,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       grid_data_Seattle_NAD83 %>%
         filter(pixel_ID %in% seattle_pixels) -> grid_data_Seattle_NAD83_filtered
       
-      #st_write(grid_data_Seattle_NAD83_filtered, "output_data/shapefiles/1km/Seattle/1km_shapefile_2019_03252024_seattle.shp") 
+      st_write(grid_data_Seattle_NAD83_filtered, "output_data/shapefiles/1km/Seattle/1km_shapefile_2019_03252024_seattle.shp") 
       #Has total pixels 16,364 we use as grid in BenMAP. 
       
 
@@ -136,7 +133,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_south_west_NAD83 %>%
       filter(pixel_ID %in% LA_pixels) -> grid_data_south_west_NAD83_LA
     
-    #st_write(grid_data_south_west_NAD83_LA, "output_data/shapefiles/1km/LA/1km_shapefile_2019_03252024_LA.shp") 
+    st_write(grid_data_south_west_NAD83_LA, "output_data/shapefiles/1km/LA/1km_shapefile_2019_03252024_LA.shp") 
     #Has total pixels 13,121 we use as grid in BenMAP.
     
     #Riverside
@@ -149,7 +146,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_south_west_NAD83 %>%
       filter(pixel_ID %in% riverside_pixels) -> grid_data_south_west_NAD83_riverside
     
-    #st_write(grid_data_south_west_NAD83_riverside, "output_data/shapefiles/1km/Riverside/1km_shapefile_2019_03252024_riverside.shp")
+    st_write(grid_data_south_west_NAD83_riverside, "output_data/shapefiles/1km/Riverside/1km_shapefile_2019_03252024_riverside.shp")
     #Has total pixels 71,352 we use as grid in BenMAP.
     
     #Phoenix
@@ -162,7 +159,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_south_west_NAD83 %>%
       filter(pixel_ID %in% phoenix_pixels) -> grid_data_south_west_NAD83_phoenix
     
-    #st_write(grid_data_south_west_NAD83_phoenix, "output_data/shapefiles/1km/Phoenix/1km_shapefile_2019_03252024_phoenix.shp")
+    st_write(grid_data_south_west_NAD83_phoenix, "output_data/shapefiles/1km/Phoenix/1km_shapefile_2019_03252024_phoenix.shp")
     #Has total pixels 38,341 we use as grid in BenMAP.
     
 #### 5. DALLAS ####
@@ -207,7 +204,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_dallas_NAD83 %>%
       filter(pixel_ID %in% dallas_pixels) -> grid_data_dallas_NAD83_filtered
     
-    #st_write(grid_data_dallas_NAD83_filtered, "output_data/shapefiles/1km/Dallas/1km_shapefile_2019_03252024_dallas.shp") 
+    st_write(grid_data_dallas_NAD83_filtered, "output_data/shapefiles/1km/Dallas/1km_shapefile_2019_03252024_dallas.shp") 
     #Has total pixels 23,747 we use as grid in BenMAP. 
 
 #### 6. Houston ####
@@ -252,7 +249,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_houston_NAD83 %>%
       filter(pixel_ID %in% houston_pixels) -> grid_data_houston_NAD83_filtered
     
-    #st_write(grid_data_houston_NAD83_filtered, "output_data/shapefiles/1km/Houston/1km_shapefile_2019_03252024_houston.shp") 
+    st_write(grid_data_houston_NAD83_filtered, "output_data/shapefiles/1km/Houston/1km_shapefile_2019_03252024_houston.shp") 
     #Has total pixels 23,340 we use as grid in BenMAP. 
     
 #### 7. MIAMI ####
@@ -297,7 +294,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_miami_NAD83 %>%
       filter(pixel_ID %in% miami_pixels) -> grid_data_miami_NAD83_filtered
     
-    #st_write(grid_data_miami_NAD83_filtered, "output_data/shapefiles/1km/Miami/1km_shapefile_2019_03252024_miami.shp") 
+    st_write(grid_data_miami_NAD83_filtered, "output_data/shapefiles/1km/Miami/1km_shapefile_2019_03252024_miami.shp") 
     #Has total pixels 15,126 we use as grid in BenMAP. 
     
 #### 8. ATLANTA ####
@@ -342,7 +339,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_atl_NAD83 %>%
       filter(pixel_ID %in% atl_pixels) -> grid_data_atl_NAD83_filtered
     
-    #st_write(grid_data_atl_NAD83_filtered, "output_data/shapefiles/1km/Atlanta/1km_shapefile_2019_03252024_atl.shp") 
+    st_write(grid_data_atl_NAD83_filtered, "output_data/shapefiles/1km/Atlanta/1km_shapefile_2019_03252024_atl.shp") 
     #Has total pixels 23,341 we use as grid in BenMAP. 
 
 #### 9. CHICAGO ####
@@ -387,7 +384,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_chicago_NAD83 %>%
       filter(pixel_ID %in% chicago_pixels) -> grid_data_chicago_NAD83_filtered
     
-    #st_write(grid_data_chicago_NAD83_filtered, "output_data/shapefiles/1km/Chicago/1km_shapefile_2019_03252024_chicago.shp") 
+    st_write(grid_data_chicago_NAD83_filtered, "output_data/shapefiles/1km/Chicago/1km_shapefile_2019_03252024_chicago.shp") 
     #Has total pixels 19,209 we use as grid in BenMAP.     
  
 #### 10. WASHINGTON ####
@@ -432,7 +429,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_wash_NAD83 %>%
       filter(pixel_ID %in% wash_pixels) -> grid_data_wash_NAD83_filtered
     
-    #st_write(grid_data_wash_NAD83_filtered, "output_data/shapefiles/1km/DC/1km_shapefile_2019_03252024_wash.shp") 
+    st_write(grid_data_wash_NAD83_filtered, "output_data/shapefiles/1km/DC/1km_shapefile_2019_03252024_wash.shp") 
     #Has total pixels 17,877 we use as grid in BenMAP.    
 
 #### 11-12. NORTH-EAST ####
@@ -481,7 +478,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_northeast_NAD83 %>%
       filter(pixel_ID %in% phil_pixels) -> grid_data_phil_NAD83_filtered
     
-    #st_write(grid_data_phil_NAD83_filtered, "output_data/shapefiles/1km/Philadelphia/1km_shapefile_2019_03252024_phil.shp") 
+    st_write(grid_data_phil_NAD83_filtered, "output_data/shapefiles/1km/Philadelphia/1km_shapefile_2019_03252024_phil.shp") 
     #Has total pixels 12,652 we use as grid in BenMAP.     
     
     #New York
@@ -494,7 +491,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_northeast_NAD83 %>%
       filter(pixel_ID %in% NY_pixels) -> grid_data_NY_NAD83_filtered
     
-    #st_write(grid_data_NY_NAD83_filtered, "output_data/shapefiles/1km/NY/1km_shapefile_2019_03252024_NY.shp") 
+    st_write(grid_data_NY_NAD83_filtered, "output_data/shapefiles/1km/NY/1km_shapefile_2019_03252024_NY.shp") 
     #Has total pixels 19,841 we use as grid in BenMAP.     
 
 #### 13. BOSTON ####
@@ -539,7 +536,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_boston_NAD83 %>%
       filter(pixel_ID %in% boston_pixels) -> grid_data_boston_NAD83_filtered
     
-    #st_write(grid_data_boston_NAD83_filtered, "output_data/shapefiles/1km/Boston/1km_shapefile_2019_03252024_boston.shp") 
+    st_write(grid_data_boston_NAD83_filtered, "output_data/shapefiles/1km/Boston/1km_shapefile_2019_03252024_boston.shp") 
     #Has total pixels 10,087 we use as grid in BenMAP.   
     
 #### 14. DETROIT ####
@@ -584,7 +581,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_detroit_NAD83 %>%
       filter(pixel_ID %in% detroit_pixels) -> grid_data_detroit_NAD83_filtered
     
-    #st_write(grid_data_detroit_NAD83_filtered, "output_data/shapefiles/1km/Detroit/1km_shapefile_2019_03252024_detroit.shp") 
+    st_write(grid_data_detroit_NAD83_filtered, "output_data/shapefiles/1km/Detroit/1km_shapefile_2019_03252024_detroit.shp")
     #Has total pixels 10,711 we use as grid in BenMAP. 
   
 #### 15. SAN FRANCISCO ####
@@ -629,24 +626,24 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     grid_data_SF_NAD83 %>%
       filter(pixel_ID %in% SF_pixels) -> grid_data_SF_NAD83_filtered
     
-    #st_write(grid_data_SF_NAD83_filtered, "output_data/shapefiles/1km/SF/1km_shapefile_2019_03252024_SF.shp") 
+    st_write(grid_data_SF_NAD83_filtered, "output_data/shapefiles/1km/SF/1km_shapefile_2019_03252024_SF.shp")
     #Has total pixels 7,072 we use as grid in BenMAP. 
     
     
     
-#------------------------------------------------- SECTION 2: 1 KM POPULATION -------------------------------------------------
+#------------------------------------------------- SECTION A2: 1 KM POPULATION -------------------------------------------------
 #Here we re-scale population data by age from Census bureau at the census block group level to our 1km grids. We will use the same 1 km 2019 population grid for our 3 BenMAP runs.
 #----GENERAL FILES----
 #### 1. Load census data ####
     census_block <- st_read("shapefiles/cb_2019_us_bg_500k_clipped/cb_2019_us_bg_500k.shp") #From https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2019.html#list-tab-1883739534
     
-    input_population_data <- read.csv("data/ACS/ACSDT5Y2019.B01003_2024-02-28T212808/ACSDT5Y2019.B01003-Data.csv") #From census data table B01003 on total population at the census block level. Note we rename column to match census block metadata
+    input_population_data <- read.csv("data/BenMAP/ACSDT5Y2019.B01003_2024-02-28T212808/ACSDT5Y2019.B01003-Data.csv") #From census data table B01003 on total population at the census block level. Note we rename column to match census block metadata
     
-    input_race_data <- read.csv("data/ACS/ACSDT5Y2019.B02001_2024-02-28T213117/ACSDT5Y2019.B02001-Data.csv")  #From census data table B02001 on race at the census block level. Note we rename column to match census block metadata
+    input_race_data <- read.csv("data/BenMAP/ACSDT5Y2019.B02001_2024-02-28T213117/ACSDT5Y2019.B02001-Data.csv")  #From census data table B02001 on race at the census block level. Note we rename column to match census block metadata
     
-    input_gender_age_data <- read.csv("data/ACS/ACSDT5Y2019.B01001_2024-02-28T213030/ACSDT5Y2019.B01001-Data.csv")  #From census data table B01001 on race at the census block level. Note we rename column to match census block metadata
+    input_gender_age_data <- read.csv("data/BenMAP/ACSDT5Y2019.B01001_2024-02-28T213030/ACSDT5Y2019.B01001-Data.csv")  #From census data table B01001 on race at the census block level. Note we rename column to match census block metadata
     
-    input_income_data <-read.csv("data/ACS/ACSDT5Y2019.B19013_2024-02-28T213319/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census block level. Note we rename column to match census block metadata
+    input_income_data <-read.csv("data/BenMAP/ACSDT5Y2019.B19013_2024-02-28T213319/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census block level. Note we rename column to match census block metadata
     
 #### 2. Prepare census data ####
   #### 2.1. Total population ####
@@ -833,7 +830,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_seattle %>%
         st_drop_geometry() -> partitions_seattle_list
-      #write.csv(partitions_seattle_list, "output_data/Gini/partitions_seattle.csv")
+      write.csv(partitions_seattle_list, "output_data/BenMAP_files/1km/Seattle/partitions_seattle.csv")
       
     ### 1.5.3. Merge variables ###
         #Merge partitions with variables
@@ -898,12 +895,11 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         
   #### 1.6. Write outputs ####
         # Print the output table with today's date
-        #st_write(population_2019_data_pixel_seattle, "output_data/shapefiles/1km/Seattle/1_km_population_2019_seattle.shp") 
+        st_write(population_2019_data_pixel_seattle, "output_data/shapefiles/1km/Seattle/1_km_population_2019_seattle.shp") 
         #Has total pixels 16,364 we use as grid in BenMAP. 
         #File with geometry, row, col, pixel ID, ages and races
         
-        #write.csv(population_2019_data_pixel_age_final_seattle, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Seattle/Date_", today_date, "1_km_population_2019_seattle.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-        population_2019_data_pixel_age_final_seattle<-read.csv("output_data/BenMAP_files/1km/Seattle/Date_ 2024-03-31 1_km_population_2019_seattle.csv")
+        write.csv(population_2019_data_pixel_age_final_seattle, row.names = FALSE,"output_data/BenMAP_files/1km/Seattle/1_km_population_2019_seattle.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
     
   #### 1.7. Figures ####
         #Figure
@@ -928,7 +924,6 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         group_by(census_block_ID) %>%
         summarise(sum_area_ratio = sum(area_ratio_block)) -> check_census_ratio_seattle #should = 1
 
-  
 #### 2. LOS ANGELES ####
   #### 2.1. Prepare census block and grids ####
     #Filter for CA
@@ -1019,7 +1014,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         #write csv
         partitions_LA %>%
           st_drop_geometry() -> partitions_LA_list
-        #write.csv(partitions_LA_list, "output_data/Gini/partitions_LA.csv")
+        write.csv(partitions_LA_list, "output_data/BenMAP_files/1km/LA/partitions_LA.csv")
         
     ### 2.5.3. Merge variables ###
         #Merge partitions with variables
@@ -1059,12 +1054,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
      
   #### 2.6. Write outputs ####   
         # Print the output table with today's date
-        #st_write(population_2019_data_pixel_LA, "output_data/shapefiles/1km/LA/1_km_population_2019_LA.shp") 
+        st_write(population_2019_data_pixel_LA, "output_data/shapefiles/1km/LA/1_km_population_2019_LA.shp") 
         #Has total pixels 16,097 we use as grid in BenMAP. 
         #File with geometry, row, col, pixel ID, ages and races
         
-        #write.csv(population_2019_data_pixel_age_final_LA, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/Date_", today_date, "1_km_population_2019_LA.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-        population_2019_data_pixel_age_final_LA <- read.csv("output_data/BenMAP_files/1km/LA/Date_ 2024-03-31 1_km_population_2019_LA.csv")
+        write.csv(population_2019_data_pixel_age_final_LA, row.names = FALSE, "output_data/BenMAP_files/1km/LA/1_km_population_2019_LA.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
+        
   #### 2.7. Figures ####
         #Figure
         population_2019_data_pixel_LA %>%
@@ -1075,8 +1070,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           geom_sf(data = population_2019_data_pixel_LA_log, aes(fill = log_pixel_population), color = NA, size = 0) +
           scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
           ggtitle("LA 1km Rescaled Population")
-        ggsave("figures/BenMAP/1km/population/1km_rescaled_population_LA_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-        ggsave("figures/BenMAP/1km/population/1km_rescaled_population_LA_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_LA_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_LA_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
         print(p)
         
   #### 2.8. Checks ####
@@ -1170,7 +1165,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
   #write csv
   partitions_riverside %>%
     st_drop_geometry() -> partitions_riverside_list
-  write.csv(partitions_riverside_list, "output_data/Gini/partitions_riverside.csv")
+  write.csv(partitions_riverside_list, "output_data/BenMAP_files/1km/Riverside/partitions_riverside.csv")
   
   ### 3.5.3. Merge variables ###
   #Merge partitions with variables
@@ -1214,8 +1209,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
   #Has total pixels 71,352 we use as grid in BenMAP. 
   #File with geometry, row, col, pixel ID, ages and races
   
-  write.csv(population_2019_data_pixel_age_final_riverside, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Riverside/Date_", today_date, "1_km_population_2019_riverside.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-  population_2019_data_pixel_age_final_riverside <- read.csv("output_data/BenMAP_files/1km/Riverside/Date_ 2024-03-31 1_km_population_2019_riverside.csv")
+  write.csv(population_2019_data_pixel_age_final_riverside, row.names = FALSE, "output_data/BenMAP_files/1km/Riverside/1_km_population_2019_riverside.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 3.7. Figures ####
   #Figure
@@ -1227,8 +1221,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     geom_sf(data = population_2019_data_pixel_riverside_log, aes(fill = log_pixel_population), color = NA, size = 0) +
     scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
     ggtitle("Riverside 1km Rescaled Population")
-  ggsave("figures/BenMAP/1km/population/1km_rescaled_population_riverside_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-  ggsave("figures/BenMAP/1km/population/1km_rescaled_population_riverside_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+  #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_riverside_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+  #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_riverside_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
   print(p)
   
   #### 3.8. Checks ####
@@ -1325,7 +1319,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_phoenix %>%
         st_drop_geometry() -> partitions_phoenix_list
-      write.csv(partitions_phoenix_list, "output_data/Gini/partitions_phoenix.csv")
+      write.csv(partitions_phoenix_list, "output_data/BenMAP_files/1km/Phoenix/partitions_phoenix.csv")
       
     ### 4.5.3. Merge variables ###
       #Merge partitions with variables
@@ -1369,8 +1363,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 38,341 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_phoenix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Phoenix/Date_", today_date, "1_km_population_2019_phoenix.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_phoenix <- read.csv("output_data/BenMAP_files/1km/Phoenix/Date_ 2024-03-31 1_km_population_2019_phoenix.csv")
+    write.csv(population_2019_data_pixel_age_final_phoenix, row.names = FALSE, "output_data/BenMAP_files/1km/Phoenix/1_km_population_2019_phoenix.csv") #BenMAP file with row, col, age range, population, all races, all ethnicity, all gender
+    
   #### 4.7. Figures ####
     #Figure
     population_2019_data_pixel_phoenix %>%
@@ -1381,8 +1375,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_phoenix_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Phoenix 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_phoenix_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_phoenix_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_phoenix_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_phoenix_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 4.8. Checks ####
@@ -1482,7 +1476,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_dallas %>%
         st_drop_geometry() -> partitions_dallas_list
-      write.csv(partitions_dallas_list, "output_data/Gini/partitions_dallas.csv")
+      write.csv(partitions_dallas_list, "output_data/BenMAP_files/1km/Dallas/partitions_dallas.csv")
       
     ### 5.5.3. Merge variables ###
       #Merge partitions with variables
@@ -1526,8 +1520,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 23,747 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_dallas, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Dallas/Date_", today_date, "1_km_population_2019_dallas.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_dallas <- read.csv("output_data/BenMAP_files/1km/Dallas/Date_ 2024-03-31 1_km_population_2019_dallas.csv")
+    write.csv(population_2019_data_pixel_age_final_dallas, row.names = FALSE, "output_data/BenMAP_files/1km/Dallas/1_km_population_2019_dallas.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
     
   #### 5.7. Figures ####
     #Figure
@@ -1539,8 +1532,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_dallas_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Dallas 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_dallas_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_dallas_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_dallas_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_dallas_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 5.8. Checks ####
@@ -1636,7 +1629,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_houston %>%
         st_drop_geometry() -> partitions_houston_list
-      write.csv(partitions_houston_list, "output_data/Gini/partitions_houston.csv")
+      write.csv(partitions_houston_list, "output_data/BenMAP_files/1km/Houston/partitions_houston.csv")
       
     ### 6.5.3. Merge variables ###
       #Merge partitions with variables
@@ -1680,8 +1673,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 23,340 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_houston, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/Date_", today_date, "1_km_population_2019_houston.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_houston <- read.csv("output_data/BenMAP_files/1km/Houston/Date_ 2024-03-31 1_km_population_2019_houston.csv")
+    write.csv(population_2019_data_pixel_age_final_houston, row.names = FALSE, "output_data/BenMAP_files/1km/Houston/1_km_population_2019_houston.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 6.7. Figures ####
     #Figure
@@ -1693,8 +1685,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_houston_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Houston 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_houston_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_houston_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_houston_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_houston_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 6.8. Checks ####
@@ -1789,7 +1781,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_miami %>%
         st_drop_geometry() -> partitions_miami_list
-      write.csv(partitions_miami_list, "output_data/Gini/partitions_miami.csv")
+      write.csv(partitions_miami_list, "output_data/BenMAP_files/1km/Miami/partitions_miami.csv")
       
     ### 7.5.3. Merge variables ###
       #Merge partitions with variables
@@ -1833,8 +1825,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 15,126we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_miami, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/Date_", today_date, "1_km_population_2019_miami.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_miami <- read.csv("output_data/BenMAP_files/1km/Miami/Date_ 2024-03-31 1_km_population_2019_miami.csv")
+    write.csv(population_2019_data_pixel_age_final_miami, row.names = FALSE, "output_data/BenMAP_files/1km/Miami/1_km_population_2019_miami.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
     
   #### 7.7. Figures ####
     #Figure
@@ -1846,8 +1837,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_miami_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Miami 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_miami_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_miami_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_miami_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_miami_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 7.8. Checks ####
@@ -1954,7 +1945,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_atl %>%
         st_drop_geometry() -> partitions_atl_list
-      write.csv(partitions_atl_list, "output_data/Gini/partitions_Atlanta.csv")
+      write.csv(partitions_atl_list, "output_data/BenMAP_files/1km/Atlanta/partitions_Atlanta.csv")
       
     ### 8.5.3. Merge variables ###
       #Merge partitions with variables
@@ -1998,8 +1989,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 23,341 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_atl, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Atlanta/Date_", today_date, "1_km_population_2019_atlanta.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_atl <- read.csv("output_data/BenMAP_files/1km/Atlanta/Date_ 2024-03-31 1_km_population_2019_atlanta.csv")
+    write.csv(population_2019_data_pixel_age_final_atl, row.names = FALSE, "output_data/BenMAP_files/1km/Atlanta/1_km_population_2019_atlanta.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 8.7. Figures ####
     #Figure
@@ -2011,8 +2001,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_atl_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Atlanta 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_atlanta_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_atlanta_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_atlanta_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_atlanta_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 8.8. Checks ####
@@ -2114,7 +2104,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_chicago %>%
         st_drop_geometry() -> partitions_chicago_list
-      write.csv(partitions_chicago_list, "output_data/Gini/partitions_Chicago.csv")
+      write.csv(partitions_chicago_list, "output_data/BenMAP_files/1km/Chicago/partitions_Chicago.csv")
       
     ### 9.5.3. Merge variables ###
       #Merge partitions with variables
@@ -2158,8 +2148,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 19,209 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_chicago, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/Date_", today_date, "1_km_population_2019_chicago.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_chicago <- read.csv("output_data/BenMAP_files/1km/Chicago/Date_ 2024-03-31 1_km_population_2019_chicago.csv")
+    write.csv(population_2019_data_pixel_age_final_chicago, row.names = FALSE, "output_data/BenMAP_files/1km/Chicago/1_km_population_2019_chicago.csv")#BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
     
   #### 9.7. Figures ####
     #Figure
@@ -2171,8 +2160,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_chicago_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Chicago 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_chicago_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_chicago_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_chicago_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_chicago_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 9.8. Checks ####
@@ -2282,7 +2271,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_wash %>%
         st_drop_geometry() -> partitions_wash_list
-      write.csv(partitions_wash_list, "output_data/Gini/partitions_DC.csv")
+      write.csv(partitions_wash_list, "output_data/BenMAP_files/1km/DC/partitions_DC.csv")
       
     ### 10.5.3. Merge variables ###
       #Merge partitions with variables
@@ -2326,8 +2315,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 17,877 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_wash, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/Date_", today_date, "1_km_population_2019_wash.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_wash <- read.csv("output_data/BenMAP_files/1km/DC/Date_ 2024-03-31 1_km_population_2019_wash.csv")
+    write.csv(population_2019_data_pixel_age_final_wash, row.names = FALSE, "output_data/BenMAP_files/1km/DC/1_km_population_2019_wash.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 10.7. Figures ####
     #Figure
@@ -2339,8 +2327,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_wash_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("DC Metro 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_DC_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_DC_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_DC_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_DC_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 10.8. Checks ####
@@ -2442,7 +2430,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_phil %>%
         st_drop_geometry() -> partitions_phil_list
-      write.csv(partitions_phil_list, "output_data/Gini/partitions_phil.csv")
+      write.csv(partitions_phil_list, "output_data/BenMAP_files/1km/Philadelphia/partitions_phil.csv")
       
     ### 11.5.3. Merge variables ###
       #Merge partitions with variables
@@ -2486,8 +2474,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 12,652we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_phil, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/Date_", today_date, "1_km_population_2019_philadelphia.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_phil <- read.csv("output_data/BenMAP_files/1km/Philadelphia/Date_ 2024-03-31 1_km_population_2019_philadelphia.csv")
+    write.csv(population_2019_data_pixel_age_final_phil, row.names = FALSE, "output_data/BenMAP_files/1km/Philadelphia/1_km_population_2019_philadelphia.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 11.7. Figures ####
     #Figure
@@ -2499,8 +2486,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_phil_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Philadelphia Metro 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_philadelphia_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_philadelphia_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_philadelphia_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_philadelphia_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 11.8. Checks ####
@@ -2607,7 +2594,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_NY %>%
         st_drop_geometry() -> partitions_NY_list
-      write.csv(partitions_NY_list, "output_data/Gini/partitions_NY.csv")
+      write.csv(partitions_NY_list, "output_data/BenMAP_files/1km/NY/partitions_NY.csv")
       
     ### 12.5.3. Merge variables ###
       #Merge partitions with variables
@@ -2651,8 +2638,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 19,841we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_NY, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/Date_", today_date, "1_km_population_2019_NY.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_NY<-read.csv("output_data/BenMAP_files/1km/NY/Date_ 2024-04-01 1_km_population_2019_NY.csv")
+    write.csv(population_2019_data_pixel_age_final_NY, row.names = FALSE, "output_data/BenMAP_files/1km/NY/1_km_population_2019_NY.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
 
   #### 12.7. Figures ####
     #Figure
@@ -2664,8 +2650,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_NY_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("NY Metro 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_NY_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_NY_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_NY_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_NY_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 12.8. Checks ####
@@ -2763,7 +2749,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_boston %>%
         st_drop_geometry() -> partitions_boston_list
-      write.csv(partitions_boston_list, "output_data/Gini/partitions_boston.csv")
+      write.csv(partitions_boston_list, "output_data/BenMAP_files/1km/Boston/partitions_boston.csv")
       
     ### 13.5.3. Merge variables ###
       #Merge partitions with variables
@@ -2807,9 +2793,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 10,087 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_boston, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/Date_", today_date, "1_km_population_2019_boston.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    
-    population_2019_data_pixel_age_final_boston<-read.csv("output_data/BenMAP_files/1km/Boston/Date_ 2024-04-01 1_km_population_2019_boston.csv")
+    write.csv(population_2019_data_pixel_age_final_boston, row.names = FALSE, "output_data/BenMAP_files/1km/Boston/1_km_population_2019_boston.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 13.7. Figures ####
     #Figure
@@ -2821,8 +2805,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_boston_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("Boston Metro 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_boston_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_boston_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_boston_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_boston_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 13.8. Checks ####
@@ -2919,7 +2903,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_detroit %>%
         st_drop_geometry() -> partitions_detroit_list
-      write.csv(partitions_detroit_list, "output_data/Gini/partitions_detroit.csv")
+      write.csv(partitions_detroit_list, "output_data/BenMAP_files/1km/Detroit/partitions_detroit.csv")
       
     ### 14.5.3. Merge variables ###
       #Merge partitions with variables
@@ -2963,10 +2947,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 10,711 we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_detroit, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/Date_", today_date, "1_km_population_2019_detroit.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    
-    population_2019_data_pixel_age_final_detroit<-read.csv("output_data/BenMAP_files/1km/Detroit/Date_ 2024-04-01 1_km_population_2019_detroit.csv")
-    
+    write.csv(population_2019_data_pixel_age_final_detroit, row.names = FALSE, "output_data/BenMAP_files/1km/Detroit/1_km_population_2019_detroit.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 14.7. Figures ####
     #Figure
@@ -2978,8 +2959,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_detroit_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("detroit Metro 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_detroit_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_detroit_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_detroit_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_detroit_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 14.8. Checks ####
@@ -3076,7 +3057,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #write csv
       partitions_SF %>%
         st_drop_geometry() -> partitions_SF_list
-      write.csv(partitions_SF_list, "output_data/Gini/partitions_SF.csv")
+      write.csv(partitions_SF_list, "output_data/BenMAP_files/1km/SF/partitions_SF.csv")
       
     ### 15.5.3. Merge variables ###
       #Merge partitions with variables
@@ -3120,8 +3101,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Has total pixels 12,652we use as grid in BenMAP. 
     #File with geometry, row, col, pixel ID, ages and races
     
-    write.csv(population_2019_data_pixel_age_final_SF, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/Date_", today_date, "1_km_population_2019_SF.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final_SF <- read.csv("output_data/BenMAP_files/1km/SF/Date_ 2024-04-08 1_km_population_2019_SF_fixed.csv")
+    write.csv(population_2019_data_pixel_age_final_SF, row.names = FALSE, "output_data/BenMAP_files/1km/SF/1_km_population_2019_SF.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
   
   #### 15.7. Figures ####
     #Figure
@@ -3133,8 +3113,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       geom_sf(data = population_2019_data_pixel_SF_log, aes(fill = log_pixel_population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("SF Metro 1km Rescaled Population")
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_SF_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/BenMAP/1km/population/1km_rescaled_population_SF_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_SF_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/1km/population/1km_rescaled_population_SF_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
   
   #### 15.8. Checks ####
@@ -3145,7 +3125,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       group_by(census_block_ID) %>%
       summarise(sum_area_ratio = sum(area_ratio_block)) -> check_census_ratio_SF #should = 1 
     
-#------------------------------------------------- SECTION 3: 1 KM INCIDENCE RATE -------------------------------------------------
+#------------------------------------------------- SECTION A3: 1 KM INCIDENCE RATE -------------------------------------------------
 #----GENERAL FILES----
 #### 1. Incidence rates ####
     #### 1.1. Load files ####
@@ -3156,10 +3136,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       dplyr::select(STATEFP, NAME, COUNTYFP, GEOID, geometry) #keep relevant columns
     
     #fromm BenMAP
-    grid_data_county_benmap <- st_read("data/incidence_rates_BenMAP/County.shp") #From BenMAP
+    grid_data_county_benmap <- st_read("data/BenMAP/incidence_rates_BenMAP/County.shp") #From BenMAP
     
-    incidence_2015 <- read.csv("data/incidence_rates_BenMAP/Mortality Incidence (2015).csv") #From BenMAP
-    incidence_2020 <- read.csv("data/incidence_rates_BenMAP/Mortality Incidence (2020).csv") #From BenMAP
+    incidence_2015 <- read.csv("data/BenMAP/incidence_rates_BenMAP/Mortality Incidence (2015).csv") #From BenMAP
+    incidence_2020 <- read.csv("data/BenMAP/incidence_rates_BenMAP/Mortality Incidence (2020).csv") #From BenMAP
     
     grid_data_county_benmap %>%
       mutate(FIPS = if_else(FIPS == "46113", "46102", FIPS)) %>% #County Oglala Lakota was previously known as Shannon, so we rename it before the join
@@ -3174,7 +3154,6 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
              benmap_ROW = ROW,
              benmap_COL = COL) %>%
       dplyr::select(-NAME.y, -CNTY_FIPS, -COUNTYFP)-> grid_data_county
-    
     #So now grid_data_county has each county in the US with the geometry from the census data 2020.
     #We will bring in incidence later
     
@@ -3198,7 +3177,6 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       mutate(Value_2019 = Value_2020 + (Value_2015 - Value_2020) / 5) %>%
       dplyr::select(-Value_2020, -Value_2015)-> incidence_2019
     
-
 #----REGIONAL FILES----   
 #### 1. SEATTLE ####
   #### 1.1. Join files ####
@@ -3300,7 +3278,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_WA
       
-      write.csv(partitions_rate_final_clean_WA, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Seattle/Date_",today_date,"Incidence_1km_2019_seattle.csv"))
+      write.csv(partitions_rate_final_clean_WA, row.names = FALSE, "output_data/BenMAP_files/1km/Seattle/Incidence_1km_2019_seattle.csv")
       
       #shapefiles
       partitions_rate_final_WA %>%
@@ -3384,7 +3362,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_LA
   
-  write.csv(partitions_rate_final_clean_LA, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/Date_",today_date,"Incidence_1km_2019_LA.csv"))
+  write.csv(partitions_rate_final_clean_LA, row.names = FALSE, "output_data/BenMAP_files/1km/LA/Incidence_1km_2019_LA.csv")
   
   #shapefiles
   partitions_rate_final_LA %>%
@@ -3467,7 +3445,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_riverside
   
-  write.csv(partitions_rate_final_clean_riverside, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Riverside/Date_",today_date,"Incidence_1km_2019_riverside.csv"))
+  write.csv(partitions_rate_final_clean_riverside, row.names = FALSE, "output_data/BenMAP_files/1km/Riverside/Incidence_1km_2019_riverside.csv")
   
   #shapefiles
   partitions_rate_final_riverside %>%
@@ -3551,7 +3529,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_phoenix
   
-  write.csv(partitions_rate_final_clean_phoenix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Phoenix/Date_",today_date,"Incidence_1km_2019_phoenix.csv"))
+  write.csv(partitions_rate_final_clean_phoenix, row.names = FALSE, "output_data/BenMAP_files/1km/Phoenix/Incidence_1km_2019_phoenix.csv")
   
   #shapefiles
   partitions_rate_final_phoenix %>%
@@ -3636,7 +3614,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_dallas
   
-  write.csv(partitions_rate_final_clean_dallas, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Dallas/Date_",today_date,"Incidence_1km_2019_dallas.csv"))
+  write.csv(partitions_rate_final_clean_dallas, row.names = FALSE, "output_data/BenMAP_files/1km/Dallas/Incidence_1km_2019_dallas.csv")
   
   #shapefiles
   partitions_rate_final_dallas %>%
@@ -3721,7 +3699,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_houston
   
-  write.csv(partitions_rate_final_clean_houston, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/Date_",today_date,"Incidence_1km_2019_houston.csv"))
+  write.csv(partitions_rate_final_clean_houston, row.names = FALSE, "output_data/BenMAP_files/1km/Houston/Incidence_1km_2019_houston.csv")
   
   #shapefiles
   partitions_rate_final_houston %>%
@@ -3805,7 +3783,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_miami
   
-  write.csv(partitions_rate_final_clean_miami, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/Date_",today_date,"Incidence_1km_2019_miami.csv"))
+  write.csv(partitions_rate_final_clean_miami, row.names = FALSE, "output_data/BenMAP_files/1km/Miami/Incidence_1km_2019_miami.csv")
   
   #shapefiles
   partitions_rate_final_miami %>%
@@ -3892,7 +3870,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_atl
   
-  write.csv(partitions_rate_final_clean_atl, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Atlanta/Date_",today_date,"Incidence_1km_2019_atlanta.csv"))
+  write.csv(partitions_rate_final_clean_atl, row.names = FALSE, "output_data/BenMAP_files/1km/Atlanta/Incidence_1km_2019_atlanta.csv")
   
   #shapefiles
   partitions_rate_final_atl %>%
@@ -3977,7 +3955,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_chicago
   
-  write.csv(partitions_rate_final_clean_chicago, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/Date_",today_date,"Incidence_1km_2019_chicago.csv"))
+  write.csv(partitions_rate_final_clean_chicago, row.names = FALSE, "output_data/BenMAP_files/1km/Chicago/Incidence_1km_2019_chicago.csv")
   
   #shapefiles
   partitions_rate_final_chicago %>%
@@ -3986,10 +3964,6 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     filter(Endpoint == "Mortality, All Cause") -> partitions_rate_final_clean_allcauses_geometry_chicago
   
   st_write(partitions_rate_final_clean_allcauses_geometry_chicago, "output_data/shapefiles/1km/Chicago/1_km_mortality_2019_chicago.shp")  
-  
-  
-  
-  
   
 #### 10. WASHINGTON DC ####
   #### 10.1. Join files ####
@@ -4068,7 +4042,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_wash
   
-  write.csv(partitions_rate_final_clean_wash, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/Date_",today_date,"Incidence_1km_2019_washington.csv"))
+  write.csv(partitions_rate_final_clean_wash, row.names = FALSE, "output_data/BenMAP_files/1km/DC/Incidence_1km_2019_washington.csv")
   
   #shapefiles
   partitions_rate_final_wash %>%
@@ -4153,7 +4127,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_phil
   
-  write.csv(partitions_rate_final_clean_phil, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/Date_",today_date,"Incidence_1km_2019_philadelphia.csv"))
+  write.csv(partitions_rate_final_clean_phil, row.names = FALSE, "output_data/BenMAP_files/1km/Philadelphia/Incidence_1km_2019_philadelphia.csv")
   
   #shapefiles
   partitions_rate_final_phil %>%
@@ -4239,7 +4213,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_NY
   
-  write.csv(partitions_rate_final_clean_NY, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/Date_",today_date,"Incidence_1km_2019_NY.csv"))
+  write.csv(partitions_rate_final_clean_NY, row.names = FALSE, "output_data/BenMAP_files/1km/NY/Incidence_1km_2019_NY.csv")
   
   #shapefiles
   partitions_rate_final_NY %>%
@@ -4323,7 +4297,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_boston
   
-  write.csv(partitions_rate_final_clean_boston, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/Date_",today_date,"Incidence_1km_2019_boston.csv"))
+  write.csv(partitions_rate_final_clean_boston, row.names = FALSE, "output_data/BenMAP_files/1km/Boston/Incidence_1km_2019_boston.csv")
   
   #shapefiles
   partitions_rate_final_boston %>%
@@ -4407,7 +4381,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_detroit
   
-  write.csv(partitions_rate_final_clean_detroit, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/Date_",today_date,"Incidence_1km_2019_detroit.csv"))
+  write.csv(partitions_rate_final_clean_detroit, row.names = FALSE, "output_data/BenMAP_files/1km/Detroit/Incidence_1km_2019_detroit.csv")
   
   #shapefiles
   partitions_rate_final_detroit %>%
@@ -4416,6 +4390,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     filter(Endpoint == "Mortality, All Cause") -> partitions_rate_final_clean_allcauses_geometry_detroit
   
   st_write(partitions_rate_final_clean_allcauses_geometry_detroit, "output_data/shapefiles/1km/Detroit/1_km_mortality_2019_detroit.shp")  
+  
 #### 15. SAN FRANCISCO ####
   #### 15.1. Join files ####
   grid_data_county %>%
@@ -4447,7 +4422,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
   partitions_mortality_SF$area_ratio <- partitions_mortality_SF$intersection_area / partitions_mortality_SF$county_area 
   partitions_mortality_SF$area_ratio_pixel <- partitions_mortality_SF$intersection_area / partitions_mortality_SF$pixel_area
   
-  #### 14.3. Border pixels ####
+  #### 15.3. Border pixels ####
   partitions_mortality_SF %>%
     group_by(pixel_ID) %>%
     summarise(sum_area_ratio_pixel = sum(area_ratio_pixel)) %>%
@@ -4490,7 +4465,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     rename(Row = row, Column = col, Value = weighted_incidence) %>%
     st_drop_geometry()-> partitions_rate_final_clean_SF
   
-  write.csv(partitions_rate_final_clean_SF, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/Date_",today_date,"Incidence_1km_2019_SF.csv"))
+  write.csv(partitions_rate_final_clean_SF, row.names = FALSE, "output_data/BenMAP_files/1km/SF/Incidence_1km_2019_SF.csv")
   
   #shapefiles
   partitions_rate_final_SF %>%
@@ -4499,7 +4474,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     filter(Endpoint == "Mortality, All Cause") -> partitions_rate_final_clean_allcauses_geometry_SF
   
   st_write(partitions_rate_final_clean_allcauses_geometry_SF, "output_data/shapefiles/1km/SF/1_km_mortality_2019_SF.shp")  
-#------------------------------------------------- SECTION 4: 1 KM POLLUTION -------------------------------------------------
+  
+  
+#------------------------------------------------- SECTION A4: 1 KM POLLUTION -------------------------------------------------
 #Here we prepare pollution files to csv for BenMAP. We need to get the mean of 365 days, and we need to assign exact row and columns to our data. We will have one file per period and per scenario (3 total: 2019, 2050 HIHG, 2050 LOW) 
 #WRF-CMAQ files form Jing for daily average PM2.5
   #WE ARE USING THE ADJUSTED VALUES !!!
@@ -4582,9 +4559,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           
         # 2. Save file
         #Csv
-        write.csv(grid_data_PM25_Seattle_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Seattle/Date_", today_date,"PM25_2019_Seattle.csv"))
+        write.csv(grid_data_PM25_Seattle_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Seattle/PM25_2019_Seattle.csv"))
         #Shapefile
-        st_write(grid_data_PM25_Seattle_NAD, "output_data/shapefiles/1km_V2/Seattle/1_km_PM25_2019_seattle.shp")
+        st_write(grid_data_PM25_Seattle_NAD, "output_data/shapefiles/1km/Seattle/1_km_PM25_2019_seattle.shp")
         
     # 1.1.5. Prepare figure
         #Get national mean (population weighted)
@@ -4628,8 +4605,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           theme_void() +
           annotation_scale() +
           geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "#95C623", size = 6, stroke = 2) #Seattle city hall+
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
         print(p)
 
   #### 1.2. 2050 HIGH CDR ####
@@ -4679,9 +4656,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                  `Annual Metric` = "Mean") -> grid_data_PM25_Seattle_NAD_filtered_final_2050_high
         
         # 2. Save file
-        write.csv(grid_data_PM25_Seattle_NAD_filtered_final_2050_high, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Seattle/Date_", today_date,"PM25_2050_high_Seattle.csv"))
+        write.csv(grid_data_PM25_Seattle_NAD_filtered_final_2050_high, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Seattle/PM25_2050_high_Seattle.csv"))
         #Shapefile
-        st_write(grid_data_PM25_Seattle_NAD_2050_high, "output_data/shapefiles/1km_V2/Seattle/1_km_PM25_2050_HIGH_seattle.shp")
+        st_write(grid_data_PM25_Seattle_NAD_2050_high, "output_data/shapefiles/1km/Seattle/1_km_PM25_2050_HIGH_seattle.shp")
         
     # 1.2.5. Prepare figure
         grid_data_PM25_Seattle_NAD_filtered_final_2050_high %>%
@@ -4713,8 +4690,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           theme_void() +
           annotation_scale() +
           geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "#95C623", size = 6, stroke = 2) #Seattle city hall+
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
         print(p)
         
   #### 1.3. 2050 LOW CDR ####
@@ -4764,9 +4741,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                  `Annual Metric` = "Mean") -> grid_data_PM25_Seattle_NAD_filtered_final_2050_low
         
         # 2. Save file
-        write.csv(grid_data_PM25_Seattle_NAD_filtered_final_2050_low, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Seattle/Date_", today_date,"PM25_2050_low_Seattle.csv"))
+        write.csv(grid_data_PM25_Seattle_NAD_filtered_final_2050_low, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Seattle/PM25_2050_low_Seattle.csv"))
         #Shapefile
-        st_write(grid_data_PM25_Seattle_NAD_2050_low, "output_data/shapefiles/1km_V2/Seattle/1_km_PM25_2050_LOW_seattle.shp")
+        st_write(grid_data_PM25_Seattle_NAD_2050_low, "output_data/shapefiles/1km/Seattle/1_km_PM25_2050_LOW_seattle.shp")
         
     # 1.3.5. Prepare figure
         grid_data_PM25_Seattle_NAD_filtered_final_2050_low %>%
@@ -4798,8 +4775,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           theme_void() +
           annotation_scale() +
           geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "#95C623", size = 6, stroke = 2) #Seattle city hall+
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
         print(p)
         
 #### 2. LOS ANGELES ####
@@ -4863,9 +4840,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_LA_NAD_final
       
         # 2. Save file
-        write.csv(grid_data_PM25_southwest_LA_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/LA/Date_", today_date,"PM25_2019_LA.csv"))
+        write.csv(grid_data_PM25_southwest_LA_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/PM25_2019_LA.csv"))
         
-        st_write(grid_data_PM25_southwest_LA_NAD, "output_data/shapefiles/1km_V2/LA/1_km_PM25_2019_LA.shp")
+        st_write(grid_data_PM25_southwest_LA_NAD, "output_data/shapefiles/1km/LA/1_km_PM25_2019_LA.shp")
       
     # 2.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -4907,8 +4884,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_LA, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "#95C623", size = 6, stroke = 2) #LA city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
     
   #### 2.2. 2050 HIGH ####
@@ -4943,8 +4920,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_LA_NAD_final_2050_high
       
       # 2. Save file
-      write.csv(grid_data_PM25_southwest_LA_NAD_final_2050_high, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/LA/Date_", today_date,"PM25_2050_high_LA.csv"))
-      st_write(grid_data_PM25_southwest_LA_NAD_2050_high, "output_data/shapefiles/1km_V2/LA/1_km_PM25_2050_high_LA.shp")
+      write.csv(grid_data_PM25_southwest_LA_NAD_final_2050_high, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/PM25_2050_high_LA.csv"))
+      st_write(grid_data_PM25_southwest_LA_NAD_2050_high, "output_data/shapefiles/1km/LA/1_km_PM25_2050_high_LA.shp")
       
     # 2.2.5. Prepare figure
       grid_data_PM25_southwest_LA_NAD_final_2050_high %>%
@@ -4977,8 +4954,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_LA, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "#95C623", size = 6, stroke = 2) #LA city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 2.3. 2050 LOW ####
@@ -5013,9 +4990,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                  `Annual Metric` = "Mean") -> grid_data_PM25_southwest_LA_NAD_final_2050_low
         
         # 2. Save file
-        write.csv(grid_data_PM25_southwest_LA_NAD_final_2050_low, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/LA/Date_", today_date,"PM25_2050_low_LA.csv"))
-        #grid_data_PM25_southwest_LA_NAD_final_2050_low<- read.csv("output_data/BenMAP_files/1km_V2/LA/Date_ 2024-05-17 PM25_2050_low_LA.csv")
-        st_write(grid_data_PM25_southwest_LA_NAD_2050_low, "output_data/shapefiles/1km_V2/LA/1_km_PM25_2050_low_LA.shp")
+        write.csv(grid_data_PM25_southwest_LA_NAD_final_2050_low, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/PM25_2050_low_LA.csv"))
+        #grid_data_PM25_southwest_LA_NAD_final_2050_low<- read.csv("output_data/BenMAP_files/1km/LA/Date_ 2024-05-17 PM25_2050_low_LA.csv")
+        st_write(grid_data_PM25_southwest_LA_NAD_2050_low, "output_data/shapefiles/1km/LA/1_km_PM25_2050_low_LA.shp")
         
     # 2.3.5. Prepare figure
         grid_data_PM25_southwest_LA_NAD_final_2050_low %>%
@@ -5048,8 +5025,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           geom_sf(data = cbsa_shapefile_LA, color = "black", fill = NA)+
           theme_void() +
           geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "#95C623", size = 6, stroke = 2) #LA city hall
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
         print(p)
 
 #### 3. RIVERSIDE ####
@@ -5080,11 +5057,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Seasonal Metric` = "QuarterlyMean",
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_riverside_NAD_final
       # 2. Save file
-      write.csv(grid_data_PM25_southwest_riverside_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Riverside/Date_", today_date,"PM25_2019_Riverside.csv"))
+      write.csv(grid_data_PM25_southwest_riverside_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Riverside/PM25_2019_Riverside.csv"))
       
-      grid_data_PM25_southwest_riverside_NAD_final<- read.csv("output_data/BenMAP_files/1km_V2/Riverside/Date_ 2024-05-10 PM25_2019_Riverside.csv")
-      
-      st_write(grid_data_PM25_southwest_riverside_NAD, "output_data/shapefiles/1km_V2/Riverside/1_km_PM25_2019_riverside.shp")
+      st_write(grid_data_PM25_southwest_riverside_NAD, "output_data/shapefiles/1km/Riverside/1_km_PM25_2019_riverside.shp")
       
     # 3.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -5126,8 +5101,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_riverside, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -117.37559005667082,  y =  33.980696653550375), shape = 1, color = "#95C623", size = 6, stroke = 2) #Riverside city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
   
   #### 3.2. 2050 HIGH ####
@@ -5151,9 +5126,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Seasonal Metric` = "QuarterlyMean",
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_riverside_2050_high_NAD_final
       # 2. Save file
-      write.csv(grid_data_PM25_southwest_riverside_2050_high_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Riverside/Date_", today_date,"PM25_2050_high_Riverside.csv"))
-      grid_data_PM25_southwest_riverside_2050_high_NAD_final <- read.csv("output_data/BenMAP_files/1km_V2/Riverside/Date_ 2024-05-10 PM25_2050_high_Riverside.csv")
-      st_write(grid_data_PM25_southwest_riverside_2050_high_NAD, "output_data/shapefiles/1km_V2/Riverside/1_km_PM25_2050_high_riverside.shp")
+      write.csv(grid_data_PM25_southwest_riverside_2050_high_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Riverside/PM25_2050_high_Riverside.csv"))
+      
+      st_write(grid_data_PM25_southwest_riverside_2050_high_NAD, "output_data/shapefiles/1km/Riverside/1_km_PM25_2050_high_riverside.shp")
       
     # 3.2.5. Prepare figure
       grid_data_PM25_southwest_riverside_2050_high_NAD_final %>%
@@ -5186,8 +5161,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_riverside, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -117.37559005667082,  y =  33.980696653550375), shape = 1, color = "#95C623", size = 6, stroke = 2) #Riverside city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 3.3. 2050 LOW ####
@@ -5211,9 +5186,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                  `Seasonal Metric` = "QuarterlyMean",
                  `Annual Metric` = "Mean") -> grid_data_PM25_southwest_riverside_2050_low_NAD_final
         # 2. Save file
-        write.csv(grid_data_PM25_southwest_riverside_2050_low_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Riverside/Date_", today_date,"PM25_2050_low_Riverside.csv"))
-        grid_data_PM25_southwest_riverside_2050_low_NAD_final <- read.csv("output_data/BenMAP_files/1km_V2/Riverside/Date_ 2024-05-10 PM25_2050_low_Riverside.csv")
-        st_write(grid_data_PM25_southwest_riverside_2050_low_NAD, "output_data/shapefiles/1km_V2/Riverside/1_km_PM25_2050_low_riverside.shp")
+        write.csv(grid_data_PM25_southwest_riverside_2050_low_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Riverside/PM25_2050_low_Riverside.csv"))
+        
+        st_write(grid_data_PM25_southwest_riverside_2050_low_NAD, "output_data/shapefiles/1km/Riverside/1_km_PM25_2050_low_riverside.shp")
         
     # 3.3.5. Prepare figure
         grid_data_PM25_southwest_riverside_2050_low_NAD_final %>%
@@ -5246,8 +5221,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
           geom_sf(data = cbsa_shapefile_riverside, color = "black", fill = NA)+
           theme_void() +
           geom_point(data = NULL, aes(x = -117.37559005667082,  y =  33.980696653550375), shape = 1, color = "#95C623", size = 6, stroke = 2) #Riverside city hall
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
-        ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
+        #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
         print(p)
         
 #### 4. PHOENIX ####
@@ -5278,9 +5253,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Seasonal Metric` = "QuarterlyMean",
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_phoenix_NAD_final
       # 2. Save file
-      write.csv(grid_data_PM25_southwest_phoenix_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Phoenix/Date_", today_date,"PM25_2019_Phoenix.csv"))
-      grid_data_PM25_southwest_phoenix_NAD_final <- read.csv("output_data/BenMAP_files/1km_V2/Phoenix/Date_ 2024-05-10 PM25_2019_Phoenix.csv")
-      st_write(grid_data_PM25_southwest_phoenix_NAD, "output_data/shapefiles/1km_V2/Phoenix/1_km_PM25_2019_phoenix.shp")
+      write.csv(grid_data_PM25_southwest_phoenix_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Phoenix/PM25_2019_Phoenix.csv"))
+      st_write(grid_data_PM25_southwest_phoenix_NAD, "output_data/shapefiles/1km/Phoenix/1_km_PM25_2019_phoenix.shp")
     
     # 4.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -5322,8 +5296,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phoenix, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Phoenix city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 4.2. 2050 HIGH ####
@@ -5346,9 +5320,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Seasonal Metric` = "QuarterlyMean",
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_phoenix_2050_high_NAD_final
 
-      write.csv(grid_data_PM25_southwest_phoenix_2050_high_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Phoenix/Date_", today_date,"PM25_2050_high_Phoenix.csv"))
-      grid_data_PM25_southwest_phoenix_2050_high_NAD_final<- read.csv("output_data/BenMAP_files/1km_V2/Phoenix/Date_ 2024-05-10 PM25_2050_high_Phoenix.csv")
-      st_write(grid_data_PM25_southwest_phoenix_2050_high_NAD, "output_data/shapefiles/1km_V2/Phoenix/1_km_PM25_2050_high_phoenix.shp")
+      write.csv(grid_data_PM25_southwest_phoenix_2050_high_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Phoenix/PM25_2050_high_Phoenix.csv"))
+      st_write(grid_data_PM25_southwest_phoenix_2050_high_NAD, "output_data/shapefiles/1km/Phoenix/1_km_PM25_2050_high_phoenix.shp")
       
     # 4.2.5. Prepare figure
       grid_data_PM25_southwest_phoenix_2050_high_NAD_final %>%
@@ -5381,8 +5354,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phoenix, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Phoenix city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 4.3. 2050 LOW ####
@@ -5405,10 +5378,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Seasonal Metric` = "QuarterlyMean",
                `Annual Metric` = "Mean") -> grid_data_PM25_southwest_phoenix_2050_low_NAD_final
       
-      write.csv(grid_data_PM25_southwest_phoenix_2050_low_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Phoenix/Date_", today_date,"PM25_2050_low_Phoenix.csv"))
-      grid_data_PM25_southwest_phoenix_2050_low_NAD_final <- read.csv("output_data/BenMAP_files/1km_V2/Phoenix/Date_ 2024-05-10 PM25_2050_low_Phoenix.csv")
+      write.csv(grid_data_PM25_southwest_phoenix_2050_low_NAD_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Phoenix/PM25_2050_low_Phoenix.csv"))
     
-      st_write(grid_data_PM25_southwest_phoenix_2050_low_NAD, "output_data/shapefiles/1km_V2/Phoenix/1_km_PM25_2050_low_phoenix.shp")
+      st_write(grid_data_PM25_southwest_phoenix_2050_low_NAD, "output_data/shapefiles/1km/Phoenix/1_km_PM25_2050_low_phoenix.shp")
       
     # 4.3.5. Prepare figure
       grid_data_PM25_southwest_phoenix_2050_low_NAD_final %>%
@@ -5440,8 +5412,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phoenix, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Phoenix city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p) 
       
 #### 5. DALLAS ####
@@ -5521,10 +5493,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         
         # 2. Save file
         #Csv
-        write.csv(grid_data_PM25_dallas_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Dallas/Date_", today_date,"PM25_2019_Dallas.csv"))
-        grid_data_PM25_dallas_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Dallas/Date_ 2024-05-10 PM25_2019_Dallas.csv")
-        #Shapefile
-        st_write(grid_data_PM25_dallas_NAD, "output_data/shapefiles/1km_V2/Dallas/1_km_PM25_2019_dallas.shp")
+        write.csv(grid_data_PM25_dallas_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Dallas/PM25_2019_Dallas.csv"))
+        
+        st_write(grid_data_PM25_dallas_NAD, "output_data/shapefiles/1km/Dallas/1_km_PM25_2019_dallas.shp")
       
     # 5.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -5565,8 +5536,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_dallas, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Dallas city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
     
   #### 5.2. 2050 HIGH ####
@@ -5603,9 +5574,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_dallas_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_dallas_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Dallas/Date_", today_date,"PM25_2050_high_Dallas.csv"))
-      grid_data_PM25_dallas_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Dallas/Date_ 2024-05-10 PM25_2050_high_Dallas.csv")
-      st_write(grid_data_PM25_dallas_2050_high_NAD, "output_data/shapefiles/1km_V2/Dallas/1_km_PM25_2050_high_dallas.shp")
+      write.csv(grid_data_PM25_dallas_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Dallas/PM25_2050_high_Dallas.csv"))
+      
+      st_write(grid_data_PM25_dallas_2050_high_NAD, "output_data/shapefiles/1km/Dallas/1_km_PM25_2050_high_dallas.shp")
       
     # 5.2.5. Prepare figure
       grid_data_PM25_dallas_2050_high_NAD_filtered_final %>%
@@ -5637,8 +5608,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_dallas, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Dallas city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 5.3. 2050 LOW ####
@@ -5675,9 +5646,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_dallas_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_dallas_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Dallas/Date_", today_date,"PM25_2050_low_Dallas.csv"))
-      grid_data_PM25_dallas_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Dallas/Date_ 2024-05-10 PM25_2050_low_Dallas.csv")
-      st_write(grid_data_PM25_dallas_2050_low_NAD, "output_data/shapefiles/1km_V2/Dallas/1_km_PM25_2050_low_dallas.shp")
+      write.csv(grid_data_PM25_dallas_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Dallas/PM25_2050_low_Dallas.csv"))
+      
+      st_write(grid_data_PM25_dallas_2050_low_NAD, "output_data/shapefiles/1km/Dallas/1_km_PM25_2050_low_dallas.shp")
       
     # 5.3.5. Prepare figure
       grid_data_PM25_dallas_2050_low_NAD_filtered_final %>%
@@ -5709,8 +5680,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_dallas, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Dallas city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
     
 #### 6. HOUSTON ####
@@ -5790,10 +5761,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_houston_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Houston/Date_", today_date,"PM25_2019_Houston.csv"))
+      write.csv(grid_data_PM25_houston_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/PM25_2019_Houston.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_houston_NAD, "output_data/shapefiles/1km_V2/Houston/1_km_PM25_2019_houston.shp")
+      st_write(grid_data_PM25_houston_NAD, "output_data/shapefiles/1km/Houston/1_km_PM25_2019_houston.shp")
       
     # 6.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -5835,8 +5806,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_houston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "#95C623", size = 6, stroke = 2) #Houston city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p) 
     
   #### 6.2. 2050 HIGH ####
@@ -5871,9 +5842,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_houston_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_houston_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Houston/Date_", today_date,"PM25_2050_high_Houston.csv"))
-      grid_data_PM25_houston_2050_high_NAD_filtered_final<- read.csv("output_data/BenMAP_files/1km_V2/Houston/Date_ 2024-05-10 PM25_2050_high_Houston.csv")
-      st_write(grid_data_PM25_houston_2050_high_NAD, "output_data/shapefiles/1km_V2/Houston/1_km_PM25_2050_high_houston.shp")
+      write.csv(grid_data_PM25_houston_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/PM25_2050_high_Houston.csv"))
+      
+      st_write(grid_data_PM25_houston_2050_high_NAD, "output_data/shapefiles/1km/Houston/1_km_PM25_2050_high_houston.shp")
       
     # 6.2.5. Prepare figure
       grid_data_PM25_houston_2050_high_NAD_filtered_final %>%
@@ -5905,8 +5876,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "#95C623", size = 6, stroke = 2) + #Houston city hall
         geom_text(aes(label = paste("Population weighted mean:", round(houston_mean_2050_high, 2), "ug/m3")),
                   x = Inf, y = -Inf, hjust = 1, vjust = -0.6, size = 5)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
   
   #### 6.3. 2050 LOW ####
@@ -5941,9 +5912,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_houston_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_houston_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Houston/Date_", today_date,"PM25_2050_low_Houston.csv"))
-      grid_data_PM25_houston_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Houston/Date_ 2024-05-10 PM25_2050_low_Houston.csv")
-      st_write(grid_data_PM25_houston_2050_low_NAD, "output_data/shapefiles/1km_V2/Houston/1_km_PM25_2050_low_houston.shp")
+      write.csv(grid_data_PM25_houston_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/PM25_2050_low_Houston.csv"))
+      
+      st_write(grid_data_PM25_houston_2050_low_NAD, "output_data/shapefiles/1km/Houston/1_km_PM25_2050_low_houston.shp")
       
     # 6.3.5. Prepare figure
       grid_data_PM25_houston_2050_low_NAD_filtered_final %>%
@@ -5976,8 +5947,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_houston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "#95C623", size = 6, stroke = 2) #Houston city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
 #### 7. MIAMI ####
@@ -6050,10 +6021,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_miami_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Miami/Date_", today_date,"PM25_2019_Miami.csv"))
+      write.csv(grid_data_PM25_miami_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/PM25_2019_Miami.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_miami_NAD, "output_data/shapefiles/1km_V2/Miami/1_km_PM25_2019_miami.shp")
+      st_write(grid_data_PM25_miami_NAD, "output_data/shapefiles/1km/Miami/1_km_PM25_2019_miami.shp")
       
     # 7.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -6094,8 +6065,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_miami, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "#95C623", size = 6, stroke = 2) #Miami city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
     
   #### 7.2. 2050 HIGH ####
@@ -6130,9 +6101,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_miami_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_miami_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Miami/Date_", today_date,"PM25_2050_high_Miami.csv"))
-      grid_data_PM25_miami_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Miami/Date_ 2024-05-10 PM25_2050_high_Miami.csv")
-      st_write(grid_data_PM25_miami_2050_high_NAD, "output_data/shapefiles/1km_V2/Miami/1_km_PM25_2050_high_miami.shp")
+      write.csv(grid_data_PM25_miami_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/PM25_2050_high_Miami.csv"))
+      
+      st_write(grid_data_PM25_miami_2050_high_NAD, "output_data/shapefiles/1km/Miami/1_km_PM25_2050_high_miami.shp")
       
     # 7.2.5. Prepare figure
       grid_data_PM25_miami_2050_high_NAD_filtered_final %>%
@@ -6165,8 +6136,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_miami, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "#95C623", size = 6, stroke = 2) #Miami city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 7.3. 2050 LOW ####
@@ -6201,9 +6172,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_miami_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_miami_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Miami/Date_", today_date,"PM25_2050_low_Miami.csv"))
-      grid_data_PM25_miami_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Miami/Date_ 2024-05-10 PM25_2050_low_Miami.csv")
-      st_write(grid_data_PM25_miami_2050_low_NAD, "output_data/shapefiles/1km_V2/Miami/1_km_PM25_2050_low_miami.shp")
+      write.csv(grid_data_PM25_miami_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/PM25_2050_low_Miami.csv"))
+      
+      st_write(grid_data_PM25_miami_2050_low_NAD, "output_data/shapefiles/1km/Miami/1_km_PM25_2050_low_miami.shp")
       
     # 7.3.5. Prepare figure
       grid_data_PM25_miami_2050_low_NAD_filtered_final %>%
@@ -6236,8 +6207,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_miami, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "#95C623", size = 6, stroke = 2) #Miami city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
     
 #### 8. ATLANTA ####
@@ -6310,11 +6281,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_atlanta_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Atlanta/Date_", today_date,"PM25_2019_Atlanta.csv"))
-      grid_data_PM25_atlanta_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Atlanta/Date_ 2024-05-10 PM25_2019_Atlanta.csv")
+      write.csv(grid_data_PM25_atlanta_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Atlanta/PM25_2019_Atlanta.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_atlanta_NAD, "output_data/shapefiles/1km_V2/Atlanta/1_km_PM25_2019_atlanta.shp")
+      st_write(grid_data_PM25_atlanta_NAD, "output_data/shapefiles/1km/Atlanta/1_km_PM25_2019_atlanta.shp")
       
     # 8.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -6356,8 +6326,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_atl, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "#95C623", size = 6, stroke = 2) #Atlanta city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_atlanta_V2.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_atlanta_V2.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
     
   #### 8.2. 2050 HIGH ####
@@ -6394,9 +6364,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_atlanta_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_atlanta_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Atlanta/Date_", today_date,"PM25_2050_high_Atlanta.csv"))
-      grid_data_PM25_atlanta_2050_high_NAD_filtered_final<- read.csv("output_data/BenMAP_files/1km_V2/Atlanta/Date_ 2024-05-10 PM25_2050_high_Atlanta.csv")
-      st_write(grid_data_PM25_atlanta_2050_high_NAD, "output_data/shapefiles/1km_V2/Atlanta/1_km_PM25_2050_high_atlanta.shp")
+      write.csv(grid_data_PM25_atlanta_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Atlanta/PM25_2050_high_Atlanta.csv"))
+      
+      st_write(grid_data_PM25_atlanta_2050_high_NAD, "output_data/shapefiles/1km/Atlanta/1_km_PM25_2050_high_atlanta.shp")
       
     # 8.2.5. Prepare figure
       grid_data_PM25_atlanta_2050_high_NAD_filtered_final %>%
@@ -6429,8 +6399,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_atl, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "#95C623", size = 6, stroke = 2) #Atlanta city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
         
   #### 8.3. 2050 LOW ####
@@ -6467,9 +6437,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_atlanta_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_atlanta_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Atlanta/Date_", today_date,"PM25_2050_low_Atlanta.csv"))
-      grid_data_PM25_atlanta_2050_low_NAD_filtered_final<- read.csv("output_data/BenMAP_files/1km_V2/Atlanta/Date_ 2024-05-10 PM25_2050_low_Atlanta.csv")
-      st_write(grid_data_PM25_atlanta_2050_low_NAD, "output_data/shapefiles/1km_V2/Atlanta/1_km_PM25_2050_low_atlanta.shp")
+      write.csv(grid_data_PM25_atlanta_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Atlanta/PM25_2050_low_Atlanta.csv"))
+      
+      st_write(grid_data_PM25_atlanta_2050_low_NAD, "output_data/shapefiles/1km/Atlanta/1_km_PM25_2050_low_atlanta.shp")
       
     # 8.3.5. Prepare figure
       grid_data_PM25_atlanta_2050_low_NAD_filtered_final %>%
@@ -6502,8 +6472,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_atl, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "#95C623", size = 6, stroke = 2) #Atlanta city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
  
 #### 9. CHICAGO ####
@@ -6574,10 +6544,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_chicago_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Chicago/Date_", today_date,"PM25_2019_Chicago.csv"))
+      write.csv(grid_data_PM25_chicago_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/PM25_2019_Chicago.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_chicago_NAD, "output_data/shapefiles/1km_V2/Chicago/1_km_PM25_2019_chicago.shp")
+      st_write(grid_data_PM25_chicago_NAD, "output_data/shapefiles/1km/Chicago/1_km_PM25_2019_chicago.shp")
       
     # 9.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -6619,8 +6589,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_chicago, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "#95C623", size = 6, stroke = 2) #Chicago city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 9.2. 2050 HIGH ####
@@ -6659,9 +6629,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_chicago_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_chicago_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Chicago/Date_", today_date,"PM25_2050_high_Chicago.csv"))
-      grid_data_PM25_chicago_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Chicago/Date_ 2024-05-10 PM25_2050_high_Chicago.csv")
-      st_write(grid_data_PM25_chicago_2050_high_NAD, "output_data/shapefiles/1km_V2/Chicago/1_km_PM25_2050_high_chicago.shp")
+      write.csv(grid_data_PM25_chicago_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/PM25_2050_high_Chicago.csv"))
+      
+      st_write(grid_data_PM25_chicago_2050_high_NAD, "output_data/shapefiles/1km/Chicago/1_km_PM25_2050_high_chicago.shp")
       
     # 9.2.5. Prepare figure
       grid_data_PM25_chicago_2050_high_NAD_filtered_final %>%
@@ -6694,8 +6664,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_chicago, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "#95C623", size = 6, stroke = 2) #Chicago city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 9.3. 2050 LOW ####
@@ -6732,9 +6702,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_chicago_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_chicago_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Chicago/Date_", today_date,"PM25_2050_low_Chicago.csv"))
-      grid_data_PM25_chicago_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Chicago/Date_ 2024-05-10 PM25_2050_low_Chicago.csv")
-      st_write(grid_data_PM25_chicago_2050_low_NAD, "output_data/shapefiles/1km_V2/Chicago/1_km_PM25_2050_low_chicago.shp")
+      write.csv(grid_data_PM25_chicago_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/PM25_2050_low_Chicago.csv"))
+      
+      st_write(grid_data_PM25_chicago_2050_low_NAD, "output_data/shapefiles/1km/Chicago/1_km_PM25_2050_low_chicago.shp")
       
     # 9.3.5. Prepare figure
       grid_data_PM25_chicago_2050_low_NAD_filtered_final %>%
@@ -6767,8 +6737,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_chicago, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "#95C623", size = 6, stroke = 2) #Chicago city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)     
       
 #### 10. WASHINGTON DC ####
@@ -6839,10 +6809,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_wash_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/DC/Date_", today_date,"PM25_2019_DC.csv"))
+      write.csv(grid_data_PM25_wash_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/PM25_2019_DC.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_wash_NAD, "output_data/shapefiles/1km_V2/DC/1_km_PM25_2019_wash.shp")
+      st_write(grid_data_PM25_wash_NAD, "output_data/shapefiles/1km/DC/1_km_PM25_2019_wash.shp")
       
     # 10.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -6883,8 +6853,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_wash, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "#95C623", size = 6, stroke = 2) #The White House
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_wash.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_wash.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_wash.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_wash.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 10.2. 2050 HIGH ####
@@ -6921,9 +6891,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_wash_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_wash_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/DC/Date_", today_date,"PM25_2050_high_DC.csv"))
-      grid_data_PM25_wash_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/DC/Date_ 2024-05-10 PM25_2050_high_DC.csv")
-      st_write(grid_data_PM25_wash_2050_high_NAD, "output_data/shapefiles/1km_V2/DC/1_km_PM25_2050_high_wash.shp")
+      write.csv(grid_data_PM25_wash_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/PM25_2050_high_DC.csv"))
+      
+      st_write(grid_data_PM25_wash_2050_high_NAD, "output_data/shapefiles/1km/DC/1_km_PM25_2050_high_wash.shp")
       
     # 10.2.5. Prepare figure
       grid_data_PM25_wash_2050_high_NAD_filtered_final %>%
@@ -6956,8 +6926,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_wash, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "#95C623", size = 6, stroke = 2) #The White House
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_wash.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_wash.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_wash.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_wash.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 10.3. 2050 LOW ####
@@ -6994,9 +6964,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_wash_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_wash_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/DC/Date_", today_date,"PM25_2050_low_DC.csv"))
-      grid_data_PM25_wash_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/DC/Date_ 2024-05-10 PM25_2050_low_DC.csv")
-      st_write(grid_data_PM25_wash_2050_low_NAD, "output_data/shapefiles/1km_V2/DC/1_km_PM25_2050_low_wash.shp")
+      write.csv(grid_data_PM25_wash_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/PM25_2050_low_DC.csv"))
+      
+      st_write(grid_data_PM25_wash_2050_low_NAD, "output_data/shapefiles/1km/DC/1_km_PM25_2050_low_wash.shp")
       
     # 10.3.5. Prepare figure
       grid_data_PM25_wash_2050_low_NAD_filtered_final %>%
@@ -7028,8 +6998,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_wash, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "#95C623", size = 6, stroke = 2) #The White House
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_wash.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_wash.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_wash.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_wash.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
 #### 11. PHILADELPHIA  ####
@@ -7100,10 +7070,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_phil_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Philadelphia/Date_", today_date,"PM25_2019_Philadelphia.csv"))
+      write.csv(grid_data_PM25_phil_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/PM25_2019_Philadelphia.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_phil_NAD, "output_data/shapefiles/1km_V2/Philadelphia/1_km_PM25_2019_phil.shp")
+      st_write(grid_data_PM25_phil_NAD, "output_data/shapefiles/1km/Philadelphia/1_km_PM25_2019_phil.shp")
       
     # 11.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -7144,8 +7114,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phil, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "#95C623", size = 6, stroke = 2) #Philadelphia city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_phil.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_phil.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_phil.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_phil.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 11.2. 2050 HIGH ####
@@ -7182,9 +7152,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_phil_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_phil_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Philadelphia/Date_", today_date,"PM25_2050_high_Philadelphia.csv"))
-      grid_data_PM25_phil_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Philadelphia/Date_ 2024-05-10 PM25_2050_high_Philadelphia.csv")
-      st_write(grid_data_PM25_phil_2050_high_NAD, "output_data/shapefiles/1km_V2/Philadelphia/1_km_PM25_2050_high_phil.shp")
+      write.csv(grid_data_PM25_phil_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/PM25_2050_high_Philadelphia.csv"))
+      
+      st_write(grid_data_PM25_phil_2050_high_NAD, "output_data/shapefiles/1km/Philadelphia/1_km_PM25_2050_high_phil.shp")
       
     # 11.2.5. Prepare figure
       grid_data_PM25_phil_2050_high_NAD_filtered_final %>%
@@ -7217,8 +7187,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phil, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "#95C623", size = 6, stroke = 2) #Philadelphia city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_phil.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_phil.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_phil.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_phil.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 11.3. 2050 LOW ####
@@ -7255,9 +7225,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_phil_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_phil_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Philadelphia/Date_", today_date,"PM25_2050_low_Philadelphia.csv"))
-      grid_data_PM25_phil_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Philadelphia/Date_ 2024-05-10 PM25_2050_low_Philadelphia.csv")
-      st_write(grid_data_PM25_phil_2050_low_NAD, "output_data/shapefiles/1km_V2/Philadelphia/1_km_PM25_2050_low_phil.shp")
+      write.csv(grid_data_PM25_phil_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/PM25_2050_low_Philadelphia.csv"))
+      
+      st_write(grid_data_PM25_phil_2050_low_NAD, "output_data/shapefiles/1km/Philadelphia/1_km_PM25_2050_low_phil.shp")
       
     # 11.3.5. Prepare figure
       grid_data_PM25_phil_2050_low_NAD_filtered_final %>%
@@ -7289,8 +7259,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phil, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "#95C623", size = 6, stroke = 2) #Philadelphia city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_phil.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_phil.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_phil.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_phil.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
      
 #### 12. NEW YORK  ####
@@ -7325,10 +7295,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_NY_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/NY/Date_", today_date,"PM25_2019_NY.csv"))
+      write.csv(grid_data_PM25_NY_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/PM25_2019_NY.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_NY_NAD, "output_data/shapefiles/1km_V2/NY/1_km_PM25_2019_NY.shp")
+      st_write(grid_data_PM25_NY_NAD, "output_data/shapefiles/1km/NY/1_km_PM25_2019_NY.shp")
       
     # 12.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -7370,8 +7340,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_NY, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "#95C623", size = 6, stroke = 2) #New York city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 12.2. 2050 HIGH ####
@@ -7399,9 +7369,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_NY_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_NY_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/NY/Date_", today_date,"PM25_2050_high_NY.csv"))
-      grid_data_PM25_NY_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/NY/Date_ 2024-05-10 PM25_2050_high_NY.csv")
-      st_write(grid_data_PM25_NY_2050_high_NAD, "output_data/shapefiles/1km_V2/NY/1_km_PM25_2050_high_NY.shp")
+      write.csv(grid_data_PM25_NY_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/PM25_2050_high_NY.csv"))
+      
+      st_write(grid_data_PM25_NY_2050_high_NAD, "output_data/shapefiles/1km/NY/1_km_PM25_2050_high_NY.shp")
       
     # 12.2.5. Prepare figure
       grid_data_PM25_NY_2050_high_NAD_filtered_final %>%
@@ -7434,8 +7404,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_NY, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "#95C623", size = 6, stroke = 2) #New York city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 12.3. 2050 LOW ####
@@ -7463,9 +7433,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_NY_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_NY_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/NY/Date_", today_date,"PM25_2050_low_NY.csv"))
-      grid_data_PM25_NY_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/NY/Date_ 2024-05-10 PM25_2050_low_NY.csv")
-      st_write(grid_data_PM25_NY_2050_low_NAD, "output_data/shapefiles/1km_V2/NY/1_km_PM25_2050_low_NY.shp")
+      write.csv(grid_data_PM25_NY_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/PM25_2050_low_NY.csv"))
+      
+      st_write(grid_data_PM25_NY_2050_low_NAD, "output_data/shapefiles/1km/NY/1_km_PM25_2050_low_NY.shp")
       
     # 12.3.5. Prepare figure
       grid_data_PM25_NY_2050_low_NAD_filtered_final %>%
@@ -7498,8 +7468,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_NY, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "#95C623", size = 6, stroke = 2) #New York city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
 #### 13. BOSTON  ####
@@ -7570,10 +7540,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_boston_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Boston/Date_", today_date,"PM25_2019_Boston.csv"))
+      write.csv(grid_data_PM25_boston_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/PM25_2019_Boston.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_boston_NAD, "output_data/shapefiles/1km_V2/Boston/1_km_PM25_2019_boston.shp")
+      st_write(grid_data_PM25_boston_NAD, "output_data/shapefiles/1km/Boston/1_km_PM25_2019_boston.shp")
       
     # 13.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -7615,8 +7585,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_boston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "#95C623", size = 6, stroke = 2) #Boston city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 13.2. 2050 HIGH ####
@@ -7653,9 +7623,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_boston_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_boston_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Boston/Date_", today_date,"PM25_2050_high_Boston.csv"))
-      grid_data_PM25_boston_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Boston/Date_ 2024-05-10 PM25_2050_high_Boston.csv")
-      st_write(grid_data_PM25_boston_2050_high_NAD, "output_data/shapefiles/1km_V2/Boston/1_km_PM25_2050_high_boston.shp")
+      write.csv(grid_data_PM25_boston_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/PM25_2050_high_Boston.csv"))
+      
+      st_write(grid_data_PM25_boston_2050_high_NAD, "output_data/shapefiles/1km/Boston/1_km_PM25_2050_high_boston.shp")
       
     # 13.2.5. Prepare figure
       grid_data_PM25_boston_2050_high_NAD_filtered_final %>%
@@ -7688,8 +7658,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_boston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "#95C623", size = 6, stroke = 2) #Boston city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 13.3. 2050 LOW ####
@@ -7726,9 +7696,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_boston_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_boston_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Boston/Date_", today_date,"PM25_2050_low_Boston.csv"))
-      grid_data_PM25_boston_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Boston/Date_ 2024-05-10 PM25_2050_low_Boston.csv")
-      st_write(grid_data_PM25_boston_2050_low_NAD, "output_data/shapefiles/1km_V2/Boston/1_km_PM25_2050_low_boston.shp")
+      write.csv(grid_data_PM25_boston_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/PM25_2050_low_Boston.csv"))
+      
+      st_write(grid_data_PM25_boston_2050_low_NAD, "output_data/shapefiles/1km/Boston/1_km_PM25_2050_low_boston.shp")
       
     # 13.3.5. Prepare figure
       grid_data_PM25_boston_2050_low_NAD_filtered_final %>%
@@ -7761,8 +7731,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_boston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "#95C623", size = 6, stroke = 2) #Boston city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
 #### 14. DETROIT  ####
@@ -7833,10 +7803,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_detroit_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Detroit/Date_", today_date,"PM25_2019_Detroit.csv"))
+      write.csv(grid_data_PM25_detroit_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/PM25_2019_Detroit.csv"))
       
       #Shapefile
-      st_write(grid_data_PM25_detroit_NAD, "output_data/shapefiles/1km_V2/Detroit/1_km_PM25_2019_detroit.shp")
+      st_write(grid_data_PM25_detroit_NAD, "output_data/shapefiles/1km/Detroit/1_km_PM25_2019_detroit.shp")
       
     # 14.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -7878,8 +7848,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_detroit, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "#95C623", size = 6, stroke = 2) #Detroit city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 14.2. 2050 HIGH ####
@@ -7916,9 +7886,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_detroit_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_detroit_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Detroit/Date_", today_date,"PM25_2050_high_Detroit.csv"))
-      grid_data_PM25_detroit_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Detroit/Date_ 2024-05-10 PM25_2050_high_Detroit.csv")
-      st_write(grid_data_PM25_detroit_2050_high_NAD, "output_data/shapefiles/1km_V2/Detroit/1_km_PM25_2050_high_detroit.shp")
+      write.csv(grid_data_PM25_detroit_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/PM25_2050_high_Detroit.csv"))
+      
+      st_write(grid_data_PM25_detroit_2050_high_NAD, "output_data/shapefiles/1km/Detroit/1_km_PM25_2050_high_detroit.shp")
       
     # 14.2.5. Prepare figure
       grid_data_PM25_detroit_2050_high_NAD_filtered_final %>%
@@ -7951,8 +7921,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_detroit, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "#95C623", size = 6, stroke = 2) #Detroit city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 14.3. 2050 LOW ####
@@ -7989,9 +7959,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_detroit_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_detroit_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/Detroit/Date_", today_date,"PM25_2050_low_Detroit.csv"))
-      grid_data_PM25_detroit_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/Detroit/Date_ 2024-05-10 PM25_2050_low_Detroit.csv")
-      st_write(grid_data_PM25_detroit_2050_low_NAD, "output_data/shapefiles/1km_V2/Detroit/1_km_PM25_2050_low_detroit.shp")
+      write.csv(grid_data_PM25_detroit_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/PM25_2050_low_Detroit.csv"))
+      
+      st_write(grid_data_PM25_detroit_2050_low_NAD, "output_data/shapefiles/1km/Detroit/1_km_PM25_2050_low_detroit.shp")
       
     # 14.3.5. Prepare figure
       grid_data_PM25_detroit_2050_low_NAD_filtered_final %>%
@@ -8024,8 +7994,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_detroit, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "#95C623", size = 6, stroke = 2) #Detroit city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)     
   
 #### 15. SAN FRANCISCO  ####
@@ -8098,8 +8068,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_SF_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/SF/Date_", today_date,"PM25_2019_SF.csv"))
-      st_write(grid_data_PM25_SF_NAD, "output_data/shapefiles/1km_V2/SF/1_km_PM25_2019_SF.shp")
+      write.csv(grid_data_PM25_SF_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/PM25_2019_SF.csv"))
+      st_write(grid_data_PM25_SF_NAD, "output_data/shapefiles/1km/SF/1_km_PM25_2019_SF.shp")
       
     # 15.1.5. Prepare figure
       #Get national mean (population weighted)
@@ -8141,8 +8111,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_SF, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "#95C623", size = 6, stroke = 2) #San Francisco city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2019_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2019_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)   
       
   #### 15.2. 2050 HIGH ####
@@ -8182,9 +8152,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_SF_2050_high_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_SF_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/SF/Date_", today_date,"PM25_2050_high_SF.csv"))
-      grid_data_PM25_SF_2050_high_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/SF/Date_ 2024-05-17 PM25_2050_high_SF.csv")
-      st_write(grid_data_PM25_SF_2050_high_NAD, "output_data/shapefiles/1km_V2/SF/1_km_PM25_2050_high_SF.shp")
+      write.csv(grid_data_PM25_SF_2050_high_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/PM25_2050_high_SF.csv"))
+      
+      st_write(grid_data_PM25_SF_2050_high_NAD, "output_data/shapefiles/1km/SF/1_km_PM25_2050_high_SF.shp")
       
      # 15.2.5. Prepare figure
       grid_data_PM25_SF_2050_high_NAD_filtered_final %>%
@@ -8216,8 +8186,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_SF, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "#95C623", size = 6, stroke = 2) #San Francisco city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_high_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_high_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)  
       
   #### 15.3. 2050 LOW ####
@@ -8256,9 +8226,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
                `Annual Metric` = "Mean") -> grid_data_PM25_SF_2050_low_NAD_filtered_final
       
       # 2. Save file
-      write.csv(grid_data_PM25_SF_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km_V2/SF/Date_", today_date,"PM25_2050_low_SF.csv"))
-      grid_data_PM25_SF_2050_low_NAD_filtered_final <- read.csv("output_data/BenMAP_files/1km_V2/SF/Date_ 2024-05-17 PM25_2050_low_SF.csv")
-      st_write(grid_data_PM25_SF_2050_low_NAD, "output_data/shapefiles/1km_V2/SF/1_km_PM25_2050_low_SF.shp")
+      write.csv(grid_data_PM25_SF_2050_low_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/PM25_2050_low_SF.csv"))
+      
+      st_write(grid_data_PM25_SF_2050_low_NAD, "output_data/shapefiles/1km/SF/1_km_PM25_2050_low_SF.shp")
       
     # 15.3.5. Prepare figure
       grid_data_PM25_SF_2050_low_NAD_filtered_final %>%
@@ -8291,11 +8261,11 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_SF, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "#95C623", size = 6, stroke = 2) #San Francisco city hall
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_low_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #gsave("figures/BenMAP/1km/pollution/1km_PM25_2050_low_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)     
       
-#------------------------------------------------- FIX FILES ---------------------------------------------------------------------------
+#------------------------------------------------- SECTION A5: FIX FILES ---------------------------------------------------------------------------
 #There are some pixels with NA in air pollution. This happens in pixels that are on the coast and have very little overlap with the land. This is because CMAQ results were cropped for post-processing, and some were lost in the process.
 #The cities affected are:
       #LA (1 pixel, 0 people), Houston (41 pixels, 23 people), Miami (32 pixels, 27 people),
@@ -8323,7 +8293,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_LA, by = "row_col") %>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_LA_fix
-      #write.csv(population_2019_data_pixel_age_final_LA_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/Date_", today_date, "1_km_population_2019_LA_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_LA_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/1_km_population_2019_LA_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_LA %>%
@@ -8331,7 +8301,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_LA_fix
-      write.csv(partitions_rate_final_clean_LA_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/Date_",today_date,"Incidence_1km_2019_LA_fixed.csv"))
+      write.csv(partitions_rate_final_clean_LA_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/LA/Incidence_1km_2019_LA_fixed.csv"))
       
 ##### 6. HOUSTON ####
       final_pixels_houston <- grid_data_PM25_houston_NAD$pixel_ID
@@ -8350,8 +8320,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_houston, by = "row_col") %>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_houston_fix
-      write.csv(population_2019_data_pixel_age_final_houston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/Date_", today_date, "1_km_population_2019_houston_fixed.csv")) 
-      population_2019_data_pixel_age_final_Houston <- read.csv("output_data/BenMAP_files/1km/Houston/Date_ 2024-03-31 1_km_population_2019_houston.csv")
+      write.csv(population_2019_data_pixel_age_final_houston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/1_km_population_2019_houston_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_houston %>%
@@ -8359,7 +8328,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_houston_fix
-      write.csv(partitions_rate_final_clean_houston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/Date_",today_date,"Incidence_1km_2019_houston_fixed.csv"))
+      write.csv(partitions_rate_final_clean_houston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Houston/Incidence_1km_2019_houston_fixed.csv"))
     
 ##### 7. MIAMI #####
       final_pixels_miami <- grid_data_PM25_miami_NAD$pixel_ID
@@ -8379,7 +8348,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_miami, by = "row_col") %>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_miami_fix
-      write.csv(population_2019_data_pixel_age_final_miami_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/Date_", today_date, "1_km_population_2019_miami_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_miami_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/1_km_population_2019_miami_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_miami %>%
@@ -8387,7 +8356,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_miami_fix
-      write.csv(partitions_rate_final_clean_miami_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/Date_",today_date,"Incidence_1km_2019_miami_fixed.csv"))
+      write.csv(partitions_rate_final_clean_miami_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Miami/Incidence_1km_2019_miami_fixed.csv"))
       
 ##### 9. CHICAGO #####
       final_pixels_chicago <- grid_data_PM25_chicago_NAD$pixel_ID
@@ -8407,7 +8376,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_chicago, by = "row_col")%>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_chicago_fix
-      write.csv(population_2019_data_pixel_age_final_chicago_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/Date_", today_date, "1_km_population_2019_chicago_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_chicago_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/1_km_population_2019_chicago_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_chicago %>%
@@ -8415,7 +8384,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_chicago_fix
-      write.csv(partitions_rate_final_clean_chicago_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/Date_",today_date,"Incidence_1km_2019_chicago_fixed.csv"))
+      write.csv(partitions_rate_final_clean_chicago_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Chicago/Incidence_1km_2019_chicago_fixed.csv"))
   
 ##### 10. WASHINGTON DC #####
       final_pixels_wash <- grid_data_PM25_wash_NAD$pixel_ID
@@ -8435,7 +8404,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_wash, by = "row_col")%>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_wash_fix
-      write.csv(population_2019_data_pixel_age_final_wash_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/Date_", today_date, "1_km_population_2019_wash_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_wash_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/1_km_population_2019_wash_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_wash %>%
@@ -8443,7 +8412,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_wash_fix
-      write.csv(partitions_rate_final_clean_wash_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/Date_",today_date,"Incidence_1km_2019_wash_fixed.csv"))
+      write.csv(partitions_rate_final_clean_wash_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/DC/Incidence_1km_2019_wash_fixed.csv"))
     
 ##### 11. PHILADELPHIA #####
       final_pixels_phil <- grid_data_PM25_phil_NAD$pixel_ID
@@ -8463,7 +8432,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_phil, by = "row_col")%>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_phil_fix
-      write.csv(population_2019_data_pixel_age_final_phil_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/Date_", today_date, "1_km_population_2019_phil_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_phil_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/1_km_population_2019_phil_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_phil %>%
@@ -8471,7 +8440,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_phil_fix
-      write.csv(partitions_rate_final_clean_phil_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/Date_",today_date,"Incidence_1km_2019_phil_fixed.csv"))
+      write.csv(partitions_rate_final_clean_phil_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Philadelphia/Incidence_1km_2019_phil_fixed.csv"))
     
 ##### 12. NEW YORK #####
       final_pixels_NY <- grid_data_PM25_NY_NAD$pixel_ID
@@ -8491,7 +8460,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_NY, by = "row_col")%>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_NY_fix
-      write.csv(population_2019_data_pixel_age_final_NY_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/Date_", today_date, "1_km_population_2019_NY_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_NY_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/1_km_population_2019_NY_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_NY %>%
@@ -8499,7 +8468,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_NY_fix
-      write.csv(partitions_rate_final_clean_NY_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/Date_",today_date,"Incidence_1km_2019_NY_fixed.csv"))
+      write.csv(partitions_rate_final_clean_NY_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/NY/Incidence_1km_2019_NY_fixed.csv"))
     
 ##### 13. BOSTON #####
       final_pixels_boston <- grid_data_PM25_boston_NAD$pixel_ID
@@ -8518,7 +8487,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_boston, by = "row_col") %>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_boston_fix
-      write.csv(population_2019_data_pixel_age_final_boston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/Date_", today_date, "1_km_population_2019_boston_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_boston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/1_km_population_2019_boston_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_boston %>%
@@ -8526,7 +8495,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_boston_fix
-      write.csv(partitions_rate_final_clean_boston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/Date_",today_date,"Incidence_1km_2019_boston_fixed.csv"))
+      write.csv(partitions_rate_final_clean_boston_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Boston/Incidence_1km_2019_boston_fixed.csv"))
       
     
 ##### 14. DETROIT #####
@@ -8547,7 +8516,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_detroit, by = "row_col") %>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_detroit_fix
-      write.csv(population_2019_data_pixel_age_final_detroit_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/Date_", today_date, "1_km_population_2019_detroit_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_detroit_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/1_km_population_2019_detroit_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_detroit %>%
@@ -8555,7 +8524,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_detroit_fix
-      write.csv(partitions_rate_final_clean_detroit_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/Date_",today_date,"Incidence_1km_2019_detroit_fixed.csv"))
+      write.csv(partitions_rate_final_clean_detroit_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/Detroit/Incidence_1km_2019_detroit_fixed.csv"))
   
 ##### 15. SAN FRANCISCO #####
       final_pixels_SF <- grid_data_PM25_SF_NAD$pixel_ID
@@ -8575,7 +8544,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         unite(row_col, c(Row, Column), sep = "_", remove = FALSE)%>%
         right_join(row_col_SF, by = "row_col") %>%
         dplyr::select(-row_col)-> population_2019_data_pixel_age_final_SF_fix
-      write.csv(population_2019_data_pixel_age_final_SF_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/Date_", today_date, "1_km_population_2019_SF_fixed.csv")) 
+      write.csv(population_2019_data_pixel_age_final_SF_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/1_km_population_2019_SF_fixed.csv")) 
       
     #MORTALITY
       partitions_rate_final_SF %>%
@@ -8583,11 +8552,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         dplyr::select(-pixel_ID) %>%
         rename(Row = row, Column = col, Value = weighted_incidence) %>%
         st_drop_geometry()-> partitions_rate_final_clean_SF_fix
-      write.csv(partitions_rate_final_clean_SF_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/Date_",today_date,"Incidence_1km_2019_detroit_fixed.csv"))
+      write.csv(partitions_rate_final_clean_SF_fix, row.names = FALSE, file = paste("output_data/BenMAP_files/1km/SF/Incidence_1km_2019_detroit_fixed.csv"))
+
       
-#------------------------------------------------- BENMAP OUTPUTS ---------------------------------------------------------------------------
       
-#------------------------------------------------- SECTION 1: 1 KM MORTALITY BENMAP RESULTS -------------------------------------------------
+#------------------------------------------------- B. BENMAP OUTPUTS ---------------------------------------------------------------------------------
+#------------------------------------------------- SECTION B1: 1 KM MORTALITY BENMAP RESULTS -------------------------------------------------
 #### 1. SEATTLE ####
   #### 1.1. Air quality difference ####
       #PM2.5 difference: High CDR - Low CDR
@@ -8597,8 +8567,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Seattle, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Seattle Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 1.2. Mortality results ####
@@ -8637,8 +8607,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         theme_void() +
         #theme(plot.background = element_rect(fill = "white")) +
         geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "purple", size = 6, stroke = 2) #Seattle city hall+
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -8654,8 +8624,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         theme_void() +
         #theme(plot.background = element_rect(fill = "white")) +
         geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "purple", size = 6, stroke = 2) #Seattle city hall+
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Seattle_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Seattle_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Seattle_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Seattle_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -8676,8 +8646,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Seattle") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Seattle.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Seattle.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Seattle.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Seattle.svg", h, width = 8, height = 6, units = "in", dpi = 300)
   
      
 #### 2. LOS ANGELES ####
@@ -8689,8 +8659,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_LA, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 LA Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 2.2. Mortality results ####
@@ -8728,8 +8698,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_LA, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "purple", size = 6, stroke = 2) #LA city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -8744,8 +8714,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_LA, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "purple", size = 6, stroke = 2) #LA city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_LA_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_LA_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_LA_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_LA_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
       ### HISTOGRAM
       # Calculate summary statistics
@@ -8765,8 +8735,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in LA") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_LA.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_LA.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_LA.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_LA.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 3. RIVERSIDE ####
   #### 3.1. Air quality difference ####
@@ -8777,8 +8747,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Riverside, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Riverside Difference Pollution PM2.5 (ug/m3) [High - Low]") 
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Riverside.png.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Riverside.png.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 3.2. Mortality results ####
@@ -8817,8 +8787,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_riverside, color = "black", fill = NA)+
         theme_void() +
       geom_point(data = NULL, aes(x = -117.37559005667082,  y =  33.980696653550375), shape = 1, color = "purple", size = 6, stroke = 2) #Riverside city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -8833,8 +8803,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_riverside, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -117.37559005667082,  y =  33.980696653550375), shape = 1, color = "purple", size = 6, stroke = 2) #Riverside city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Riverside_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Riverside_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Riverside_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Riverside_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
       ### HISTOGRAM
       # Calculate summary statistics
@@ -8854,8 +8824,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Riverside") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Riverside.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Riverside.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Riverside.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Riverside.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 4. PHOENIX ####
   #### 4.1. Air quality difference ####
@@ -8866,8 +8836,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Phoenix, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Phoenix Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 4.2. Mortality results ####
@@ -8905,8 +8875,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phoenix, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "purple", size = 6, stroke = 2) #Phoenix city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -8921,8 +8891,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phoenix, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "purple", size = 6, stroke = 2) #Phoenix city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Phoenix_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Phoenix_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Phoenix_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Phoenix_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
 
       ### HISTOGRAM
@@ -8943,8 +8913,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Phoenix") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Phoenix.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Phoenix.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Phoenix.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Phoenix.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 5. DALLAS ####
   #### 5.1. Air quality difference ####
@@ -8955,8 +8925,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Dallas, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Dallas Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Dallas.png.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Dallas.png.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 5.2. Mortality results ####
@@ -8994,8 +8964,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_dallas, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "purple", size = 6, stroke = 2) #Dallas city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9010,8 +8980,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_dallas, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "purple", size = 6, stroke = 2) #Dallas city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Dallas_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Dallas_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Dallas_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Dallas_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9032,8 +9002,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Dallas") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Dallas.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Dallas.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Dallas.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Dallas.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 6. HOUSTON ####
   #### 6.1. Air quality difference ####
@@ -9044,8 +9014,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Houston, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Houston Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 6.2. Mortality results ####
@@ -9083,8 +9053,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_houston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "purple", size = 6, stroke = 2) #Houston city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9099,8 +9069,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_houston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "purple", size = 6, stroke = 2) #Houston city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Houston_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Houston_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Houston_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Houston_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9121,8 +9091,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Houston") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Houston.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Houston.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Houston.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Houston.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 7. MIAMI ####
   #### 7.1. Air quality difference ####
@@ -9133,8 +9103,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Miami, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Miami Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 7.2. Mortality results ####
@@ -9172,8 +9142,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_miami, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "purple", size = 6, stroke = 2) #Miami city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9188,8 +9158,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_miami, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "purple", size = 6, stroke = 2) #Miami city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Miami_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Miami_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Miami_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Miami_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9210,8 +9180,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Miami") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Miami.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Miami.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Miami.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Miami.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 8. ATLANTA ####
   #### 8.1. Air quality difference ####
@@ -9222,8 +9192,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Atlanta, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Atlanta Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 8.2. Mortality results ####
@@ -9261,8 +9231,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_atl, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "purple", size = 6, stroke = 2) #Atlanta city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9277,8 +9247,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_atl, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "purple", size = 6, stroke = 2) #Atlanta city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Atlanta_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Atlanta_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Atlanta_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Atlanta_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9299,8 +9269,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Atlanta") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Atlanta.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Atlanta.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Atlanta.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Atlanta.svg", h, width = 8, height = 6, units = "in", dpi = 300)
 
 #### 9. CHICAGO ####
   #### 9.1. Air quality difference ####
@@ -9311,8 +9281,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Chicago, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Chicago Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 9.2. Mortality results ####
@@ -9350,8 +9320,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_chicago, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "purple", size = 6, stroke = 2) #Chicago city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9366,8 +9336,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_chicago, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "purple", size = 6, stroke = 2) #Chicago city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Chicago_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Chicago_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Chicago_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Chicago_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       
@@ -9389,8 +9359,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Chicago") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Chicago.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Chicago.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Chicago.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Chicago.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 10. WASHINGTON DC ####
   #### 10.1. Air quality difference ####
@@ -9401,8 +9371,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_DC, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 DC Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 10.2. Mortality results ####
@@ -9440,8 +9410,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_wash, color = "black", fill = NA)+
         theme_void() +
       geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "purple", size = 6, stroke = 2) #The White House
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9456,8 +9426,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_wash, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "purple", size = 6, stroke = 2) #The White House
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_DC_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_DC_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_DC_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_DC_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9478,8 +9448,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in DC") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_DC.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_DC.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_DC.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_DC.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 11. PHILADELPHIA ####
   #### 11.1. Air quality difference ####
@@ -9490,8 +9460,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Philadelphia, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Philadelphia Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 11.2. Mortality results ####
@@ -9529,8 +9499,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phil, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "purple", size = 6, stroke = 2) #Philadelphia city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9545,8 +9515,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_phil, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "purple", size = 6, stroke = 2) #Philadelphia city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Philadelphia_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Philadelphia_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Philadelphia_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Philadelphia_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9567,8 +9537,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Philadelphia") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Philadelphia.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Philadelphia.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Philadelphia.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Philadelphia.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 12. NEW YORK ####
   #### 12.1. Air quality difference ####
@@ -9579,8 +9549,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_NY, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 NY Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 12.2. Mortality results ####
@@ -9618,8 +9588,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_NY, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "purple", size = 6, stroke = 2) #New York city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9634,8 +9604,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_NY, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "purple", size = 6, stroke = 2) #New York city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_NY_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_NY_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_NY_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_NY_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9656,8 +9626,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in NY") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_NY.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_NY.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_NY.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_NY.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 13. BOSTON ####
   #### 13.1. Air quality difference ####
@@ -9668,8 +9638,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Boston, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Boston Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 13.2. Mortality results ####
@@ -9707,8 +9677,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_boston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "purple", size = 6, stroke = 2) #Boston city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9723,8 +9693,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_boston, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "purple", size = 6, stroke = 2) #Boston city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Boston_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Boston_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Boston_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Boston_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9745,8 +9715,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Boston") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Boston.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Boston.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Boston.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Boston.svg", h, width = 8, height = 6, units = "in", dpi = 300)
       
 #### 14. DETROIT ####
   #### 14.1. Air quality difference ####
@@ -9757,8 +9727,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_Detroit, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 Detroit Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 14.2. Mortality results ####
@@ -9796,8 +9766,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_detroit, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "purple", size = 6, stroke = 2) #Detroit city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9811,8 +9781,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_detroit, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "purple", size = 6, stroke = 2) #Detroit city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Detroit_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_Detroit_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Detroit_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_Detroit_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9833,8 +9803,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in Detroit") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Detroit.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_Detroit.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Detroit.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_Detroit.svg", h, width = 8, height = 6, units = "in", dpi = 300)
 
 #### 15. SAN FRANCISCO ####
   #### 15.1. Air quality difference ####
@@ -9845,8 +9815,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = PM_difference_2050_SF, aes(fill = D24HourMean), color = NA, size = 0) +
         scale_fill_viridis_c(option = "magma", direction = -1) + 
         ggtitle("2050 SF Difference Pollution PM2.5 (ug/m3) [High - Low]")
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/pollution_V2/1km_PM25_2050_DIFF_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/pollution/1km_PM25_2050_DIFF_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
   #### 15.2. Mortality results ####
@@ -9884,8 +9854,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_SF, color = "black", fill = NA)+
         theme_void() +
       geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "purple", size = 6, stroke = 2) #San Francisco city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       #Total deaths
@@ -9900,8 +9870,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         geom_sf(data = cbsa_shapefile_SF, color = "black", fill = NA)+
         theme_void() +
         geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "purple", size = 6, stroke = 2) #San Francisco city hall
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_SF_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/1km/mortality_V2/1km_PM25_2050_Benmap_SF_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_SF_total.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/1km/mortality/1km_PM25_2050_Benmap_SF_total.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       ### HISTOGRAM
@@ -9922,5 +9892,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         ggtitle("Deaths per Thousand People in SF") +
         xlab("Deaths per Thousand People") +
         ylab("Frequency")
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_SF.png", h, width = 8, height = 6, units = "in", dpi = 300)
-      ggsave("figures/BenMAP/1km/mortality_V2/distribution_plot_SF.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_SF.png", h, width = 8, height = 6, units = "in", dpi = 300)
+      #ggsave("figures/BenMAP/1km/mortality/distribution_plot_SF.svg", h, width = 8, height = 6, units = "in", dpi = 300)
+
+      

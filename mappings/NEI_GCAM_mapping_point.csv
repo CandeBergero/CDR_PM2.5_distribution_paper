@@ -1,0 +1,702 @@
+﻿Facility Type,Sector,ghg
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),CO
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),PM10
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),PM2.5
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),NOx
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),SO2_1
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),NH3
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),NMVOC
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),PM10_AGG
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),PM2.5_AGG
+Airport,Aviation,CO
+Airport,Aviation,PM10
+Airport,Aviation,PM2.5
+Airport,Aviation,NOx
+Airport,Aviation,SO2_1
+Airport,Aviation,NH3
+Airport,Aviation,NMVOC
+Airport,Aviation,PM10_AGG
+Airport,Aviation,PM2.5_AGG
+Alumina Refinery,Industry (energy + processes),CO
+Alumina Refinery,Industry (energy + processes),PM10
+Alumina Refinery,Industry (energy + processes),PM2.5
+Alumina Refinery,Industry (energy + processes),NOx
+Alumina Refinery,Industry (energy + processes),SO2_1
+Alumina Refinery,Industry (energy + processes),NH3
+Alumina Refinery,Industry (energy + processes),NMVOC
+Alumina Refinery,Industry (energy + processes),PM10_AGG
+Alumina Refinery,Industry (energy + processes),PM2.5_AGG
+Animal Feedlot or Farm,Animals,CO
+Animal Feedlot or Farm,Animals,PM10
+Animal Feedlot or Farm,Animals,PM2.5
+Animal Feedlot or Farm,Animals,NOx_AGR
+Animal Feedlot or Farm,Animals,SO2_1
+Animal Feedlot or Farm,Animals,NH3_AGR
+Animal Feedlot or Farm,Animals,NMVOC_AGR
+Animal Feedlot or Farm,Animals,PM10_AGG
+Animal Feedlot or Farm,Animals,PM2.5_AGG
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),CO
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),PM10
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),PM2.5
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),NOx
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),SO2_1
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),NH3
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),NMVOC
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),PM10_AGG
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),PM2.5_AGG
+Automobile/Truck or Parts Plant,Industry (energy + processes),CO
+Automobile/Truck or Parts Plant,Industry (energy + processes),PM10
+Automobile/Truck or Parts Plant,Industry (energy + processes),PM2.5
+Automobile/Truck or Parts Plant,Industry (energy + processes),NOx
+Automobile/Truck or Parts Plant,Industry (energy + processes),SO2_1
+Automobile/Truck or Parts Plant,Industry (energy + processes),NH3
+Automobile/Truck or Parts Plant,Industry (energy + processes),NMVOC
+Automobile/Truck or Parts Plant,Industry (energy + processes),PM10_AGG
+Automobile/Truck or Parts Plant,Industry (energy + processes),PM2.5_AGG
+Bakeries,Industry (energy + processes),CO
+Bakeries,Industry (energy + processes),PM10
+Bakeries,Industry (energy + processes),PM2.5
+Bakeries,Industry (energy + processes),NOx
+Bakeries,Industry (energy + processes),SO2_1
+Bakeries,Industry (energy + processes),NH3
+Bakeries,Industry (energy + processes),NMVOC
+Bakeries,Industry (energy + processes),PM10_AGG
+Bakeries,Industry (energy + processes),PM2.5_AGG
+Battery Plant,Industry (energy + processes),CO
+Battery Plant,Industry (energy + processes),PM10
+Battery Plant,Industry (energy + processes),PM2.5
+Battery Plant,Industry (energy + processes),NOx
+Battery Plant,Industry (energy + processes),SO2_1
+Battery Plant,Industry (energy + processes),NH3
+Battery Plant,Industry (energy + processes),NMVOC
+Battery Plant,Industry (energy + processes),PM10_AGG
+Battery Plant,Industry (energy + processes),PM2.5_AGG
+Breweries/Distilleries/Wineries,Industry (energy + processes),CO
+Breweries/Distilleries/Wineries,Industry (energy + processes),PM10
+Breweries/Distilleries/Wineries,Industry (energy + processes),PM2.5
+Breweries/Distilleries/Wineries,Industry (energy + processes),NOx
+Breweries/Distilleries/Wineries,Industry (energy + processes),SO2_1
+Breweries/Distilleries/Wineries,Industry (energy + processes),NH3
+Breweries/Distilleries/Wineries,Industry (energy + processes),NMVOC
+Breweries/Distilleries/Wineries,Industry (energy + processes),PM10_AGG
+Breweries/Distilleries/Wineries,Industry (energy + processes),PM2.5_AGG
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),CO
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),PM10
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),PM2.5
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),NOx
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),SO2_1
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),NH3
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),NMVOC
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),PM10_AGG
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),PM2.5_AGG
+Calcined Pet Coke Plant,Industry (energy + processes),CO
+Calcined Pet Coke Plant,Industry (energy + processes),PM10
+Calcined Pet Coke Plant,Industry (energy + processes),PM2.5
+Calcined Pet Coke Plant,Industry (energy + processes),NOx
+Calcined Pet Coke Plant,Industry (energy + processes),SO2_1
+Calcined Pet Coke Plant,Industry (energy + processes),NH3
+Calcined Pet Coke Plant,Industry (energy + processes),NMVOC
+Calcined Pet Coke Plant,Industry (energy + processes),PM10_AGG
+Calcined Pet Coke Plant,Industry (energy + processes),PM2.5_AGG
+Carbon Black Plant,Industry (energy + processes),CO
+Carbon Black Plant,Industry (energy + processes),PM10
+Carbon Black Plant,Industry (energy + processes),PM2.5
+Carbon Black Plant,Industry (energy + processes),NOx
+Carbon Black Plant,Industry (energy + processes),SO2_1
+Carbon Black Plant,Industry (energy + processes),NH3
+Carbon Black Plant,Industry (energy + processes),NMVOC
+Carbon Black Plant,Industry (energy + processes),PM10_AGG
+Carbon Black Plant,Industry (energy + processes),PM2.5_AGG
+Carbon or Graphite Plant,Industry (energy + processes),CO
+Carbon or Graphite Plant,Industry (energy + processes),PM10
+Carbon or Graphite Plant,Industry (energy + processes),PM2.5
+Carbon or Graphite Plant,Industry (energy + processes),NOx
+Carbon or Graphite Plant,Industry (energy + processes),SO2_1
+Carbon or Graphite Plant,Industry (energy + processes),NH3
+Carbon or Graphite Plant,Industry (energy + processes),NMVOC
+Carbon or Graphite Plant,Industry (energy + processes),PM10_AGG
+Carbon or Graphite Plant,Industry (energy + processes),PM2.5_AGG
+Chemical Plant,Industry (energy + processes),CO
+Chemical Plant,Industry (energy + processes),PM10
+Chemical Plant,Industry (energy + processes),PM2.5
+Chemical Plant,Industry (energy + processes),NOx
+Chemical Plant,Industry (energy + processes),SO2_1
+Chemical Plant,Industry (energy + processes),NH3
+Chemical Plant,Industry (energy + processes),NMVOC
+Chemical Plant,Industry (energy + processes),PM10_AGG
+Chemical Plant,Industry (energy + processes),PM2.5_AGG
+Chlor-alkali Plant,Industry (energy + processes),CO
+Chlor-alkali Plant,Industry (energy + processes),PM10
+Chlor-alkali Plant,Industry (energy + processes),PM2.5
+Chlor-alkali Plant,Industry (energy + processes),NOx
+Chlor-alkali Plant,Industry (energy + processes),SO2_1
+Chlor-alkali Plant,Industry (energy + processes),NH3
+Chlor-alkali Plant,Industry (energy + processes),NMVOC
+Chlor-alkali Plant,Industry (energy + processes),PM10_AGG
+Chlor-alkali Plant,Industry (energy + processes),PM2.5_AGG
+Coal Gasification Plant,Coal Gasification Plant,CO
+Coal Gasification Plant,Coal Gasification Plant,PM10
+Coal Gasification Plant,Coal Gasification Plant,NMVOC
+Coal Gasification Plant,Coal Gasification Plant,PM2.5
+Coal Gasification Plant,Coal Gasification Plant,SO2_1
+Coal Gasification Plant,Coal Gasification Plant,NH3
+Coal Gasification Plant,Coal Gasification Plant,NOx
+Coke Battery,Industry (energy + processes),CO
+Coke Battery,Industry (energy + processes),PM10
+Coke Battery,Industry (energy + processes),PM2.5
+Coke Battery,Industry (energy + processes),NOx
+Coke Battery,Industry (energy + processes),SO2_1
+Coke Battery,Industry (energy + processes),NH3
+Coke Battery,Industry (energy + processes),NMVOC
+Coke Battery,Industry (energy + processes),PM10_AGG
+Coke Battery,Industry (energy + processes),PM2.5_AGG
+Commercial Sterilizer,Industry (energy + processes),CO
+Commercial Sterilizer,Industry (energy + processes),PM10
+Commercial Sterilizer,Industry (energy + processes),PM2.5
+Commercial Sterilizer,Industry (energy + processes),NOx
+Commercial Sterilizer,Industry (energy + processes),SO2_1
+Commercial Sterilizer,Industry (energy + processes),NH3
+Commercial Sterilizer,Industry (energy + processes),NMVOC
+Commercial Sterilizer,Industry (energy + processes),PM10_AGG
+Commercial Sterilizer,Industry (energy + processes),PM2.5_AGG
+Compressor Station,Industry (energy + processes),CO
+Compressor Station,Industry (energy + processes),PM10
+Compressor Station,Industry (energy + processes),PM2.5
+Compressor Station,Industry (energy + processes),NOx
+Compressor Station,Industry (energy + processes),SO2_1
+Compressor Station,Industry (energy + processes),NH3
+Compressor Station,Industry (energy + processes),NMVOC
+Compressor Station,Industry (energy + processes),PM10_AGG
+Compressor Station,Industry (energy + processes),PM2.5_AGG
+Concrete Batch Plant,Cement,CO
+Concrete Batch Plant,Cement,NMVOC
+Concrete Batch Plant,Cement,NH3
+Concrete Batch Plant,Cement,NOx
+Concrete Batch Plant,Cement,PM10
+Concrete Batch Plant,Cement,PM2.5
+Concrete Batch Plant,Cement,SO2_1
+"Concrete Block, Pipe or Other Manuf",Cement,CO
+"Concrete Block, Pipe or Other Manuf",Cement,NMVOC
+"Concrete Block, Pipe or Other Manuf",Cement,NH3
+"Concrete Block, Pipe or Other Manuf",Cement,NOx
+"Concrete Block, Pipe or Other Manuf",Cement,PM10
+"Concrete Block, Pipe or Other Manuf",Cement,PM2.5
+"Concrete Block, Pipe or Other Manuf",Cement,SO2_1
+Cotton Gin,Industry (energy + processes),CO
+Cotton Gin,Industry (energy + processes),PM10
+Cotton Gin,Industry (energy + processes),PM2.5
+Cotton Gin,Industry (energy + processes),NOx
+Cotton Gin,Industry (energy + processes),SO2_1
+Cotton Gin,Industry (energy + processes),NH3
+Cotton Gin,Industry (energy + processes),NMVOC
+Cotton Gin,Industry (energy + processes),PM10_AGG
+Cotton Gin,Industry (energy + processes),PM2.5_AGG
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),CO
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),PM10
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),PM2.5
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),NOx
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),SO2_1
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),NH3
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),NMVOC
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),PM10_AGG
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),PM2.5_AGG
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),CO
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),PM10
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),PM2.5
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),NOx
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),SO2_1
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),NH3
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),NMVOC
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),PM10_AGG
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),PM2.5_AGG
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),CO
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),NMVOC
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),PM10
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),PM2.5
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),SO2_1
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),NH3
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),NOx
+Fabricated Metal Products Plant,Industry (energy + processes),CO
+Fabricated Metal Products Plant,Industry (energy + processes),PM10
+Fabricated Metal Products Plant,Industry (energy + processes),PM2.5
+Fabricated Metal Products Plant,Industry (energy + processes),NOx
+Fabricated Metal Products Plant,Industry (energy + processes),SO2_1
+Fabricated Metal Products Plant,Industry (energy + processes),NH3
+Fabricated Metal Products Plant,Industry (energy + processes),NMVOC
+Fabricated Metal Products Plant,Industry (energy + processes),PM10_AGG
+Fabricated Metal Products Plant,Industry (energy + processes),PM2.5_AGG
+Ferroalloy Plant,Industry (energy + processes),CO
+Ferroalloy Plant,Industry (energy + processes),PM10
+Ferroalloy Plant,Industry (energy + processes),PM2.5
+Ferroalloy Plant,Industry (energy + processes),NOx
+Ferroalloy Plant,Industry (energy + processes),SO2_1
+Ferroalloy Plant,Industry (energy + processes),NH3
+Ferroalloy Plant,Industry (energy + processes),NMVOC
+Ferroalloy Plant,Industry (energy + processes),PM10_AGG
+Ferroalloy Plant,Industry (energy + processes),PM2.5_AGG
+Fertilizer Plant,Industry (energy + processes),CO
+Fertilizer Plant,Industry (energy + processes),PM10
+Fertilizer Plant,Industry (energy + processes),PM2.5
+Fertilizer Plant,Industry (energy + processes),NOx
+Fertilizer Plant,Industry (energy + processes),SO2_1
+Fertilizer Plant,Industry (energy + processes),NH3
+Fertilizer Plant,Industry (energy + processes),NMVOC
+Fertilizer Plant,Industry (energy + processes),PM10_AGG
+Fertilizer Plant,Industry (energy + processes),PM2.5_AGG
+Fiberglass Products Manuf,Industry (energy + processes),CO
+Fiberglass Products Manuf,Industry (energy + processes),PM10
+Fiberglass Products Manuf,Industry (energy + processes),PM2.5
+Fiberglass Products Manuf,Industry (energy + processes),NOx
+Fiberglass Products Manuf,Industry (energy + processes),SO2_1
+Fiberglass Products Manuf,Industry (energy + processes),NH3
+Fiberglass Products Manuf,Industry (energy + processes),NMVOC
+Fiberglass Products Manuf,Industry (energy + processes),PM10_AGG
+Fiberglass Products Manuf,Industry (energy + processes),PM2.5_AGG
+Food Products Processing Plant,Industry (energy + processes),CO
+Food Products Processing Plant,Industry (energy + processes),PM10
+Food Products Processing Plant,Industry (energy + processes),PM2.5
+Food Products Processing Plant,Industry (energy + processes),NOx
+Food Products Processing Plant,Industry (energy + processes),SO2_1
+Food Products Processing Plant,Industry (energy + processes),NH3
+Food Products Processing Plant,Industry (energy + processes),NMVOC
+Food Products Processing Plant,Industry (energy + processes),PM10_AGG
+Food Products Processing Plant,Industry (energy + processes),PM2.5_AGG
+"Foundries, Iron and Steel",Industry (energy + processes),CO
+"Foundries, Iron and Steel",Industry (energy + processes),PM10
+"Foundries, Iron and Steel",Industry (energy + processes),PM2.5
+"Foundries, Iron and Steel",Industry (energy + processes),NOx
+"Foundries, Iron and Steel",Industry (energy + processes),SO2_1
+"Foundries, Iron and Steel",Industry (energy + processes),NH3
+"Foundries, Iron and Steel",Industry (energy + processes),NMVOC
+"Foundries, Iron and Steel",Industry (energy + processes),PM10_AGG
+"Foundries, Iron and Steel",Industry (energy + processes),PM2.5_AGG
+"Foundries, non-ferrous",Industry (energy + processes),CO
+"Foundries, non-ferrous",Industry (energy + processes),PM10
+"Foundries, non-ferrous",Industry (energy + processes),PM2.5
+"Foundries, non-ferrous",Industry (energy + processes),NOx
+"Foundries, non-ferrous",Industry (energy + processes),SO2_1
+"Foundries, non-ferrous",Industry (energy + processes),NH3
+"Foundries, non-ferrous",Industry (energy + processes),NMVOC
+"Foundries, non-ferrous",Industry (energy + processes),PM10_AGG
+"Foundries, non-ferrous",Industry (energy + processes),PM2.5_AGG
+Gas Plant,Resource production (gas),PM2.5
+Gas Plant,Resource production (gas),PM10
+Gas Plant,Resource production (gas),NMVOC
+Gas Plant,Resource production (gas),CO
+Gas Plant,Resource production (gas),SO2_1
+Gas Plant,Resource production (gas),NH3
+Gas Plant,Resource production (gas),PM2.5_AGG
+Gas Plant,Resource production (gas),PM10_AGG
+Gas Plant,Resource production (gas),NOx
+Gasoline/Diesel Service Station,Refining (oil),PM2.5
+Gasoline/Diesel Service Station,Refining (oil),PM10
+Gasoline/Diesel Service Station,Refining (oil),NMVOC
+Gasoline/Diesel Service Station,Refining (oil),CO
+Gasoline/Diesel Service Station,Refining (oil),SO2_1
+Gasoline/Diesel Service Station,Refining (oil),NH3
+Gasoline/Diesel Service Station,Refining (oil),PM2.5_AGG
+Gasoline/Diesel Service Station,Refining (oil),PM10_AGG
+Gasoline/Diesel Service Station,Refining (oil),NOx
+Glass Plant,Industry (energy + processes),CO
+Glass Plant,Industry (energy + processes),PM10
+Glass Plant,Industry (energy + processes),PM2.5
+Glass Plant,Industry (energy + processes),NOx
+Glass Plant,Industry (energy + processes),SO2_1
+Glass Plant,Industry (energy + processes),NH3
+Glass Plant,Industry (energy + processes),NMVOC
+Glass Plant,Industry (energy + processes),PM10_AGG
+Glass Plant,Industry (energy + processes),PM2.5_AGG
+Gold Mine or Processing Facility,Industry (energy + processes),CO
+Gold Mine or Processing Facility,Industry (energy + processes),PM10
+Gold Mine or Processing Facility,Industry (energy + processes),PM2.5
+Gold Mine or Processing Facility,Industry (energy + processes),NOx
+Gold Mine or Processing Facility,Industry (energy + processes),SO2_1
+Gold Mine or Processing Facility,Industry (energy + processes),NH3
+Gold Mine or Processing Facility,Industry (energy + processes),NMVOC
+Gold Mine or Processing Facility,Industry (energy + processes),PM10_AGG
+Gold Mine or Processing Facility,Industry (energy + processes),PM2.5_AGG
+Grain Handling Facility,Industry (energy + processes),CO
+Grain Handling Facility,Industry (energy + processes),PM10
+Grain Handling Facility,Industry (energy + processes),PM2.5
+Grain Handling Facility,Industry (energy + processes),NOx
+Grain Handling Facility,Industry (energy + processes),SO2_1
+Grain Handling Facility,Industry (energy + processes),NH3
+Grain Handling Facility,Industry (energy + processes),NMVOC
+Grain Handling Facility,Industry (energy + processes),PM10_AGG
+Grain Handling Facility,Industry (energy + processes),PM2.5_AGG
+Gravel/Sand Plant,Industry (energy + processes),CO
+Gravel/Sand Plant,Industry (energy + processes),PM10
+Gravel/Sand Plant,Industry (energy + processes),PM2.5
+Gravel/Sand Plant,Industry (energy + processes),NOx
+Gravel/Sand Plant,Industry (energy + processes),SO2_1
+Gravel/Sand Plant,Industry (energy + processes),NH3
+Gravel/Sand Plant,Industry (energy + processes),NMVOC
+Gravel/Sand Plant,Industry (energy + processes),PM10_AGG
+Gravel/Sand Plant,Industry (energy + processes),PM2.5_AGG
+Hot Mix Asphalt Plant,Industry (energy + processes),CO
+Hot Mix Asphalt Plant,Industry (energy + processes),PM10
+Hot Mix Asphalt Plant,Industry (energy + processes),PM2.5
+Hot Mix Asphalt Plant,Industry (energy + processes),NOx
+Hot Mix Asphalt Plant,Industry (energy + processes),SO2_1
+Hot Mix Asphalt Plant,Industry (energy + processes),NH3
+Hot Mix Asphalt Plant,Industry (energy + processes),NMVOC
+Hot Mix Asphalt Plant,Industry (energy + processes),PM10_AGG
+Hot Mix Asphalt Plant,Industry (energy + processes),PM2.5_AGG
+Industrial Machinery or Equipment Plant,Industry (energy + processes),CO
+Industrial Machinery or Equipment Plant,Industry (energy + processes),PM10
+Industrial Machinery or Equipment Plant,Industry (energy + processes),PM2.5
+Industrial Machinery or Equipment Plant,Industry (energy + processes),NOx
+Industrial Machinery or Equipment Plant,Industry (energy + processes),SO2_1
+Industrial Machinery or Equipment Plant,Industry (energy + processes),NH3
+Industrial Machinery or Equipment Plant,Industry (energy + processes),NMVOC
+Industrial Machinery or Equipment Plant,Industry (energy + processes),PM10_AGG
+Industrial Machinery or Equipment Plant,Industry (energy + processes),PM2.5_AGG
+"Institutional (school, hospital, prison, etc.)",Commercial,CO
+"Institutional (school, hospital, prison, etc.)",Commercial,PM10
+"Institutional (school, hospital, prison, etc.)",Commercial,PM2.5
+"Institutional (school, hospital, prison, etc.)",Commercial,NOx
+"Institutional (school, hospital, prison, etc.)",Commercial,SO2_1
+"Institutional (school, hospital, prison, etc.)",Commercial,NH3
+"Institutional (school, hospital, prison, etc.)",Commercial,NMVOC
+"Institutional (school, hospital, prison, etc.)",Commercial,PM10_AGG
+"Institutional (school, hospital, prison, etc.)",Commercial,PM2.5_AGG
+Landfill,Urban Processes,CO
+Landfill,Urban Processes,PM10
+Landfill,Urban Processes,PM2.5
+Landfill,Urban Processes,NOx
+Landfill,Urban Processes,SO2_1
+Landfill,Urban Processes,NH3
+Landfill,Urban Processes,NMVOC
+Landfill,Urban Processes,PM10_AGG
+Landfill,Urban Processes,PM2.5_AGG
+Lumber/Sawmill,Industry (energy + processes),CO
+Lumber/Sawmill,Industry (energy + processes),PM10
+Lumber/Sawmill,Industry (energy + processes),PM2.5
+Lumber/Sawmill,Industry (energy + processes),NOx
+Lumber/Sawmill,Industry (energy + processes),SO2_1
+Lumber/Sawmill,Industry (energy + processes),NH3
+Lumber/Sawmill,Industry (energy + processes),NMVOC
+Lumber/Sawmill,Industry (energy + processes),PM10_AGG
+Lumber/Sawmill,Industry (energy + processes),PM2.5_AGG
+Marine Port,Ships,CO
+Marine Port,Ships,PM10
+Marine Port,Ships,PM2.5
+Marine Port,Ships,NOx
+Marine Port,Ships,SO2_1
+Marine Port,Ships,NH3
+Marine Port,Ships,NMVOC
+Marine Port,Ships,PM10_AGG
+Marine Port,Ships,PM2.5_AGG
+Mineral Processing Plant,Industry (energy + processes),CO
+Mineral Processing Plant,Industry (energy + processes),PM10
+Mineral Processing Plant,Industry (energy + processes),PM2.5
+Mineral Processing Plant,Industry (energy + processes),NOx
+Mineral Processing Plant,Industry (energy + processes),SO2_1
+Mineral Processing Plant,Industry (energy + processes),NH3
+Mineral Processing Plant,Industry (energy + processes),NMVOC
+Mineral Processing Plant,Industry (energy + processes),PM10_AGG
+Mineral Processing Plant,Industry (energy + processes),PM2.5_AGG
+Mineral Wool Plant,Industry (energy + processes),CO
+Mineral Wool Plant,Industry (energy + processes),PM10
+Mineral Wool Plant,Industry (energy + processes),PM2.5
+Mineral Wool Plant,Industry (energy + processes),NOx
+Mineral Wool Plant,Industry (energy + processes),SO2_1
+Mineral Wool Plant,Industry (energy + processes),NH3
+Mineral Wool Plant,Industry (energy + processes),NMVOC
+Mineral Wool Plant,Industry (energy + processes),PM10_AGG
+Mineral Wool Plant,Industry (energy + processes),PM2.5_AGG
+Mines/Quarries,Resource production (coal),PM2.5
+Mines/Quarries,Resource production (coal),PM10
+Mines/Quarries,Resource production (coal),NMVOC
+Mines/Quarries,Resource production (coal),CO
+Mines/Quarries,Resource production (coal),SO2_1
+Mines/Quarries,Resource production (coal),NH3
+Mines/Quarries,Resource production (coal),PM2.5_AGG
+Mines/Quarries,Resource production (coal),PM10_AGG
+Mines/Quarries,Resource production (coal),NOx
+Municipal Waste Combustor,Urban Processes,PM2.5
+Municipal Waste Combustor,Urban Processes,PM10
+Municipal Waste Combustor,Urban Processes,NMVOC
+Municipal Waste Combustor,Urban Processes,CO
+Municipal Waste Combustor,Urban Processes,SO2_1
+Municipal Waste Combustor,Urban Processes,NH3
+Municipal Waste Combustor,Urban Processes,PM2.5_AGG
+Municipal Waste Combustor,Urban Processes,PM10_AGG
+Municipal Waste Combustor,Urban Processes,NOx
+Munition or Explosives Plant,Industry (energy + processes),CO
+Munition or Explosives Plant,Industry (energy + processes),PM10
+Munition or Explosives Plant,Industry (energy + processes),PM2.5
+Munition or Explosives Plant,Industry (energy + processes),NOx
+Munition or Explosives Plant,Industry (energy + processes),SO2_1
+Munition or Explosives Plant,Industry (energy + processes),NH3
+Munition or Explosives Plant,Industry (energy + processes),NMVOC
+Munition or Explosives Plant,Industry (energy + processes),PM10_AGG
+Munition or Explosives Plant,Industry (energy + processes),PM2.5_AGG
+Off-shore Oil or Gas Platform,Resource production (gas and oil),PM2.5
+Off-shore Oil or Gas Platform,Resource production (gas and oil),PM10
+Off-shore Oil or Gas Platform,Resource production (gas and oil),NMVOC
+Off-shore Oil or Gas Platform,Resource production (gas and oil),CO
+Off-shore Oil or Gas Platform,Resource production (gas and oil),SO2_1
+Off-shore Oil or Gas Platform,Resource production (gas and oil),NH3
+Off-shore Oil or Gas Platform,Resource production (gas and oil),PM2.5_AGG
+Off-shore Oil or Gas Platform,Resource production (gas and oil),PM10_AGG
+Off-shore Oil or Gas Platform,Resource production (gas and oil),NOx
+Oil or Gas Facility (On-shore),Resource production (gas and oil),PM2.5
+Oil or Gas Facility (On-shore),Resource production (gas and oil),PM10
+Oil or Gas Facility (On-shore),Resource production (gas and oil),NMVOC
+Oil or Gas Facility (On-shore),Resource production (gas and oil),CO
+Oil or Gas Facility (On-shore),Resource production (gas and oil),SO2_1
+Oil or Gas Facility (On-shore),Resource production (gas and oil),NH3
+Oil or Gas Facility (On-shore),Resource production (gas and oil),PM2.5_AGG
+Oil or Gas Facility (On-shore),Resource production (gas and oil),PM10_AGG
+Oil or Gas Facility (On-shore),Resource production (gas and oil),NOx
+Petroleum Refinery,Refining (oil),PM2.5
+Petroleum Refinery,Refining (oil),PM10
+Petroleum Refinery,Refining (oil),NMVOC
+Petroleum Refinery,Refining (oil),CO
+Petroleum Refinery,Refining (oil),SO2_1
+Petroleum Refinery,Refining (oil),NH3
+Petroleum Refinery,Refining (oil),PM2.5_AGG
+Petroleum Refinery,Refining (oil),PM10_AGG
+Petroleum Refinery,Refining (oil),NOx
+Petroleum Storage Facility,Refining (oil),PM2.5
+Petroleum Storage Facility,Refining (oil),PM10
+Petroleum Storage Facility,Refining (oil),NMVOC
+Petroleum Storage Facility,Refining (oil),CO
+Petroleum Storage Facility,Refining (oil),SO2_1
+Petroleum Storage Facility,Refining (oil),NH3
+Petroleum Storage Facility,Refining (oil),PM2.5_AGG
+Petroleum Storage Facility,Refining (oil),PM10_AGG
+Petroleum Storage Facility,Refining (oil),NOx
+Pharmaceutical Manufacturing,Industry (energy + processes),CO
+Pharmaceutical Manufacturing,Industry (energy + processes),PM10
+Pharmaceutical Manufacturing,Industry (energy + processes),PM2.5
+Pharmaceutical Manufacturing,Industry (energy + processes),NOx
+Pharmaceutical Manufacturing,Industry (energy + processes),SO2_1
+Pharmaceutical Manufacturing,Industry (energy + processes),NH3
+Pharmaceutical Manufacturing,Industry (energy + processes),NMVOC
+Pharmaceutical Manufacturing,Industry (energy + processes),PM10_AGG
+Pharmaceutical Manufacturing,Industry (energy + processes),PM2.5_AGG
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),CO
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),PM10
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),PM2.5
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),NOx
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),SO2_1
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),NH3
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),NMVOC
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),PM10_AGG
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),PM2.5_AGG
+Plywood & Engineered Wood Products,Industry (energy + processes),CO
+Plywood & Engineered Wood Products,Industry (energy + processes),PM10
+Plywood & Engineered Wood Products,Industry (energy + processes),PM2.5
+Plywood & Engineered Wood Products,Industry (energy + processes),NOx
+Plywood & Engineered Wood Products,Industry (energy + processes),SO2_1
+Plywood & Engineered Wood Products,Industry (energy + processes),NH3
+Plywood & Engineered Wood Products,Industry (energy + processes),NMVOC
+Plywood & Engineered Wood Products,Industry (energy + processes),PM10_AGG
+Plywood & Engineered Wood Products,Industry (energy + processes),PM2.5_AGG
+Portland Cement Manufacturing,Cement,CO
+Portland Cement Manufacturing,Cement,NMVOC
+Portland Cement Manufacturing,Cement,NH3
+Portland Cement Manufacturing,Cement,NOx
+Portland Cement Manufacturing,Cement,PM10
+Portland Cement Manufacturing,Cement,PM2.5
+Portland Cement Manufacturing,Cement,SO2_1
+Primary Aluminum Plant,Industry (energy + processes),CO
+Primary Aluminum Plant,Industry (energy + processes),PM10
+Primary Aluminum Plant,Industry (energy + processes),PM2.5
+Primary Aluminum Plant,Industry (energy + processes),NOx
+Primary Aluminum Plant,Industry (energy + processes),SO2_1
+Primary Aluminum Plant,Industry (energy + processes),NH3
+Primary Aluminum Plant,Industry (energy + processes),NMVOC
+Primary Aluminum Plant,Industry (energy + processes),PM10_AGG
+Primary Aluminum Plant,Industry (energy + processes),PM2.5_AGG
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),CO
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),PM10
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),PM2.5
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),NOx
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),SO2_1
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),NH3
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),NMVOC
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),PM10_AGG
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),PM2.5_AGG
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),CO
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),PM10
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),PM2.5
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),NOx
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),SO2_1
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),NH3
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),NMVOC
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),PM10_AGG
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),PM2.5_AGG
+Printing/Publishing Facility,Industry (energy + processes),CO
+Printing/Publishing Facility,Industry (energy + processes),PM10
+Printing/Publishing Facility,Industry (energy + processes),PM2.5
+Printing/Publishing Facility,Industry (energy + processes),NOx
+Printing/Publishing Facility,Industry (energy + processes),SO2_1
+Printing/Publishing Facility,Industry (energy + processes),NH3
+Printing/Publishing Facility,Industry (energy + processes),NMVOC
+Printing/Publishing Facility,Industry (energy + processes),PM10_AGG
+Printing/Publishing Facility,Industry (energy + processes),PM2.5_AGG
+Pulp and Paper Plant,Industry (energy + processes),CO
+Pulp and Paper Plant,Industry (energy + processes),PM10
+Pulp and Paper Plant,Industry (energy + processes),PM2.5
+Pulp and Paper Plant,Industry (energy + processes),NOx
+Pulp and Paper Plant,Industry (energy + processes),SO2_1
+Pulp and Paper Plant,Industry (energy + processes),NH3
+Pulp and Paper Plant,Industry (energy + processes),NMVOC
+Pulp and Paper Plant,Industry (energy + processes),PM10_AGG
+Pulp and Paper Plant,Industry (energy + processes),PM2.5_AGG
+Rail Yard,Rail,CO
+Rail Yard,Rail,PM10
+Rail Yard,Rail,PM2.5
+Rail Yard,Rail,NOx
+Rail Yard,Rail,SO2_1
+Rail Yard,Rail,NH3
+Rail Yard,Rail,NMVOC
+Rail Yard,Rail,PM10_AGG
+Rail Yard,Rail,PM2.5_AGG
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),CO
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),PM10
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),PM2.5
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),NOx
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),SO2_1
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),NH3
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),NMVOC
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),PM10_AGG
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),PM2.5_AGG
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),CO
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),PM10
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),PM2.5
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),NOx
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),SO2_1
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),NH3
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),NMVOC
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),PM10_AGG
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),PM2.5_AGG
+Secondary Lead Smelting Plant,Industry (energy + processes),CO
+Secondary Lead Smelting Plant,Industry (energy + processes),PM10
+Secondary Lead Smelting Plant,Industry (energy + processes),PM2.5
+Secondary Lead Smelting Plant,Industry (energy + processes),NOx
+Secondary Lead Smelting Plant,Industry (energy + processes),SO2_1
+Secondary Lead Smelting Plant,Industry (energy + processes),NH3
+Secondary Lead Smelting Plant,Industry (energy + processes),NMVOC
+Secondary Lead Smelting Plant,Industry (energy + processes),PM10_AGG
+Secondary Lead Smelting Plant,Industry (energy + processes),PM2.5_AGG
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),CO
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),PM10
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),PM2.5
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),NOx
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),SO2_1
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),NH3
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),NMVOC
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),PM10_AGG
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),PM2.5_AGG
+Ship Yards,Industry (energy + processes),CO
+Ship Yards,Industry (energy + processes),PM10
+Ship Yards,Industry (energy + processes),PM2.5
+Ship Yards,Industry (energy + processes),NOx
+Ship Yards,Industry (energy + processes),SO2_1
+Ship Yards,Industry (energy + processes),NH3
+Ship Yards,Industry (energy + processes),NMVOC
+Ship Yards,Industry (energy + processes),PM10_AGG
+Ship Yards,Industry (energy + processes),PM2.5_AGG
+Steam/Heating Facility,Industry (energy + processes),CO
+Steam/Heating Facility,Industry (energy + processes),PM10
+Steam/Heating Facility,Industry (energy + processes),PM2.5
+Steam/Heating Facility,Industry (energy + processes),NOx
+Steam/Heating Facility,Industry (energy + processes),SO2_1
+Steam/Heating Facility,Industry (energy + processes),NH3
+Steam/Heating Facility,Industry (energy + processes),NMVOC
+Steam/Heating Facility,Industry (energy + processes),PM10_AGG
+Steam/Heating Facility,Industry (energy + processes),PM2.5_AGG
+Steel Mill,Industry (energy + processes),CO
+Steel Mill,Industry (energy + processes),PM10
+Steel Mill,Industry (energy + processes),PM2.5
+Steel Mill,Industry (energy + processes),NOx
+Steel Mill,Industry (energy + processes),SO2_1
+Steel Mill,Industry (energy + processes),NH3
+Steel Mill,Industry (energy + processes),NMVOC
+Steel Mill,Industry (energy + processes),PM10_AGG
+Steel Mill,Industry (energy + processes),PM2.5_AGG
+Sugar Mill,Industry (energy + processes),CO
+Sugar Mill,Industry (energy + processes),PM10
+Sugar Mill,Industry (energy + processes),PM2.5
+Sugar Mill,Industry (energy + processes),NOx
+Sugar Mill,Industry (energy + processes),SO2_1
+Sugar Mill,Industry (energy + processes),NH3
+Sugar Mill,Industry (energy + processes),NMVOC
+Sugar Mill,Industry (energy + processes),PM10_AGG
+Sugar Mill,Industry (energy + processes),PM2.5_AGG
+Taconite Processing,Industry (energy + processes),CO
+Taconite Processing,Industry (energy + processes),PM10
+Taconite Processing,Industry (energy + processes),PM2.5
+Taconite Processing,Industry (energy + processes),NOx
+Taconite Processing,Industry (energy + processes),SO2_1
+Taconite Processing,Industry (energy + processes),NH3
+Taconite Processing,Industry (energy + processes),NMVOC
+Taconite Processing,Industry (energy + processes),PM10_AGG
+Taconite Processing,Industry (energy + processes),PM2.5_AGG
+Tank Battery,Resource production (gas and oil),CO
+Tank Battery,Resource production (gas and oil),PM10
+Tank Battery,Resource production (gas and oil),PM2.5
+Tank Battery,Resource production (gas and oil),NOx
+Tank Battery,Resource production (gas and oil),SO2_1
+Tank Battery,Resource production (gas and oil),NH3
+Tank Battery,Resource production (gas and oil),NMVOC
+Tank Battery,Resource production (gas and oil),PM10_AGG
+Tank Battery,Resource production (gas and oil),PM2.5_AGG
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),CO
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),PM10
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),PM2.5
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),NOx
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),SO2_1
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),NH3
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),NMVOC
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),PM10_AGG
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),PM2.5_AGG
+Tire Manuf (not retread),Industry (energy + processes),CO
+Tire Manuf (not retread),Industry (energy + processes),PM10
+Tire Manuf (not retread),Industry (energy + processes),PM2.5
+Tire Manuf (not retread),Industry (energy + processes),NOx
+Tire Manuf (not retread),Industry (energy + processes),SO2_1
+Tire Manuf (not retread),Industry (energy + processes),NH3
+Tire Manuf (not retread),Industry (energy + processes),NMVOC
+Tire Manuf (not retread),Industry (energy + processes),PM10_AGG
+Tire Manuf (not retread),Industry (energy + processes),PM2.5_AGG
+Unspecified,Industry (energy + processes),CO
+Unspecified,Industry (energy + processes),PM10
+Unspecified,Industry (energy + processes),PM2.5
+Unspecified,Industry (energy + processes),NOx
+Unspecified,Industry (energy + processes),SO2_1
+Unspecified,Industry (energy + processes),NH3
+Unspecified,Industry (energy + processes),NMVOC
+Unspecified,Industry (energy + processes),PM10_AGG
+Unspecified,Industry (energy + processes),PM2.5_AGG
+Wastewater Treatment Facility,Urban Processes,CO
+Wastewater Treatment Facility,Urban Processes,PM10
+Wastewater Treatment Facility,Urban Processes,PM2.5
+Wastewater Treatment Facility,Urban Processes,NOx
+Wastewater Treatment Facility,Urban Processes,SO2_1
+Wastewater Treatment Facility,Urban Processes,NH3
+Wastewater Treatment Facility,Urban Processes,NMVOC
+Wastewater Treatment Facility,Urban Processes,PM10_AGG
+Wastewater Treatment Facility,Urban Processes,PM2.5_AGG
+Wet Corn Mill,Industry (energy + processes),CO
+Wet Corn Mill,Industry (energy + processes),PM10
+Wet Corn Mill,Industry (energy + processes),PM2.5
+Wet Corn Mill,Industry (energy + processes),NOx
+Wet Corn Mill,Industry (energy + processes),SO2_1
+Wet Corn Mill,Industry (energy + processes),NH3
+Wet Corn Mill,Industry (energy + processes),NMVOC
+Wet Corn Mill,Industry (energy + processes),PM10_AGG
+Wet Corn Mill,Industry (energy + processes),PM2.5_AGG
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),CO
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),PM10
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),PM2.5
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),NOx
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),SO2_1
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),NH3
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),NMVOC
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),PM10_AGG
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),PM2.5_AGG

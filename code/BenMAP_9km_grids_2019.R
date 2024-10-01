@@ -1,7 +1,7 @@
 # BenMAP_9km_grids.R
 # Code for re-scaling variables at 9 km grid: population and baseline incidence, and for getting mean for PM2.5
 # This script is designed to re-scale demographic and socioeconomic data from census block level to 9 km grid
-# It is V2 because we are using the modified pollution data based on Wei et al (https://www.nature.com/articles/s41467-023-43862-3)
+# It is the version where we are using the modified pollution data based on Wei et al (https://www.nature.com/articles/s41467-023-43862-3)
 # Date: May 2024
 # Author: Candelaria Bergero
 
@@ -25,17 +25,12 @@ library(furrr)
 library(dplyr)
 library(tidyr)
 library(ggpubr)
-
-#Set working directory
-setwd("~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition")
-
-# Get today's date
-today_date <- Sys.Date()
+library(ggspatial)
 
 #General files
-source( "~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition/code/color_schemes.R" ) # some predefined color schemes
+source( "code/color_schemes.R" ) # some predefined color schemes
 state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
-  mutate( state_ID = gsub("^_", "", state_ID))
+  mutate( state_ID = gsub("^_", "", state_ID)) #mapping
 
 
 #------------------------------------------------- BENMAP INPUTS --------------------------------------------------
@@ -80,13 +75,13 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
 #### 1. Load census data ####
     census_block <- st_read("shapefiles/cb_2019_us_bg_500k_clipped/cb_2019_us_bg_500k.shp") #From https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2019.html#list-tab-1883739534
     
-    input_population_data <- read.csv("data/ACS/ACSDT5Y2019.B01003_2024-02-28T212808/ACSDT5Y2019.B01003-Data.csv") #From census data table B01003 on total population at the census block level. Note we rename column to match census block metadata
+    input_population_data <- read.csv("data/BenMAP/ACSDT5Y2019.B01003_2024-02-28T212808/ACSDT5Y2019.B01003-Data.csv") #From census data table B01003 on total population at the census block level. Note we rename column to match census block metadata
     
-    input_race_data <- read.csv("data/ACS/ACSDT5Y2019.B02001_2024-02-28T213117/ACSDT5Y2019.B02001-Data.csv")  #From census data table B02001 on race at the census block level. Note we rename column to match census block metadata
+    input_race_data <- read.csv("data/BenMAP/ACSDT5Y2019.B02001_2024-02-28T213117/ACSDT5Y2019.B02001-Data.csv")  #From census data table B02001 on race at the census block level. Note we rename column to match census block metadata
     
-    input_gender_age_data <- read.csv("data/ACS/ACSDT5Y2019.B01001_2024-02-28T213030/ACSDT5Y2019.B01001-Data.csv")  #From census data table B01001 on race at the census block level. Note we rename column to match census block metadata
+    input_gender_age_data <- read.csv("data/BenMAP/ACSDT5Y2019.B01001_2024-02-28T213030/ACSDT5Y2019.B01001-Data.csv")  #From census data table B01001 on race at the census block level. Note we rename column to match census block metadata
     
-    input_income_data <-read.csv("data/ACS/ACSDT5Y2019.B19013_2024-02-28T213319/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census block level. Note we rename column to match census block metadata
+    input_income_data <-read.csv("data/BenMAP/ACSDT5Y2019.B19013_2024-02-28T213319/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census block level. Note we rename column to match census block metadata
     
 #### 2 Prepare census data ####
   #### 2.1. Total population ####
@@ -192,7 +187,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
 
 #### 6. Run the function ####
   #### 6.1. Run ####
-    #partitions <- joined_data_original[1:5000, ]
+    #partitions <- joined_data_original[1:5000, ] #this is for testing
     partitions <- joined_data_original
     
       timing_result <- system.time({
@@ -204,22 +199,13 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
     
   #### 6.2. Save partitions ####
     #Write as shapefile
-    #st_write(partitions, "output_data/shapefiles/9km/9km_partitions_shapefile_2019_03152024.shp")
-    partitions <- st_read("output_data/shapefiles/9km/9km_partitions_shapefile_2019_03152024.shp") 
-    partitions %>%
-      dplyr::rename(pixel_ID = pixl_ID,
-             census_block_ID = cns__ID,
-             state_ID = stat_ID,
-             pixel_area = pixel_r,
-             block_area = block_r,
-             intersection_area = intrsc_) -> partitions
+    st_write(partitions, "output_data/shapefiles/9km/9km_partitions_shapefile_2019_03152024.shp")
     
     #Write as csv
-    #write.csv(partitions, row.names = FALSE, file = paste("output_data/BenMAP_files/9km/Date_", today_date, "_9km_partitions_2019.csv"))
-    partitions <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-13 _9km_partitions_2019.csv")
+    write.csv(partitions, row.names = FALSE, "output_data/BenMAP_files/9km/9km_partitions_2019.csv")
     partitions %>%
-      st_drop_geometry() -> partitions_clean
-    #write.csv(partitions_clean, row.names = FALSE, file = paste("output_data/BenMAP_files/Date_", today_date, "_9km_partitions_nogeometry_2019.csv"))
+       st_drop_geometry() -> partitions_clean
+    write.csv(partitions_clean, row.names = FALSE, "output_data/BenMAP_files/9km/9km_partitions_nogeometry_2019.csv")
     #NOTE: If we just need the intersection area and the ratio we can load this csv
     
 #### 7. Outputs ####
@@ -278,6 +264,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
     
     #Merge partitions with variables
     partitions %>%
+      mutate(state_ID = as.numeric(state_ID)) %>%
       select(-block_area) %>%
       left_join(census_block_variables, by = c("census_block_ID", "state_ID")) -> partitions_complete
 
@@ -340,17 +327,15 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
              Ethnicity = "ALL",
              Gender = "ALL")-> population_2019_data_pixel_age_final
       
-    # Print the output table with today's date
-    #st_write(population_2019_data_pixel, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_population_2019.shp") #File with geometry, row, col, pixel ID, ages and races
-    population_2019_data_pixel <- st_read("output_data/shapefiles/9km/9_km_grid_NAD83_filtered_population_2019.shp")
+    # Print the output table
+    st_write(population_2019_data_pixel, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_population_2019.shp") #File with geometry, row, col, pixel ID, ages and races
     
-    #write.csv(population_2019_data_pixel_age_final, row.names = FALSE, file = paste("output_data/BenMAP_files/Date_", today_date, "9_km_grid_NAD83_filtered_population_2019.csv")) #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
-    population_2019_data_pixel_age_final<- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-01 9_km_grid_NAD83_filtered_population_2019.csv")
+    write.csv(population_2019_data_pixel_age_final, row.names = FALSE, "output_data/BenMAP_files/9km/9_km_grid_NAD83_filtered_population_2019.csv") #BenMAP file wiht row, col, age range, population, all races, all ethnicity, all gender
     
     #Print the shapefile without unused pixels
     grid_data_NAD83 %>%
       filter(pixel_ID %in% pixels_to_keep) -> grid_data_NAD83_filtered
-    #st_write(grid_data_NAD83_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_2019.shp")
+    st_write(grid_data_NAD83_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_2019.shp")
     
   #### 7.6. Figures ####
     #Figure
@@ -363,8 +348,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       #geom_sf(data = population_2019_data_pixel, aes(fill = Population), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("United States 9km Rescaled Population")
-      ggsave("figures/BenMAP/9km/population/9km_rescaled_population_USA_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/population/9km_rescaled_population_USA_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/population/9km_rescaled_population_USA_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/population/9km_rescaled_population_USA_plot_2019_log.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #Plot census block data
@@ -376,7 +361,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       #geom_sf(data = census_block_filtered, aes(fill = population_in), color = NA, size = 0) +
       scale_fill_viridis_c(option = "magma", direction = -1) +  # Using the magma color scale
       ggtitle("United States Census Block Population")
-    ggsave("figures/BenMAP/9km/population/census_block_USA_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/9km/population/census_block_USA_plot_2019_log.png", p, width = 16, height = 12, units = "in", dpi = 600)
   print(p)
 
 #### 8. Checks ####
@@ -410,9 +395,6 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
     partitions_complete %>%
       group_by(census_block_ID) %>%
       summarise(sum_area_ratio = sum(area_ratio)) -> check_census_ratio #should = 1
-  
-
-    
     
 #------------------------------------------------- SECTION 3: 9 KM INCIDENCE RATE -------------------------------------------------
 #### 1. Incidence rates ####
@@ -424,10 +406,10 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       dplyr::select(STATEFP, NAME, COUNTYFP, GEOID, geometry) #keep relevant columns
     
     #fromm BenMAP
-    grid_data_county_benmap <- st_read("data/incidence_rates_BenMAP/County.shp") #From BenMAP
+    grid_data_county_benmap <- st_read("data/BenMAP/incidence_rates_BenMAP/County.shp") #From BenMAP
     
-    incidence_2015 <- read.csv("data/incidence_rates_BenMAP/Mortality Incidence (2015).csv") #From BenMAP
-    incidence_2020 <- read.csv("data/incidence_rates_BenMAP/Mortality Incidence (2020).csv") #From BenMAP
+    incidence_2015 <- read.csv("data/BenMAP/incidence_rates_BenMAP/Mortality Incidence (2015).csv") #From BenMAP
+    incidence_2020 <- read.csv("data/BenMAP/incidence_rates_BenMAP/Mortality Incidence (2020).csv") #From BenMAP
     
     grid_data_county_benmap %>%
       mutate(FIPS = if_else(FIPS == "46113", "46102", FIPS)) %>% #County Oglala Lakota was previously known as Shannon, so we rename it before the join
@@ -451,7 +433,6 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
     grid_data_county %>%
       mutate(county_area = round(st_area(grid_data_county), digits = 5), #Area in m^2
              county_area = as.numeric(gsub("\\[m²\\]", "", county_area)))-> grid_data_county
-    
     #Calculated pixel area ->  we use grid_data_NAD83_area
     
 #### 2. Join files ####
@@ -519,6 +500,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         
       } 
     }
+  
   #### 3.5. Recalculate area pixel ratio ####
     #This is how much of the pixel is in each county, group by pixel should equal 1
     partitions_mortality$area_ratio_pixel <- partitions_mortality$intersection_area / partitions_mortality$pixel_area
@@ -540,7 +522,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
            x = "Value_2015",
            y = "Value_2020") + 
       facet_wrap(~ age, scales = "free")
-    ggsave("figures/BenMAP/9km/incidence/incidence_rates_2015vs2020.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/BenMAP/9km/incidence/incidence_rates_2015vs2020.png", p, width = 16, height = 12, units = "in", dpi = 600)
     (p)
     
     #Now linearly interpolate 2015 to 2020
@@ -578,8 +560,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       dplyr::rename(Row = row, Column = col, Value = weighted_incidence) %>%
       st_drop_geometry()-> partitions_rate_final_clean
     
-    write.csv(partitions_rate_final_clean, row.names = FALSE, file = paste("output_data/BenMAP_files/Date_",today_date,"Incidence_9km_2019.csv"))
-    
+    write.csv(partitions_rate_final_clean, row.names = FALSE, "output_data/BenMAP_files/9km/Incidence_9km_2019.csv")
+  
     #shapefiles
     partitions_rate_final %>%
       dplyr::select(-pixel_ID) %>%
@@ -587,8 +569,6 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       filter(Endpoint == "Mortality, All Cause") -> partitions_rate_final_clean_allcauses_geometry
     
     st_write(partitions_rate_final_clean_allcauses_geometry, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_mortality_geometry_2019.shp")
-    
-    #partitions_rate_final_clean_allcauses_geometry <- st_read("output_data/shapefiles/9km/9_km_grid_NAD83_filtered_mortality_geometry_2019.shp")
     
 #------------------------------------------------- SECTION 4: 9 KM POLLUTION -------------------------------------------------
 #Here we prepare pollution files to csv for BenMAP. We need to get the mean of 365 days, and we need to assign exact row and columns to our data. We will have one file per period and per scenario (4 total: 2019, 2050 REF, 2050 HIH, 2050 LOW) 
@@ -665,15 +645,12 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
                `Seasonal Metric` = "QuarterlyMean",
                `Annual Metric` = "Mean") -> grid_data_PM25_NAD_filtered_final
         
-
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_NAD_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/9km_V2/Date_", today_date,"OutputTable_PM25_2019.csv"))
-      #grid_data_PM25_NAD_filtered_final <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-01 OutputTable_PM25_2019.csv")
+      write.csv(grid_data_PM25_NAD_filtered_final, row.names = FALSE, "output_data/BenMAP_files/9km/OutputTable_PM25_2019.csv")
       
       #Shapefile
-      #st_write(grid_data_PM25_NAD_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2019.shp")
-      grid_data_PM25_NAD_filtered <- st_read("output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2019.shp")
+      st_write(grid_data_PM25_NAD_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2019.shp")
       
   #### 1.5. Prepare figure #### 
       #Get national mean (population weighted mean)
@@ -707,11 +684,11 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         ggtitle("2019 US Mean 9km Yearly PM2.5 (ug/m3)") +
         geom_text(aes(label = paste("Population weighted mean:", round(mean_2019, 2), "ug/m3")),
                   x = Inf, y = -Inf, hjust = 1, vjust = -0.6, size = 5) +
-        annotation_scale() +
+        #annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2019_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2019_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2019_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2019_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
 #### 2. 2050 Reference (9km resolution) ####
@@ -785,12 +762,10 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_NAD_REF_2050_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/9km_V2/Date_", today_date,"OutputTable_PM25_2050_REF.csv"))
-      #grid_data_PM25_NAD_REF_2050_filtered_final <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-07 OutputTable_PM25_2050_REF.csv")
+      write.csv(grid_data_PM25_NAD_REF_2050_filtered_final, row.names = FALSE, "output_data/BenMAP_files/9km/OutputTable_PM25_2050_REF.csv")
       
       #Shapefile
-      #st_write(grid_data_PM25_NAD_REF_2050_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_REF.shp")
-      grid_data_PM25_NAD_REF_2050_filtered <- st_read("output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_REF.shp")
+      st_write(grid_data_PM25_NAD_REF_2050_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_REF.shp")
       
   #### 2.5. Prepare figure #### 
       #Get national mean (population weighted)
@@ -837,8 +812,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_REF_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_REF_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_REF_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_REF_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
       
@@ -914,13 +889,10 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_NAD_HIGH_2050_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/9km_V2/Date_", today_date,"OutputTable_PM25_2050_HIGH.csv"))
-      #grid_data_PM25_NAD_HIGH_2050_filtered_final <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-07 OutputTable_PM25_2050_HIGH.csv")
+      write.csv(grid_data_PM25_NAD_HIGH_2050_filtered_final, row.names = FALSE, "output_data/BenMAP_files/9km/OutputTable_PM25_2050_HIGH.csv")
       
       #Shapefile
-      #st_write(grid_data_PM25_NAD_HIGH_2050_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_HIGH.shp")
-      grid_data_PM25_NAD_HIGH_2050_filtered <- st_read("output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_HIGH.shp")
-      
+      st_write(grid_data_PM25_NAD_HIGH_2050_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_HIGH.shp")
   
   #### 3.5. Prepare figure #### 
       #Get national mean (population weighted)
@@ -965,8 +937,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_HIGH_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_HIGH_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_HIGH_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_HIGH_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
 #### 4. 2050 Low CDR (9km resolution) ####
@@ -1040,12 +1012,10 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       
       # 2. Save file
       #Csv
-      write.csv(grid_data_PM25_NAD_LOW_2050_filtered_final, row.names = FALSE, file = paste("output_data/BenMAP_files/9km_V2/Date_", today_date,"OutputTable_PM25_2050_LOW.csv"))
-      #grid_data_PM25_NAD_LOW_2050_filtered_final <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-07 OutputTable_PM25_2050_LOW.csv")
+      write.csv(grid_data_PM25_NAD_LOW_2050_filtered_final, row.names = FALSE, "output_data/BenMAP_files/9km/OutputTable_PM25_2050_LOW.csv")
       
       #Shapefile
-     # st_write(grid_data_PM25_NAD_LOW_2050_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_LOW.shp")
-      grid_data_PM25_NAD_LOW_2050_filtered <- st_read("output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_LOW.shp")
+     st_write(grid_data_PM25_NAD_LOW_2050_filtered, "output_data/shapefiles/9km/9_km_grid_NAD83_filtered_PM25_2050_LOW.shp")
       
   #### 4.5 Prepare figure ####
       #Get national mean (population weighted)
@@ -1090,8 +1060,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_LOW_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_LOW_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_LOW_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      # ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_LOW_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
 ##### 5. 2050 High CDR vs Low CDR (9km resolution) ####
@@ -1123,6 +1093,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       mean_2050_HIGHvsLOW <- sum_products / total_population #Population weighted mean PM2.5
       
       grid_data_PM25_NAD_HIGHvsLOW_2050_filtered_graph %>%
+        st_drop_geometry() %>%
         summarise(mean_PM25 = mean(HIGH_minus_LOW)) -> mean_HIGHvsLOW_2050 #Normal mean
       
       #Perform intersection to crop pixels within the boundary
@@ -1137,8 +1108,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_HIGHvsLOW_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_HIGHvsLOW_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_HIGHvsLOW_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_HIGHvsLOW_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
 ##### 6. 2050 REF vs High CDR (9km resolution) ####
@@ -1170,6 +1141,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       mean_2050_REFvsHIGH <- sum_products / total_population #Population weighted mean PM2.5
       
       grid_data_PM25_NAD_REFvsHIGH_2050_filtered_graph %>%
+        st_drop_geometry() %>%
         summarise(mean_PM25 = mean(REF_minus_HIGH)) -> mean_REFvsHIGH_2050
       
       #Perform intersection to crop pixels within the boundary
@@ -1184,8 +1156,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_REFvsHIGH_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_REFvsHIGH_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_REFvsHIGH_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_REFvsHIGH_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
 
 ##### 7. 2050 REF vs LOW CDR (9km resolution) ####
@@ -1227,8 +1199,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         annotation_scale() +
         theme_void() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_REFvsLOW_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/pollution_V2/9km_PM25_2050_REFvsLOW_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution/9km_PM25_2050_REFvsLOW_plot.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/pollution_/9km_PM25_2050_REFvsLOW_plot.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       print(p)
       
 
@@ -1265,6 +1237,7 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
       
       #Get state values
       partitions %>%
+        mutate(state_ID = as.numeric(state_ID)) %>%
         st_drop_geometry() %>%
         dplyr::select(pixel_ID, row, col, state_ID) %>%
         unique() %>%
@@ -1276,7 +1249,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         group_by(state_ID, state_name, Region) %>%
         dplyr::summarise(Population_state = sum(Population),
                   Point.Estim_state = sum(Point.Estim)) %>%
-        mutate(deaths_per_1000 = (Point.Estim_state / Population_state)*1000)-> total_mortality_2019_state
+        mutate(deaths_per_1000 = (Point.Estim_state / Population_state)*1000,
+               deaths_per_million = (Point.Estim_state / Population_state)*10^6)-> total_mortality_2019_state
   
   #### 1.4 Graph ####
       #Perform intersection to crop pixels within the boundary
@@ -1291,8 +1265,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2019_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2019_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2019_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2019_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
 
 #### 2. 2050 High CDR (9km resolution) #### 
   #### 2.1. Load data ####
@@ -1326,7 +1300,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         group_by(state_ID, state_name, Region) %>%
         dplyr::summarise(Population_state = sum(Population),
                   Point.Estim_state = sum(Point.Estim)) %>%
-        mutate(deaths_per_1000 = (Point.Estim_state / Population_state)*1000)-> total_mortality_2050_HIGH_9km_state
+        mutate(deaths_per_1000 = (Point.Estim_state / Population_state)*1000,
+               deaths_per_million = (Point.Estim_state / Population_state)*10^6)-> total_mortality_2050_HIGH_9km_state
   
   #### 2.4 Figure ####
       #Perform intersection to crop pixels within the boundary
@@ -1341,8 +1316,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_HIGH_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_HIGH_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_HIGH_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_HIGH_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
 #### 3. 2050 Low CDR (9km resolution) ####
   #### 3.1. Load data ####
@@ -1378,7 +1353,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         group_by(state_ID, state_name, Region) %>%
         dplyr::summarise(Population_state = sum(Population),
                   Point.Estim_state = sum(Point.Estim)) %>%
-        mutate(deaths_per_1000 = (Point.Estim_state / Population_state)*1000)-> total_mortality_2050_LOW_9km_state
+        mutate(deaths_per_1000 = (Point.Estim_state / Population_state)*1000,
+               deaths_per_million = (Point.Estim_state / Population_state)*10^6)-> total_mortality_2050_LOW_9km_state
       
   #### 3.4. Figure ####
       #Perform intersection to crop pixels within the boundary
@@ -1393,8 +1369,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_LOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_LOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_LOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_LOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
 #### 4. 2050 Reference (9km resolution) ####  
   #### 4.1. Load data ####
@@ -1445,8 +1421,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_REF_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_REF_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_REF_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_REF_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
 #### 5. 2050 High minus Low CDR (9km resolution) ####
   #### 5.1. Load data ####
@@ -1488,8 +1464,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_HIGHvsLOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_HIGHvsLOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_HIGHvsLOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_HIGHvsLOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
 #### 6. 2050 Reference minus High CDR (9km resolution) ####  
   #### 6.1. Load data ####
@@ -1530,8 +1506,8 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_REFvsHIGH_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_REFvsHIGH_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_REFvsHIGH_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_REFvsHIGH_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
 #### 7. 2050 Reference minus Low CDR (9km resolution) ####  
       #### 7.1. Load data ####
@@ -1573,89 +1549,11 @@ state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
         theme_void() +
         annotation_scale() +
         geom_sf(data = usa_boundary, color = "black", fill = NA) 
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_REFvsLOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/mortality_V2/9km_mortality_2050_REFvsLOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_REFvsLOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/mortality/9km_mortality_2050_REFvsLOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      
       
       p <- ggplot() +
         geom_sf(data = usa_boundary, color = "black", fill = NA, size = 2) 
-      ggsave("figures/BenMAP/9km/US_MAP2.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+      #ggsave("figures/BenMAP/9km/US_MAP2.svg", p, width = 16, height = 12, units = "in", dpi = 600)
       
-      
-#---------------------------------------------- SECTION 2: SCATTERPLOTS
-      #Here we load BenMAP shapefiles with mortality results to create plots
-      #These are results from High CDR run inus a Low CDR run
-      benmap_2050_REF_9km <- st_read("BenMAP_results/9km/2050_REF/health_impacts_2050_ref_9km/Health Impacts-Pope 2019_20240311.shp")
-      
-      benmap_2050_HIGHvsLOW_9km %>% #This is the population in each pixel from 18-99, which is where the health impacts are applied
-        mutate(deaths_per_1000 = (Point.Estim / Population)*1000,
-               deaths_per_1000_GRAPH = if_else(deaths_per_1000 >= 0.5, 0.5, deaths_per_1000)) -> benmap_2050_HIGHvsLOW_9km_pop_weighted #This has number of people dying per pixel for every 1000 inhabitants age 18-99
-      
-      #Calculate total
-      benmap_2050_HIGHvsLOW_9km %>%
-        st_drop_geometry() %>%
-        summarise(sum = sum(Point.Estim)) %>%
-        mutate(Scenario = "2050 High vs Low 9km")-> total_mortality_2050_HIGHvsLOW_9km
-      
-      p <- ggplot() +
-        geom_sf(data = benmap_2050_HIGHvsLOW_9km_pop_weighted, aes(fill = deaths_per_1000_GRAPH), color = NA, size = 0) +
-        #geom_sf(data = benmap_2019_9km_log, aes(fill = Point.Estim_log), color = NA, size = 0) +
-        #scale_fill_viridis_c(option = "magma", direction = -1, limits = c(0, 2)) +  # Using the magma color scale
-        scale_fill_gradient(low = difference_plot_color[1], high = difference_plot_color[length(difference_plot_color)]) +
-        ggtitle("2050 HIGH minus LOW CDR US Mortality due to Mean Yearly PM2.5 (per 1000 people)")+
-        geom_text(data = total_mortality_2050_HIGHvsLOW_9km, aes(label = paste("Total Deaths:", round(sum))),
-                  x = Inf, y = -Inf, hjust = 1, vjust = 0, size = 5)
-      ggsave("figures/BenMAP/9km/9km_mortality_2050_HIGHvsLOW_plot_BENMAP_result.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      ggsave("figures/BenMAP/9km/9km_mortality_2050_HIGHvsLOW_plot_BENMAP_result.svg", p, width = 16, height = 12, units = "in", dpi = 600)
-      print(p)
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-  #------------------------------------------------- SECTION 2: SCATTER PLOTS BENMAP RESULTS -------------------------------------------------    
-#### 1. 2019 mortality Baseline ####
-  #### 1.1. Mortality vs race ####
-      partitions %>%
-        dplyr::select(pixel_ID, state_ID) %>%
-        unique() %>%
-        st_drop_geometry() %>%
-        left_join(state_region_mapping, by = "state_ID")-> pixel_by_state
-      
-      benmap_2019_9km %>% #Table with mortality per pixel for 18-99 years old because of PM2.5 in 2019
-        dplyr::select(ROW, COL, Point.Estim, Endpoint, Population) %>%
-        mutate(percent_mortality = (Point.Estim / Population) * 100) %>%
-        dplyr::rename(population_BenMAP = Population) %>% #Population BenMAP is between 18-99
-        st_drop_geometry() -> benmap_2019_9km_final
-      
-      population_2019_data_pixel %>%
-        st_drop_geometry() %>%
-        dplyr::rename(population_pixel = Population) %>% #This is total population 0-99 in pixel
-        dplyr::select(-`0TO0`, -`1TO17`, -`18TO24`, -`25TO34`, -`35TO44`, 
-               -`45TO54`, -`55TO64`, -`65TO74`, -`75TO84`, -`85TO99`) %>%
-        left_join(benmap_2019_9km_final, by = c("Row" = "ROW", "Column" = "COL")) %>%
-        #Filter out NAs in point estimate, which are pixels with population = 0
-        filter(!is.na(Point.Estim)) %>%
-        gather(Race, race_value, -pixel_ID, -Row, -Column, -population_pixel, -Endpoint, 
-               -Point.Estim, -population_BenMAP, -percent_mortality) %>%
-        mutate(percent_race = (race_value / population_pixel) * 100) %>%
-        left_join(pixel_by_state, by = "pixel_ID")-> benmap_2019_9km_final_scatter
-      
-      #NOTE: if pixel is in two states, it just appears twice here, one time for each state, thus region
-      #Figures
-      p <- ggplot(benmap_2019_9km_final_scatter, aes(x = percent_race, y = percent_mortality, color = Region)) +
-        geom_point() +
-        labs(title = "Scatter Plot of Mortality and Race 2019 9 km",
-             x = "Percent of race in pixel (all ages)",
-             y = "Percent of people dying in pixel (age 18-99)") +
-        facet_wrap(~ Race) +
-        ggpubr::stat_cor(method = "pearson", 
-                        label.y.npc="top", label.x.npc = "center", inherit.aes = TRUE)
-      ggsave("figures/BenMAP/9km/incidence/9km_2019_incidence_vs_race.png", p, width = 16, height = 12, units = "in", dpi = 600)
-      (p)
-      
-      #### 1.2. Mortality vs income ####

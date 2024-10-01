@@ -1,0 +1,80 @@
+﻿Facility Type,Sector,GCAM_Sector
+Animal Feedlot or Farm,Animals,Agriculture
+Airport,Aviation,Transportation
+Concrete Batch Plant,Cement,Cement
+"Concrete Block, Pipe or Other Manuf",Cement,Cement
+Portland Cement Manufacturing,Cement,Cement
+Coal Gasification Plant,Coal Gasification Plant,Resource production
+"Institutional (school, hospital, prison, etc.)",Commercial,Commercial
+"Aircraft, Aerospace, or Related Parts Plant",Industry (energy + processes),Industrial
+Alumina Refinery,Industry (energy + processes),Industrial
+"Auto Body, Painting, or Repair Shop",Industry (energy + processes),Industrial
+Automobile/Truck or Parts Plant,Industry (energy + processes),Industrial
+Bakeries,Industry (energy + processes),Industrial
+Battery Plant,Industry (energy + processes),Industrial
+Breweries/Distilleries/Wineries,Industry (energy + processes),Industrial
+"Brick, Structural Clay, or Clay Ceramics Plant",Industry (energy + processes),Industrial
+Calcined Pet Coke Plant,Industry (energy + processes),Industrial
+Carbon Black Plant,Industry (energy + processes),Industrial
+Carbon or Graphite Plant,Industry (energy + processes),Industrial
+Chemical Plant,Industry (energy + processes),Industrial
+Chlor-alkali Plant,Industry (energy + processes),Industrial
+Coke Battery,Industry (energy + processes),Industrial
+Commercial Sterilizer,Industry (energy + processes),Industrial
+Compressor Station,Industry (energy + processes),Industrial
+Cotton Gin,Industry (energy + processes),Industrial
+Dry Cleaner - Perchloroethylene,Industry (energy + processes),Industrial
+Dry Cleaner - Petroleum Solvent,Industry (energy + processes),Industrial
+Fabricated Metal Products Plant,Industry (energy + processes),Industrial
+Ferroalloy Plant,Industry (energy + processes),Industrial
+Fertilizer Plant,Industry (energy + processes),Industrial
+Fiberglass Products Manuf,Industry (energy + processes),Industrial
+Food Products Processing Plant,Industry (energy + processes),Industrial
+"Foundries, Iron and Steel",Industry (energy + processes),Industrial
+"Foundries, non-ferrous",Industry (energy + processes),Industrial
+Glass Plant,Industry (energy + processes),Industrial
+Gold Mine or Processing Facility,Industry (energy + processes),Industrial
+Grain Handling Facility,Industry (energy + processes),Industrial
+Gravel/Sand Plant,Industry (energy + processes),Industrial
+Hot Mix Asphalt Plant,Industry (energy + processes),Industrial
+Industrial Machinery or Equipment Plant,Industry (energy + processes),Industrial
+Lumber/Sawmill,Industry (energy + processes),Industrial
+Mineral Processing Plant,Industry (energy + processes),Industrial
+Mineral Wool Plant,Industry (energy + processes),Industrial
+Munition or Explosives Plant,Industry (energy + processes),Industrial
+Pharmaceutical Manufacturing,Industry (energy + processes),Industrial
+"Plastic, Resin, Rubber or Syn Fiber Manuf Plant",Industry (energy + processes),Industrial
+Plywood & Engineered Wood Products,Industry (energy + processes),Industrial
+Primary Aluminum Plant,Industry (energy + processes),Industrial
+Primary Copper Smelting/Refining Plant,Industry (energy + processes),Industrial
+"Primary Non-ferrous Metal Smelting/Refining Plant (not Lead, Gold, Aluminum, or Copper)",Industry (energy + processes),Industrial
+Printing/Publishing Facility,Industry (energy + processes),Industrial
+Pulp and Paper Plant,Industry (energy + processes),Industrial
+Secondary Aluminum Smelting/Refining Plant,Industry (energy + processes),Industrial
+Secondary Copper Smelting/Refining Plant,Industry (energy + processes),Industrial
+Secondary Lead Smelting Plant,Industry (energy + processes),Industrial
+"Secondary Non-ferrous Metal Smelting/Refining Plant (not Lead, Aluminum, or Copper)",Industry (energy + processes),Industrial
+Ship Yards,Industry (energy + processes),Industrial
+Steam/Heating Facility,Industry (energy + processes),Industrial
+Steel Mill,Industry (energy + processes),Industrial
+Sugar Mill,Industry (energy + processes),Industrial
+Taconite Processing,Industry (energy + processes),Industrial
+"Textile, Yarn, or Carpet Plant",Industry (energy + processes),Industrial
+Tire Manuf (not retread),Industry (energy + processes),Industrial
+Unspecified,Industry (energy + processes),Industrial
+Wet Corn Mill,Industry (energy + processes),Industrial
+"Woodwork, Furniture, Millwork Manufacturing",Industry (energy + processes),Industrial
+Rail Yard,Rail,Transportation
+Ethanol Biorefineries/Soy Biodiesel,Refining (biomass),Refining (biomass)
+Gasoline/Diesel Service Station,Refining (oil),Refining (oil)
+Petroleum Refinery,Refining (oil),Refining (oil)
+Petroleum Storage Facility,Refining (oil),Refining (oil)
+Mines/Quarries,Resource production (coal),Resource production
+Off-shore Oil or Gas Platform,Resource production (gas and oil),Resource production
+Oil or Gas Facility (On-shore),Resource production (gas and oil),Resource production
+Tank Battery,Resource production (gas and oil),Resource production
+Gas Plant,Resource production (gas),Resource production
+Marine Port,Ships,Transportation
+Landfill,Urban Processes,Urban
+Municipal Waste Combustor,Urban Processes,Urban
+Wastewater Treatment Facility,Urban Processes,Urban

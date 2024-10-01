@@ -1,0 +1,15 @@
+﻿GENSTAT,Status of generator
+CN,Cancelled
+IP,Planned
+L,Approval pending
+OA,Out of service
+OP,Operating
+OS,Out of service
+OT,Other
+P,Planned
+RE,Retired
+SB,Stand-by (storage)
+T,Regultaroty approvals received
+TS,testing
+U,under construction (<50%)
+V,under construction (>50%)

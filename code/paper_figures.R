@@ -7,7 +7,7 @@
 
 #### Load packages ####
 library(plyr)
-library(readr)
+
 library(ggplot2)
 library(devtools)
 devtools::load_all("/Users/mariacandelariabergero/Documents/GCAM/rgcam-1.2.0")
@@ -29,24 +29,16 @@ library(ncdf4)
 library(raster)
 library(RColorBrewer)
 library(dplyr)
+library(readr)
 
 #### Load scenarios ####
-#Set working directory
-setwd("~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition")
-
-#Connect to the database
-conn <- localDBConn('/Users/mariacandelariabergero/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output', 'database_basexdb_FINAL')
-
-#Load the scenario
-# prj <- addScenario(conn, 'dat/GCAM_analysis_V3.dat', 'GCAM-USA_REF', 'queries/queries.xml') #Reference
-# prj <- addScenario(conn, 'dat/GCAM_analysis_V3.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF', 'queries/queries.xml') #Net-zero + high CDR
-# prj <- addScenario(conn, 'dat/GCAM_analysis_V3.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF', 'queries/queries.xml') #Net-zero + lowCDR
 
 #Load the project
-prj <- loadProject('dat/GCAM_analysis_V3.dat')
+prj <- loadProject('data/GCAM/GCAM_analysis.dat')
 
 #Get color schemes
-source( "~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition/code/color_schemes.R" ) # some predefined color schemes
+source( "code/color_schemes.R" ) # some predefined color schemes
+
 #### Mapping files ####
 scenario_mapping <- read_csv("mappings/scenario_mapping.csv")
 PE_fuel_mapping <- read_csv("mappings/PE_fuel_mapping.csv", skip = 1)
@@ -57,7 +49,7 @@ air_pollution_sector_mapping <- read_csv("mappings/air_pollution_sectors_mapping
 us_states <- st_read("shapefiles/cb_2019_us_state_500k/cb_2019_us_state_500k.shp")
 usa_boundary <- st_union(us_states) #Get outter borders
 
-state_region_mapping <- read.csv("mappings/state_region_mapping.csv") %>%
+state_region_mapping <- read_csv("mappings/state_region_mapping.csv") %>%
   mutate( state_ID = gsub("^_", "", state_ID))
 
 cbsa_shapefile <- st_read("shapefiles/cb_2019_us_cbsa_500k/cb_2019_us_cbsa_500k.shp") %>% dplyr::select(AFFGEOID, NAME, geometry)
@@ -152,9 +144,9 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Here we bring in the 3 files with emissions per sector and state where biomass has been allocated to each sector
     #Thus there is no "regional biomass" sector
     #This was processed in another script in folder "gcam-usa-nobio-accounting-main"
-    CO2_sector_nobio_REF <- read_csv("/Users/mariacandelariabergero/Documents/GCAM/gcam-usa-nobio-accounting-main/csv/FINAL/P_co2_sector_GCAM-USA_REF.csv") #Units are MtC
-    CO2_sector_nobio_lowCDR <- read_csv("/Users/mariacandelariabergero/Documents/GCAM/gcam-usa-nobio-accounting-main/csv/FINAL/P_co2_sector_GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF.csv")
-    CO2_sector_nobio_highCDR <- read_csv("/Users/mariacandelariabergero/Documents/GCAM/gcam-usa-nobio-accounting-main/csv/FINAL/P_co2_sector_GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF.csv")
+    CO2_sector_nobio_REF <- read_csv("data/GCAM/P_co2_sector_GCAM-USA_REF.csv") #Units are MtC
+    CO2_sector_nobio_lowCDR <- read_csv("data/GCAM/P_co2_sector_GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF.csv")
+    CO2_sector_nobio_highCDR <- read_csv("data/GCAM/P_co2_sector_GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF.csv")
     
     #Merge 3 scenarios
     CO2_sector_nobio_REF %>%
@@ -353,7 +345,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       filter(year == 2050) %>%
       left_join(total, by = c("Scenario", "year")) %>%
       mutate(percentage = round((total_USA / sum)*100, digits = 0),
-             total_USA = round(total_USA, digits=2))-> percentage
+             total_USA = round(total_USA, digits=2))-> percentages
     
     p <- ggplot() + geom_area(data=air_pollution_2.5_final, aes(x=year, y=total_USA, fill= Sector)) +
       scale_fill_manual(values=pollutant_sector_color_2) +
@@ -371,10 +363,10 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
 #Figure 2 is on 9 km results: three scenarios PM2.5 from WRF-CMAQ and mortality from BenMAP
 #### 2.0 Prepare data ####
     #Load partitions to get pixel_ID column
-    pixel_ID_table <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-13 _9km_partitions_2019.csv")  %>% select(row, col, pixel_ID) %>% unique() #98,276 total pixels
+    pixel_ID_table <- read_csv("output_data/BenMAP_files/9km/9km_partitions_2019.csv")  %>% select(row, col, pixel_ID) %>% unique() #98,276 total pixels
     
     #Get pixels to keep (those that have)
-    input_pollution_pixels <- read.csv("output_data/BenMAP_files/9km_V2/Date_ 2024-05-24 OutputTable_PM25_2050_REF.csv") %>%
+    input_pollution_pixels <- read_csv("output_data/BenMAP_files/9km/OutputTable_PM25_2050_REF.csv") %>%
       select(Row, Column) %>% #97,433 total pixels with pollution from Jing files
       left_join(pixel_ID_table, by = c("Row" = "row", "Column" = "col"))
     
@@ -383,7 +375,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     input_pollution_pixels %>% select(pixel_ID, Row, Column) -> pixel_ID
     
     #Prepare useful tables 
-    partitions <- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-13 _9km_partitions_2019.csv")
+    partitions <- read_csv("output_data/BenMAP_files/9km/9km_partitions_2019.csv")
     
     partitions %>%
       mutate(pixel_area = round(pixel_area)) %>%
@@ -392,7 +384,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       filter(pixel_ID %in% pixels_to_keep)-> pixel_area #97,433 instances, in m^2
     
     #Get population per pixel
-    population_2019_data_pixel_age_final<- read.csv("output_data/BenMAP_files/9km/Date_ 2024-03-01 9_km_grid_NAD83_filtered_population_2019.csv")
+    population_2019_data_pixel_age_final<- read_csv("output_data/BenMAP_files/9km/9_km_grid_NAD83_filtered_population_2019.csv")
     
     population_2019_data_pixel_age_final %>% 
       group_by(Row, Column) %>%
@@ -400,6 +392,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
 
     #Get state pixels
     partitions %>%
+      mutate(state_ID = as.numeric(state_ID)) %>%
       st_drop_geometry() %>%
       dplyr::select(pixel_ID, row, col, state_ID) %>%
       unique() %>%
@@ -553,8 +546,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #annotation_scale() +
       theme_void() +
       geom_sf(data = usa_boundary, color = "black", fill = NA)
-    ggsave("figures/paper_figures/2.2.2050_HIGH_PM25_blue.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.2.2050_HIGH_PM25_blue.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.2.2050_HIGH_PM25_blue.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.2.2050_HIGH_PM25_blue.svg", dpi=600/2, width=6000/300, height=3000/300)
     print(p)
     
 #### 2.3. 2050 LOW-CDR Pollution ####
@@ -626,8 +619,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #annotation_scale() +
       theme_void() +
       geom_sf(data = usa_boundary, color = "black", fill = NA)
-    ggsave("figures/paper_figures/2.3.2050_LOW_PM25_blue.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.3.2050_LOW_PM25_blue.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.3.2050_LOW_PM25_blue.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.3.2050_LOW_PM25_blue.svg", dpi=600/2, width=6000/300, height=3000/300)
     print(p)
   
 #### 2.4. 2050 Reference Mortality####  
@@ -682,8 +675,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/2.4.2050_REF_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.4.2050_REF_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.4.2050_REF_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.4.2050_REF_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #Deaths per million
     p <- ggplot() +
@@ -695,8 +688,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/2.4.2050_REF_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.4.2050_REF_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.4.2050_REF_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.4.2050_REF_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
   
 #### 2.5. 2050 HIGH-CDR  Mortality####  
     #Here we load BenMAP shapefiles with mortality results to create plots      
@@ -750,8 +743,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/2.5.2050_HIGH_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.5.2050_HIGH_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)  
+    #ggsave("figures/paper_figures/2.5.2050_HIGH_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.5.2050_HIGH_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)  
     
     #Deaths per million
     p <- ggplot() +
@@ -763,8 +756,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/2.5.2050_HIGH_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.5.2050_HIGH_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)  
+    #ggsave("figures/paper_figures/2.5.2050_HIGH_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.5.2050_HIGH_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)  
     
 #### 2.6. 2050 LOW-CDR  Mortality####  
     #Here we load BenMAP shapefiles with mortality results to create plots      
@@ -818,8 +811,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/2.6.2050_LOW_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.6.2050_LOW_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)  
+    #ggsave("figures/paper_figures/2.6.2050_LOW_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.6.2050_LOW_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)  
     
     #Deaths per million
     p <- ggplot() +
@@ -831,13 +824,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/2.6.2050_LOW_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/2.6.2050_LOW_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)  
+    #ggsave("figures/paper_figures/2.6.2050_LOW_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/2.6.2050_LOW_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)  
     
 #--------------------------------------------------------------- FIGURE 3 -------------------------------------------------------------------
     #Figure 3 is on 1 km results: mortality in the 15 most populous US cities
 #### 3.1. SEATTLE ####
-    population_2019_data_pixel_age_final_seattle<-read.csv("output_data/BenMAP_files/1km/Seattle/Date_ 2024-03-31 1_km_population_2019_seattle.csv")
+    population_2019_data_pixel_age_final_seattle<-read_csv("output_data/BenMAP_files/1km/Seattle/1_km_population_2019_seattle.csv")
     
     #City shapefile 
     cbsa_shapefile %>%
@@ -891,7 +884,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US31080")-> cbsa_shapefile_LA
     
-    population_2019_data_pixel_age_final_LA <- read.csv("output_data/BenMAP_files/1km/LA/Date_ 2024-03-31 1_km_population_2019_LA.csv")
+    population_2019_data_pixel_age_final_LA <- read_csv("output_data/BenMAP_files/1km/LA/1_km_population_2019_LA.csv")
 
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_LA <- st_read("BenMAP_results/1km_V2/LA/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -938,7 +931,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US40140")-> cbsa_shapefile_riverside
     
-    population_2019_data_pixel_age_final_riverside <- read.csv("output_data/BenMAP_files/1km/Riverside/Date_ 2024-03-31 1_km_population_2019_riverside.csv")
+    population_2019_data_pixel_age_final_riverside <- read_csv("output_data/BenMAP_files/1km/Riverside/1_km_population_2019_riverside.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Riverside <- st_read("BenMAP_results/1km_V2/Riverside/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -986,7 +979,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US38060")-> cbsa_shapefile_phoenix
     
-    population_2019_data_pixel_age_final_phoenix <- read.csv("output_data/BenMAP_files/1km/Phoenix/Date_ 2024-03-31 1_km_population_2019_phoenix.csv")
+    population_2019_data_pixel_age_final_phoenix <- read_csv("output_data/BenMAP_files/1km/Phoenix/1_km_population_2019_phoenix.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Phoenix <- st_read("BenMAP_results/1km_V2/Phoenix/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -1033,7 +1026,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US19100")-> cbsa_shapefile_dallas
     
-    population_2019_data_pixel_age_final_dallas <- read.csv("output_data/BenMAP_files/1km/Dallas/Date_ 2024-03-31 1_km_population_2019_dallas.csv")
+    population_2019_data_pixel_age_final_dallas <- read_csv("output_data/BenMAP_files/1km/Dallas/1_km_population_2019_dallas.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Dallas <- st_read("BenMAP_results/1km_V2/Dallas/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240517.shp")
@@ -1080,7 +1073,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US26420")-> cbsa_shapefile_houston
     
-    population_2019_data_pixel_age_final_houston_fix <- read.csv("output_data/BenMAP_files/1km/Houston/Date_ 2024-04-08 1_km_population_2019_houston_fixed.csv")
+    population_2019_data_pixel_age_final_houston_fix <- read_csv("output_data/BenMAP_files/1km/Houston/1_km_population_2019_houston_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Houston <- st_read("BenMAP_results/1km_V2/Houston/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240517.shp")
@@ -1127,7 +1120,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US33100")-> cbsa_shapefile_miami
     
-    population_2019_data_pixel_age_final_miami_fix <- read.csv("output_data/BenMAP_files/1km/Miami/Date_ 2024-04-08 1_km_population_2019_miami_fixed.csv")
+    population_2019_data_pixel_age_final_miami_fix <- read_csv("output_data/BenMAP_files/1km/Miami/1_km_population_2019_miami_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Miami <- st_read("BenMAP_results/1km_V2/Miami/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -1174,7 +1167,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US12060")-> cbsa_shapefile_atl
     
-    population_2019_data_pixel_age_final_atl <- read.csv("output_data/BenMAP_files/1km/Atlanta/Date_ 2024-03-31 1_km_population_2019_atlanta.csv")
+    population_2019_data_pixel_age_final_atl <- read_csv("output_data/BenMAP_files/1km/Atlanta/1_km_population_2019_atlanta.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Atlanta <- st_read("BenMAP_results/1km_V2/Atlanta/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240517.shp")
@@ -1222,7 +1215,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US16980")-> cbsa_shapefile_chicago
     
-    population_2019_data_pixel_age_final_chicago_fix <- read.csv("output_data/BenMAP_files/1km/Chicago/Date_ 2024-04-08 1_km_population_2019_chicago_fixed.csv")
+    population_2019_data_pixel_age_final_chicago_fix <- read_csv("output_data/BenMAP_files/1km/Chicago/1_km_population_2019_chicago_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Chicago <- st_read("BenMAP_results/1km_V2/Chicago/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240521.shp")
@@ -1269,7 +1262,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US47900")-> cbsa_shapefile_wash
     
-    population_2019_data_pixel_age_final_wash_fix <- read.csv("output_data/BenMAP_files/1km/DC/Date_ 2024-04-08 1_km_population_2019_wash_fixed.csv")
+    population_2019_data_pixel_age_final_wash_fix <- read_csv("output_data/BenMAP_files/1km/DC/1_km_population_2019_wash_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_DC <- st_read("BenMAP_results/1km_V2/DC/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240517.shp")
@@ -1316,7 +1309,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US37980")-> cbsa_shapefile_phil
     
-    population_2019_data_pixel_age_final_phil_fix <- read.csv("output_data/BenMAP_files/1km/Philadelphia/Date_ 2024-04-08 1_km_population_2019_phil_fixed.csv")
+    population_2019_data_pixel_age_final_phil_fix <- read_csv("output_data/BenMAP_files/1km/Philadelphia/1_km_population_2019_phil_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Philadelphia <- st_read("BenMAP_results/1km_V2/Philadelphia/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -1363,7 +1356,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US35620")-> cbsa_shapefile_NY
     
-    population_2019_data_pixel_age_final_NY_fix<-read.csv("output_data/BenMAP_files/1km/NY/Date_ 2024-04-08 1_km_population_2019_NY_fixed.csv")
+    population_2019_data_pixel_age_final_NY_fix<-read_csv("output_data/BenMAP_files/1km/NY/1_km_population_2019_NY_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_NY <- st_read("BenMAP_results/1km_V2/NY/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -1410,7 +1403,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US14460")-> cbsa_shapefile_boston
     
-    population_2019_data_pixel_age_final_boston_fix<-read.csv("output_data/BenMAP_files/1km/Boston/Date_ 2024-04-08 1_km_population_2019_boston_fixed.csv")
+    population_2019_data_pixel_age_final_boston_fix<-read_csv("output_data/BenMAP_files/1km/Boston/1_km_population_2019_boston_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Boston <- st_read("BenMAP_results/1km_V2/Boston/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240517.shp")
@@ -1457,7 +1450,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US19820")-> cbsa_shapefile_detroit
     
-    population_2019_data_pixel_age_final_detroit_fix <-read.csv("output_data/BenMAP_files/1km/Detroit/Date_ 2024-04-08 1_km_population_2019_detroit_fixed.csv")
+    population_2019_data_pixel_age_final_detroit_fix <-read_csv("output_data/BenMAP_files/1km/Detroit/1_km_population_2019_detroit_fixed.csv")
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_Detroit <- st_read("BenMAP_results/1km_V2/Detroit/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240517.shp")
     
@@ -1502,7 +1495,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     cbsa_shapefile %>%
       filter(AFFGEOID == "310M500US41860")-> cbsa_shapefile_SF
     
-    population_2019_data_pixel_age_final_SF_fix <- read.csv("output_data/BenMAP_files/1km/SF/Date_ 2024-04-08 1_km_population_2019_SF_fixed.csv")
+    population_2019_data_pixel_age_final_SF_fix <- read_csv("output_data/BenMAP_files/1km/SF/1_km_population_2019_SF_fixed.csv")
     
     #PM2.5 difference: High CDR - Low CDR
     PM_difference_2050_SF <- st_read("BenMAP_results/1km_V2/SF/air_quality_2050_1km/Air Quality-PM2.5-Delta_20240520.shp")
@@ -1773,13 +1766,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
   ## Load data
     census_block <- st_read("shapefiles/cb_2019_us_bg_500k_clipped/cb_2019_us_bg_500k.shp") #From https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2019.html#list-tab-1883739534
     
-    input_ethnicity_data <- read.csv("data/ACS/ACSDT5Y2019.B03002_2024-04-13T182630/ACSDT5Y2019.B03002-Data.csv")  #From census data table B03002 on race at the census block level. Note we rename column to match census block metadata
+    input_ethnicity_data <- read_csv("data/BenMAP/ACSDT5Y2019.B03002_2024-04-13T182630/ACSDT5Y2019.B03002-Data.csv")  #From census data table B03002 on race at the census block level. Note we rename column to match census block metadata
     
-    input_income_data <-read.csv("data/ACS/ACSDT5Y2019.B19013_2024-02-28T213319/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census block level. Note we rename column to match census block metadata
+    input_income_data <-read_csv("data/BenMAP/ACSDT5Y2019.B19013_2024-02-28T213319/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census block level. Note we rename column to match census block metadata
     
-    input_income_data_tract <-read.csv("data/ACS/ACSDT5Y2019.B19013_2024-04-17T151300_tract/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census TRACT level. Note we rename column to match census block metadata
+    input_income_data_tract <-read_csv("data/BenMAP/ACSDT5Y2019.B19013_2024-04-17T151300_tract/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census TRACT level. Note we rename column to match census block metadata
     
-    input_income_data_county <-read.csv("data/ACS/ACSDT5Y2019.B19013_2024-04-17T154614_county/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census TRACT level. Note we rename column to match census block metadata
+    input_income_data_county <-read_csv("data/BenMAP/ACSDT5Y2019.B19013_2024-04-17T154614_county/ACSDT5Y2019.B19013-Data.csv")  #From census data table B19013 on race at the census TRACT level. Note we rename column to match census block metadata
     
   ## Prepare census data 
     #2.1. Race-Ethnicity 
@@ -1860,12 +1853,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
 #----REGION FILES----
 #### 1. SEATTLE 1km ####
     #Partitions
-    partitions_seattle <- read.csv("output_data/Partitions/partitions_seattle.csv") %>% dplyr::select(-X)
+    partitions_seattle <- read_csv("output_data/BenMAP_files/1km/Seattle/partitions_seattle.csv")
     
     #Pollution
-    pollution_Seattle_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Seattle/Date_ 2024-05-10 PM25_2019_Seattle.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Seattle_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Seattle/Date_ 2024-05-10 PM25_2050_high_Seattle.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Seattle_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Seattle/Date_ 2024-05-10 PM25_2050_low_Seattle.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Seattle_2019 <- read_csv("output_data/BenMAP_files/1km/Seattle/PM25_2019_Seattle.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Seattle_HIGH <- read_csv("output_data/BenMAP_files/1km/Seattle/PM25_2050_high_Seattle.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Seattle_LOW <- read_csv("output_data/BenMAP_files/1km/Seattle/PM25_2050_low_Seattle.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Seattle_2019 <- st_read("BenMAP_results/1km_V2/Seattle/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -1949,13 +1942,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 2. LOS ANGELES 1km ####
     #Partitions
-    partitions_LA <- read.csv("output_data/Partitions/partitions_LA.csv") %>% dplyr::select(-X)
+    partitions_LA <- read_csv("output_data/BenMAP_files/1km/LA/partitions_LA.csv")
     
     #Pollution
-    pollution_LA_2019 <- read.csv("output_data/BenMAP_files/1km_V2/LA/Date_ 2024-05-10 PM25_2019_LA.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_LA_2019 <- read_csv("output_data/BenMAP_files/1km/LA/PM25_2019_LA.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
     
-    pollution_LA_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/LA/Date_ 2024-05-10 PM25_2050_high_LA.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_LA_LOW <- read.csv("output_data/BenMAP_files/1km_V2/LA/Date_ 2024-05-17 PM25_2050_low_LA.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_LA_HIGH <- read_csv("output_data/BenMAP_files/1km/LA/PM25_2050_high_LA.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_LA_LOW <- read_csv("output_data/BenMAP_files/1km/LA/PM25_2050_low_LA.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_LA_2019 <- st_read("BenMAP_results/1km_V2/LA/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2055,12 +2048,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 3. RIVERSIDE1km ####
     #Partitions
-    partitions_Riverside <- read.csv("output_data/Partitions/partitions_Riverside.csv") %>% dplyr::select(-X)
+    partitions_Riverside <- read_csv("output_data/BenMAP_files/1km/Riverside/partitions_Riverside.csv")
     
     #Pollution
-    pollution_Riverside_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Riverside/Date_ 2024-05-10 PM25_2019_Riverside.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Riverside_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Riverside/Date_ 2024-05-10 PM25_2050_high_Riverside.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Riverside_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Riverside/Date_ 2024-05-10 PM25_2050_low_Riverside.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Riverside_2019 <- read_csv("output_data/BenMAP_files/1km/Riverside/PM25_2019_Riverside.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Riverside_HIGH <- read_csv("output_data/BenMAP_files/1km/Riverside/PM25_2050_high_Riverside.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Riverside_LOW <- read_csv("output_data/BenMAP_files/1km/Riverside/PM25_2050_low_Riverside.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Riverside_2019 <- st_read("BenMAP_results/1km_V2/Riverside/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2151,12 +2144,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 4 SAN FRANCISCO ####
     #Partitions
-    partitions_SF <- read.csv("output_data/Partitions/partitions_SF.csv") %>% dplyr::select(-X)
+    partitions_SF <- read_csv("output_data/BenMAP_files/1km/SF/partitions_SF.csv") 
     
     #Pollution
-    pollution_SF_2019 <- read.csv("output_data/BenMAP_files/1km_V2/SF/Date_ 2024-05-17 PM25_2019_SF.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_SF_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/SF/Date_ 2024-05-17 PM25_2050_high_SF.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_SF_LOW <- read.csv("output_data/BenMAP_files/1km_V2/SF/Date_ 2024-05-17 PM25_2050_low_SF.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_SF_2019 <- read_csv("output_data/BenMAP_files/1km/SF/PM25_2019_SF.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_SF_HIGH <- read_csv("output_data/BenMAP_files/1km/SF/PM25_2050_high_SF.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_SF_LOW <- read_csv("output_data/BenMAP_files/1km/SF/PM25_2050_low_SF.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_SF_2019 <- st_read("BenMAP_results/1km_V2/SF/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2244,12 +2237,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 5. PHOENIX ####
     #Partitions
-    partitions_Phoenix <- read.csv("output_data/Partitions/partitions_Phoenix.csv") %>% dplyr::select(-X)
+    partitions_Phoenix <- read_csv("output_data/BenMAP_files/1km/Phoenix/partitions_Phoenix.csv")
     
     #Pollution
-    pollution_Phoenix_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Phoenix/Date_ 2024-05-10 PM25_2019_Phoenix.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Phoenix_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Phoenix/Date_ 2024-05-10 PM25_2050_high_Phoenix.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Phoenix_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Phoenix/Date_ 2024-05-10 PM25_2050_low_Phoenix.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Phoenix_2019 <- read_csv("output_data/BenMAP_files/1km/Phoenix/PM25_2019_Phoenix.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Phoenix_HIGH <- read_csv("output_data/BenMAP_files/1km/Phoenix/PM25_2050_high_Phoenix.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Phoenix_LOW <- read_csv("output_data/BenMAP_files/1km/Phoenix/PM25_2050_low_Phoenix.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Phoenix_2019 <- st_read("BenMAP_results/1km_V2/Phoenix/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2337,12 +2330,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 6. DALLAS 1km ####
     #Partitions
-    partitions_Dallas <- read.csv("output_data/Partitions/partitions_Dallas.csv") %>% dplyr::select(-X)
+    partitions_Dallas <- read_csv("output_data/BenMAP_files/1km/Dallas/partitions_Dallas.csv") 
     
     #Pollution
-    pollution_Dallas_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Dallas/Date_ 2024-05-10 PM25_2019_Dallas.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Dallas_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Dallas/Date_ 2024-05-10 PM25_2050_high_Dallas.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Dallas_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Dallas/Date_ 2024-05-10 PM25_2050_low_Dallas.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Dallas_2019 <- read_csv("output_data/BenMAP_files/1km/Dallas/PM25_2019_Dallas.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Dallas_HIGH <- read_csv("output_data/BenMAP_files/1km/Dallas/PM25_2050_high_Dallas.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Dallas_LOW <- read_csv("output_data/BenMAP_files/1km/Dallas/PM25_2050_low_Dallas.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Dallas_2019 <- st_read("BenMAP_results/1km_V2/Dallas/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2431,12 +2424,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 7. HOUSTON 1km ####
     #Partitions
-    partitions_Houston <- read.csv("output_data/Partitions/partitions_Houston.csv") %>% dplyr::select(-X)
+    partitions_Houston <- read_csv("output_data/BenMAP_files/1km/Houston/partitions_Houston.csv") 
     
     #Pollution
-    pollution_Houston_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Houston/Date_ 2024-05-10 PM25_2019_Houston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Houston_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Houston/Date_ 2024-05-10 PM25_2050_high_Houston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Houston_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Houston/Date_ 2024-05-10 PM25_2050_low_Houston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Houston_2019 <- read_csv("output_data/BenMAP_files/1km/Houston/PM25_2019_Houston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Houston_HIGH <- read_csv("output_data/BenMAP_files/1km/Houston/PM25_2050_high_Houston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Houston_LOW <- read_csv("output_data/BenMAP_files/1km/Houston/PM25_2050_low_Houston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Houston_2019 <- st_read("BenMAP_results/1km_V2/Houston/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2524,12 +2517,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
 
 #### 8. MIAMI 1km ####
     #Partitions
-    partitions_Miami <- read.csv("output_data/Partitions/partitions_Miami.csv") %>% dplyr::select(-X)
+    partitions_Miami <- read_csv("output_data/BenMAP_files/1km/Miami/partitions_Miami.csv") 
     
     #Pollution
-    pollution_Miami_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Miami/Date_ 2024-05-10 PM25_2019_Miami.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Miami_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Miami/Date_ 2024-05-10 PM25_2050_high_Miami.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Miami_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Miami/Date_ 2024-05-10 PM25_2050_low_Miami.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Miami_2019 <- read_csv("output_data/BenMAP_files/1km/Miami/PM25_2019_Miami.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Miami_HIGH <- read_csv("output_data/BenMAP_files/1km/Miami/PM25_2050_high_Miami.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Miami_LOW <- read_csv("output_data/BenMAP_files/1km/Miami/PM25_2050_low_Miami.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Miami_2019 <- st_read("BenMAP_results/1km_V2/Miami/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2618,12 +2611,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
 
 #### 9. ATLANTA 1km ####
     #Partitions
-    partitions_Atlanta <- read.csv("output_data/Partitions/partitions_Atlanta.csv") %>% dplyr::select(-X)
+    partitions_Atlanta <- read_csv("output_data/BenMAP_files/1km/Atlanta/partitions_Atlanta.csv")
     
     #Pollution
-    pollution_Atlanta_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Atlanta/Date_ 2024-05-10 PM25_2019_Atlanta.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Atlanta_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Atlanta/Date_ 2024-05-10 PM25_2050_high_Atlanta.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Atlanta_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Atlanta/Date_ 2024-05-10 PM25_2050_low_Atlanta.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Atlanta_2019 <- read_csv("output_data/BenMAP_files/1km/Atlanta/PM25_2019_Atlanta.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Atlanta_HIGH <- read_csv("output_data/BenMAP_files/1km/Atlanta/PM25_2050_high_Atlanta.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Atlanta_LOW <- read_csv("output_data/BenMAP_files/1km/Atlanta/PM25_2050_low_Atlanta.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Atlanta_2019 <- st_read("BenMAP_results/1km_V2/Atlanta/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2711,12 +2704,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 10. CHICAGO 1km ####
     #Partitions
-    partitions_Chicago <- read.csv("output_data/Partitions/partitions_Chicago.csv") %>% dplyr::select(-X)
+    partitions_Chicago <- read_csv("output_data/BenMAP_files/1km/Chicago/partitions_Chicago.csv") 
     
     #Pollution
-    pollution_Chicago_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Chicago/Date_ 2024-05-10 PM25_2019_Chicago.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Chicago_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Chicago/Date_ 2024-05-10 PM25_2050_high_Chicago.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Chicago_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Chicago/Date_ 2024-05-10 PM25_2050_low_Chicago.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Chicago_2019 <- read_csv("output_data/BenMAP_files/1km/Chicago/PM25_2019_Chicago.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Chicago_HIGH <- read_csv("output_data/BenMAP_files/1km/Chicago/PM25_2050_high_Chicago.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Chicago_LOW <- read_csv("output_data/BenMAP_files/1km/Chicago/PM25_2050_low_Chicago.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Chicago_2019 <- st_read("BenMAP_results/1km_V2/Chicago/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2804,12 +2797,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
    
 #### 11. DETROIT 1km ####
     #Partitions
-    partitions_Detroit <- read.csv("output_data/Partitions/partitions_Detroit.csv") %>% dplyr::select(-X)
+    partitions_Detroit <- read_csv("output_data/BenMAP_files/1km/Detroit/partitions_Detroit.csv") 
     
     #Pollution
-    pollution_Detroit_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Detroit/Date_ 2024-05-10 PM25_2019_Detroit.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Detroit_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Detroit/Date_ 2024-05-10 PM25_2050_high_Detroit.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Detroit_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Detroit/Date_ 2024-05-10 PM25_2050_low_Detroit.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Detroit_2019 <- read_csv("output_data/BenMAP_files/1km/Detroit/PM25_2019_Detroit.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Detroit_HIGH <- read_csv("output_data/BenMAP_files/1km/Detroit/PM25_2050_high_Detroit.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Detroit_LOW <- read_csv("output_data/BenMAP_files/1km/Detroit/PM25_2050_low_Detroit.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Detroit_2019 <- st_read("BenMAP_results/1km_V2/Detroit/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2898,12 +2891,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 12. WASHINGTON DC 1km ####
     #Partitions
-    partitions_DC <- read.csv("output_data/Partitions/partitions_DC.csv") %>% dplyr::select(-X)
+    partitions_DC <- read_csv("output_data/BenMAP_files/1km/DC/partitions_DC.csv") 
     
     #Pollution
-    pollution_DC_2019 <- read.csv("output_data/BenMAP_files/1km_V2/DC/Date_ 2024-05-10 PM25_2019_DC.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_DC_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/DC/Date_ 2024-05-10 PM25_2050_high_DC.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_DC_LOW <- read.csv("output_data/BenMAP_files/1km_V2/DC/Date_ 2024-05-10 PM25_2050_low_DC.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_DC_2019 <- read_csv("output_data/BenMAP_files/1km/DC/PM25_2019_DC.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_DC_HIGH <- read_csv("output_data/BenMAP_files/1km/DC/PM25_2050_high_DC.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_DC_LOW <- read_csv("output_data/BenMAP_files/1km/DC/PM25_2050_low_DC.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_DC_2019 <- st_read("BenMAP_results/1km_V2/DC/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -2991,12 +2984,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 13. NEW YORK 1km ####
     #Partitions
-    partitions_NY <- read.csv("output_data/Partitions/partitions_NY.csv") %>% dplyr::select(-X)
+    partitions_NY <- read_csv("output_data/BenMAP_files/1km/NY/partitions_NY.csv")
     
     #Pollution
-    pollution_NY_2019 <- read.csv("output_data/BenMAP_files/1km_V2/NY/Date_ 2024-05-10 PM25_2019_NY.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_NY_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/NY/Date_ 2024-05-10 PM25_2050_high_NY.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_NY_LOW <- read.csv("output_data/BenMAP_files/1km_V2/NY/Date_ 2024-05-10 PM25_2050_low_NY.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_NY_2019 <- read_csv("output_data/BenMAP_files/1km/NY/PM25_2019_NY.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_NY_HIGH <- read_csv("output_data/BenMAP_files/1km/NY/PM25_2050_high_NY.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_NY_LOW <- read_csv("output_data/BenMAP_files/1km/NY/PM25_2050_low_NY.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_NY_2019 <- st_read("BenMAP_results/1km_V2/NY/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -3084,12 +3077,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 14. PHILADELPHIA 1km ####
     #Partitions
-    partitions_Philadelphia <- read.csv("output_data/Partitions/partitions_phil.csv") %>% dplyr::select(-X)
+    partitions_Philadelphia <- read_csv("output_data/BenMAP_files/1km/Philadelphia/partitions_phil.csv") 
     
     #Pollution
-    pollution_Philadelphia_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Philadelphia/Date_ 2024-05-10 PM25_2019_Philadelphia.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Philadelphia_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Philadelphia/Date_ 2024-05-10 PM25_2050_high_Philadelphia.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Philadelphia_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Philadelphia/Date_ 2024-05-10 PM25_2050_low_Philadelphia.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Philadelphia_2019 <- read_csv("output_data/BenMAP_files/1km/Philadelphia/PM25_2019_Philadelphia.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Philadelphia_HIGH <- read_csv("output_data/BenMAP_files/1km/Philadelphia/PM25_2050_high_Philadelphia.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Philadelphia_LOW <- read_csv("output_data/BenMAP_files/1km/Philadelphia/PM25_2050_low_Philadelphia.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Philadelphia_2019 <- st_read("BenMAP_results/1km_V2/Philadelphia/health_impacts_2019_1km/Health Impacts-Pope 2019_20240520.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -3177,12 +3170,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 15. BOSTON 1km ####
     #Partitions
-    partitions_Boston <- read.csv("output_data/Partitions/partitions_Boston.csv") %>% dplyr::select(-X)
+    partitions_Boston <- read_csv("output_data/BenMAP_files/1km/Boston/partitions_Boston.csv")
     
     #Pollution
-    pollution_Boston_2019 <- read.csv("output_data/BenMAP_files/1km_V2/Boston/Date_ 2024-05-10 PM25_2019_Boston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
-    pollution_Boston_HIGH <- read.csv("output_data/BenMAP_files/1km_V2/Boston/Date_ 2024-05-10 PM25_2050_high_Boston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
-    pollution_Boston_LOW <- read.csv("output_data/BenMAP_files/1km_V2/Boston/Date_ 2024-05-10 PM25_2050_low_Boston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
+    pollution_Boston_2019 <- read_csv("output_data/BenMAP_files/1km/Boston/PM25_2019_Boston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_2019 = Values, row = Row, col = Column)
+    pollution_Boston_HIGH <- read_csv("output_data/BenMAP_files/1km/Boston/PM25_2050_high_Boston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_HIGH = Values, row = Row, col = Column)
+    pollution_Boston_LOW <- read_csv("output_data/BenMAP_files/1km/Boston/PM25_2050_low_Boston.csv") %>% dplyr::select(Row, Column, Values) %>% rename(PM25_LOW = Values, row = Row, col = Column)
     
     #Mortality
     mortality_Boston_2019 <- st_read("BenMAP_results/1km_V2/Boston/health_impacts_2019_1km/Health Impacts-Pope 2019_20240517.shp") %>% st_drop_geometry() %>% dplyr::select(ROW, COL, Point.Estim, Population) %>% rename(row = ROW, col = COL, benmap_population = Population, deaths_2019 = Point.Estim) 
@@ -3344,7 +3337,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     bin_income <- bind_rows(seattle_income, LA_income, riverside_income, SF_income, phoenix_income, dallas_income, hosuton_income, miami_income, atlanta_income, chicago_income, detroit_income, DC_income, NY_income, philadelphia_income, boston_income)
     
     master_table_weighted_averages_bins_city <- bind_rows(bin_white, bin_income)
-    #write.csv(master_table_weighted_averages_bins_city, "output_data/results/master_table_weighted_averages_bins_city.csv")
+    write.csv(master_table_weighted_averages_bins_city, "output_data/distribution/master_table_weighted_averages_bins_city.csv")
     
 #### 17.2. Scatterplots based on race ####
     ### PM2.5 and race ####
@@ -3375,8 +3368,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       labs(x = "Population-weighted PM2.5 for 0-30% white",
            y = "Population-weighted PM2.5 for 61-100% white",
            title = "Scatterplot of Population-weighted PM2.5")
-    ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     bin_white_graph %>%
@@ -3392,8 +3385,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
            title = "Scatterplot of Population-weighted PM2.5") +
       xlim(3, 8.2) +  # Set x-axis limit
       ylim(3, 7.68)    # Set y-axis limit
-    ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.5.scatterplot_cities_white_PM_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     ### Deaths and race ####
@@ -3424,8 +3417,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       labs(x = "Population-weighted deaths for 0-30% white",
            y = "Population-weighted deaths for 61-100% white",
            title = "Scatterplot of Population-weighted deaths")
-    ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #ZOOM
@@ -3445,8 +3438,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
            title = "Scatterplot of Population-weighted deaths") +
       xlim(0.5, 5.1) +  # Set x-axis limit
       ylim(0.3, 2.3)    # Set y-axis limit
-    ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths_zoom_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths_zoom_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths_zoom_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.6.scatterplot_cities_white_deaths_zoom_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
 #### 17.3. scatter based on income ####
@@ -3478,8 +3471,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       labs(x = "Population-weighted PM2.5 for 0-33 income percentile",
            y = "Population-weighted PM2.5 for 66-100 income percentile",
            title = "Scatterplot of Population-weighted PM2.5")
-    ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #ZOOM
@@ -3496,8 +3489,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
            title = "Scatterplot of Population-weighted PM2.5") +
       xlim(3, 8.2) +  # Set x-axis limit
       ylim(3, 7.68)    # Set y-axis limit
-    ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.7.scatterplot_cities_income_PM_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     ### Deaths and income ####
@@ -3528,8 +3521,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       labs(x = "Population-weighted mortality for 0-33 income percentile",
            y = "Population-weighted mortality for 66-100 income percentile",
            title = "Scatterplot of Population-weighted deaths")
-    ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     bin_income_graph %>%
@@ -3546,27 +3539,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
            title = "ZOOM Scatterplot of Population-weighted deaths")+
       xlim(0.5, 5.1) +  # Set x-axis limit
       ylim(0.3, 2.3)    # Set y-axis limit
-    ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths_zoom_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths_zoom_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths_zoom_top5.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/4.8.scatterplot_cities_income_deaths_zoom_top5.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
  
 #--------------------------------------------------------------- POLICY COSTS -------------------------------------------------------------------
-    #Connect to the database
-      conn <- localDBConn('/Users/mariacandelariabergero/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output', 'database_basexdb_FINAL_policy_cost')
-    
-    # #Load the scenario
-    # prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF_0percent', 'queries/queries_cost.xml') #High CDR (0% of tax)
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF_25percent', 'queries/queries_cost.xml') #High CDR (25% of tax)
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF_50percent', 'queries/queries_cost.xml') #High CDR (50% of tax)
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF_75percent', 'queries/queries_cost.xml') #High CDR (75% of tax)
-    #    
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF_0percent', 'queries/queries_cost.xml') #Low CDR (0% of tax)
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF_25percent', 'queries/queries_cost.xml') #Low CDR (25% of tax)
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF_50percent', 'queries/queries_cost.xml') #Low CDR (50% of tax)
-    #   prj_cost <- addScenario(conn, 'dat/GCAM_analysis_V3_policy_cost.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF_75percent', 'queries/queries_cost.xml') #Low CDR (75% of tax)
-    
     #Load the project
-      prj_cost <- loadProject('dat/GCAM_analysis_V3_policy_cost.dat')  
+      prj_cost <- loadProject('data/GCAM/GCAM_analysis_policy_cost.dat')  
     
     #Get query on CO2 prices
       CO2_prices_MAC <- getQuery(prj_cost, "CO2 prices")
@@ -3682,8 +3661,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       xlab("Year") +
       ylab("2023$ / tCO2") +
       figure_theme
-    ggsave("figures/paper_figures/SM_CO2_storage_cost.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM_CO2_storage_cost.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM_CO2_storage_cost.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM_CO2_storage_cost.svg", dpi=600/2, width=6000/300, height=3000/300)
     
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 2 -------------------------------------------------------------------
 #### SM Figure 2: GCAM 2015 values ####
@@ -3710,9 +3689,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       xlab("Year") +
       ylab("EJ") +
       figure_theme
-    ggsave("figures/paper_figures/SM2_primary_energy_fuel_USA_2015.png", plot = p, dpi = 600/2, width = 6000/300, height = 3000/300)
-    ggsave("figures/paper_figures/SM2.primary_energy_fuel_USA_2015.svg", plot = p, dpi = 600/2, width = 6000/300, height = 3000/300)
-    
+    #ggsave("figures/paper_figures/SM2_primary_energy_fuel_USA_2015.png", plot = p, dpi = 600/2, width = 6000/300, height = 3000/300)
+    #ggsave("figures/paper_figures/SM2.primary_energy_fuel_USA_2015.svg", plot = p, dpi = 600/2, width = 6000/300, height = 3000/300)
     
     #### SM2.2. CO2 emissions #####
     #All emissions
@@ -3747,8 +3725,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       xlab("Year") +
       ylab("GtCO2") +
       figure_theme
-    ggsave("figures/paper_figures/SM2.CO2_emissions_sector_USA_nobio_2015.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM2.CO2_emissions_sector_USA_nobio_2015.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM2.CO2_emissions_sector_USA_nobio_2015.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM2.CO2_emissions_sector_USA_nobio_2015.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #### SM2.3. PM2.5 Emissions ####
     air_pollution_sources_complete_PM2.5 %>%
@@ -3764,8 +3742,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       xlab("Year") +
       ylab("GtCO2") +
       figure_theme
-    ggsave("figures/paper_figures/SM2.PM2.5_emissions_sector_USA_2015.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM2.PM2.5_emissions_sector_USA_2015.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM2.PM2.5_emissions_sector_USA_2015.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM2.PM2.5_emissions_sector_USA_2015.svg", dpi=600/2, width=6000/300, height=3000/300)
     
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 3 -------------------------------------------------------------------
 #### SM Figure 3: energy CO2 emissions ####
@@ -3871,8 +3849,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       facet_wrap(Scenario ~ ., ncol = 2, as.table = F) +
       scale_fill_gradient2(low = "#06BA63", mid = "#FAF0CA", high = "#E63946", midpoint = 0) +
       figure_theme
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     ## Positive emissions
     CO2_nobio_all_sector %>%
@@ -3891,8 +3869,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       facet_wrap(Scenario ~ ., ncol = 2, as.table = F) +
       scale_fill_gradient2(low = "#06BA63", mid = "#FAF0CA", high = "#E63946", midpoint = 0) +
       figure_theme
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_positive.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_positive.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_positive.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_positive.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     ## Negative emissions
     CO2_nobio_all_sector %>%
@@ -3911,8 +3889,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       facet_wrap(Scenario ~ ., ncol = 2, as.table = F) +
       scale_fill_gradient2(low = "#06BA63", mid = "#FAF0CA", high = "#E63946", midpoint = 0) +
       figure_theme
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_negative.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_negative.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_negative.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_negative.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     ## Ratio
     negative_emissions %>%
@@ -3929,8 +3907,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       facet_wrap(Scenario ~ ., ncol = 2, as.table = F) +      
       scale_fill_gradient2(low = "#08A045", mid = "#FAF0CA", high = "#007EA7", midpoint = 0) +
       figure_theme
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_ratio.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_ratio.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_ratio.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM3.CO2_emissions_USA_MAPS_2050_ratio.svg", dpi=600/2, width=6000/300, height=3000/300)
 
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 4 & 5 -------------------------------------------------------------------
 #### SM Figure 4 and 5: PM2.5 in states ####
@@ -3985,8 +3963,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       xlab("Year") +
       ylab("Tg") +
       figure_theme
-    ggsave("figures/paper_figures/SM5.PM2.5_top3.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM5.PM2.5_top3.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM5.PM2.5_top3.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM5.PM2.5_top3.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     air_pollution_sources_complete_PM2.5_region_final_top3 %>%
       group_by(Scenario, year, region) %>%
@@ -4013,8 +3991,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
         name = "PM2.5 (ug/m3)"
       ) +
       figure_theme
-    ggsave("figures/paper_figures/SM4.PM2.5_map.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM4.PM2.5_map.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM4.PM2.5_map.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM4.PM2.5_map.svg", dpi=600/2, width=6000/300, height=3000/300)
     
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 6 -------------------------------------------------------------------
 #### SM Figure 6: 2019 Pollution and mortality ####
@@ -4025,7 +4003,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Get national mean (population weighted)
     grid_data_PM25_NAD_2019_filtered_final %>%
       left_join(population_2019_data_pixel_clean, by = c("Row", "Column")) %>%
-      left_join(pixel_ID, by = c("Row" = "row", "Column" = "col")) %>%
+      left_join(pixel_ID, by = c("Row", "Column")) %>%
       filter(pixel_ID %in% pixels_to_keep)-> grid_data_PM25_NAD_2019_filtered_final_pop
     
     #Population weighted PM2.5
@@ -4076,8 +4054,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #annotation_scale() +
       theme_void() +
       geom_sf(data = usa_boundary, color = "black", fill = NA)
-    ggsave("figures/paper_figures/SM6.2019_PM25_magma.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM6.2019_PM25_magma.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM6.2019_PM25_magma.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM6.2019_PM25_magma.svg", dpi=600/2, width=6000/300, height=3000/300)
     print(p)
     
     #### SM6.2. Mortality ####
@@ -4132,8 +4110,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM6.2019_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM6.2019_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM6.2019_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM6.2019_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #Deaths per million
     p <- ggplot() +
@@ -4145,8 +4123,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM6.2019_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM6.2019_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM6.2019_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM6.2019_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
     
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 7 -------------------------------------------------------------------
 #### SM Figure 7: 2050 Pollution and mortality ####
@@ -4158,7 +4136,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Get national mean (population weighted)
     grid_data_PM25_NAD_highVSlow_filtered_final %>%
       left_join(population_2019_data_pixel_clean, by = c("Row", "Column")) %>%
-      left_join(pixel_ID, by = c("Row" = "row", "Column" = "col")) %>%
+      left_join(pixel_ID, by = c("Row", "Column")) %>%
       filter(pixel_ID %in% pixels_to_keep)-> grid_data_PM25_NAD_highVSlow_filtered_final_pop
     
     #Population weighted PM2.5
@@ -4192,8 +4170,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #annotation_scale() +
       theme_void() +
       geom_sf(data = usa_boundary, color = "black", fill = NA)
-    ggsave("figures/paper_figures/SM7.highVSlow_PM25_magma.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.highVSlow_PM25_magma.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.highVSlow_PM25_magma.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.highVSlow_PM25_magma.svg", dpi=600/2, width=6000/300, height=3000/300)
     print(p)
     
     ###MORTALITY     
@@ -4247,8 +4225,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM7.highVSlow_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.highVSlow_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.highVSlow_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.highVSlow_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #Deaths per million
     p <- ggplot() +
@@ -4260,8 +4238,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM7.highVSlow_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.highVSlow_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.highVSlow_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.highVSlow_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #### SM7.2. Ref vs High ####
     #POLLUTION
@@ -4271,7 +4249,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Get national mean (population weighted)
     grid_data_PM25_NAD_refVShigh_filtered_final %>%
       left_join(population_2019_data_pixel_clean, by = c("Row", "Column")) %>%
-      left_join(pixel_ID, by = c("Row" = "row", "Column" = "col")) %>%
+      left_join(pixel_ID, by = c("Row", "Column")) %>%
       filter(pixel_ID %in% pixels_to_keep)-> grid_data_PM25_NAD_refVShigh_filtered_final_pop
     
     #Population weighted PM2.5
@@ -4305,8 +4283,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #annotation_scale() +
       theme_void() +
       geom_sf(data = usa_boundary, color = "black", fill = NA)
-    ggsave("figures/paper_figures/SM7.refVShigh_PM25_magma.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.refVShigh_PM25_magma.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVShigh_PM25_magma.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVShigh_PM25_magma.svg", dpi=600/2, width=6000/300, height=3000/300)
     print(p)
     
     ###MORTALITY     
@@ -4360,8 +4338,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM7.refVShigh_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.refVShigh_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVShigh_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVShigh_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #Deaths per million
     p <- ggplot() +
@@ -4373,8 +4351,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM7.refVShigh_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.refVShigh_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVShigh_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVShigh_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #### SM7.3. Ref vs Low ####
     #POLLUTION
@@ -4384,7 +4362,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     #Get national mean (population weighted)
     grid_data_PM25_NAD_refVSlow_filtered_final %>%
       left_join(population_2019_data_pixel_clean, by = c("Row", "Column")) %>%
-      left_join(pixel_ID, by = c("Row" = "row", "Column" = "col")) %>%
+      left_join(pixel_ID, by = c("Row", "Column")) %>%
       filter(pixel_ID %in% pixels_to_keep)-> grid_data_PM25_NAD_refVSlow_filtered_final_pop
     
     #Population weighted PM2.5
@@ -4418,8 +4396,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       #annotation_scale() +
       theme_void() +
       geom_sf(data = usa_boundary, color = "black", fill = NA)
-    ggsave("figures/paper_figures/SM7.refVSlow_PM25.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.refVSlow_PM25.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVSlow_PM25.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVSlow_PM25.svg", dpi=600/2, width=6000/300, height=3000/300)
     print(p)
     
     ###MORTALITY     
@@ -4473,8 +4451,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM7.refVSlow_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.refVSlow_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVSlow_mortality.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVSlow_mortality.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #Deaths per million
     p <- ggplot() +
@@ -4486,14 +4464,14 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_sf(data = usa_boundary, color = "black", fill = NA) 
-    ggsave("figures/paper_figures/SM7.refVSlow_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM7.refVSlow_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVSlow_mortality_per_million.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM7.refVSlow_mortality_per_million.svg", dpi=600/2, width=6000/300, height=3000/300)
     
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 8, 9 & 10 -------------------------------------------------------------------
     #Figures with pollution in each city
 #### 1. SEATTLE ####
     #### 1.1. 2019 ####
-    grid_data_PM25_Seattle_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Seattle/1_km_PM25_2019_seattle.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Seattle_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Seattle/1_km_PM25_2019_seattle.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     #Note that there are NAs in latest file provided by Jing because some bordering pixels were removed. 
     
     #Get national mean (population weighted)
@@ -4536,7 +4514,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     print(p)
     
     #### 1.2. 2050 HIGH CDR ####
-    grid_data_PM25_Seattle_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Seattle/1_km_PM25_2050_HIGH_seattle.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Seattle_NAD_2050_high<- st_read("output_data/shapefiles/1km/Seattle/1_km_PM25_2050_HIGH_seattle.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     seattle_pop_total %>%
       left_join(grid_data_PM25_Seattle_NAD_2050_high, by = c("Row", "Column")) %>%
@@ -4570,12 +4548,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "#95C623", size = 6, stroke = 2) #Seattle city hall+
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 1.3. 2050 LOW CDR ####
-    grid_data_PM25_Seattle_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Seattle/1_km_PM25_2050_LOW_seattle.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Seattle_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Seattle/1_km_PM25_2050_LOW_seattle.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Seattle_NAD_2050_LOW %>%
       left_join(seattle_pop_total, by = c("Row", "Column")) -> seattle_pop_PM25_total_2050_LOW
@@ -4608,13 +4586,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -122.32987465320657, y = 47.60386428408079), shape = 1, color = "#95C623", size = 6, stroke = 2) #Seattle city hall+
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Seattle.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Seattle.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
 #### 2. LOS ANGELES ####
     #### 2.1. 2019 ####
-    grid_data_PM25_LA_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/LA/1_km_PM25_2019_LA.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_LA_NAD_filtered_final<- st_read("output_data/shapefiles/1km/LA/1_km_PM25_2019_LA.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_LA %>%
@@ -4653,12 +4631,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "#95C623", size = 6, stroke = 2) #LA city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 2.2. 2050 HIGH CDR ####
-    grid_data_PM25_LA_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/LA/1_km_PM25_2050_HIGH_LA.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_LA_NAD_2050_high<- st_read("output_data/shapefiles/1km/LA/1_km_PM25_2050_HIGH_LA.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_LA_NAD_2050_high %>%
       left_join(LA_pop_total, by = c("Row", "Column")) -> LA_pop_PM25_total_2050_high
@@ -4691,12 +4669,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "#95C623", size = 6, stroke = 2) #LA city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 2.3. 2050 LOW CDR ####
-    grid_data_PM25_LA_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/LA/1_km_PM25_2050_LOW_LA.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_LA_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/LA/1_km_PM25_2050_LOW_LA.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_LA_NAD_2050_LOW %>%
       left_join(LA_pop_total, by = c("Row", "Column")) -> LA_pop_PM25_total_2050_LOW
@@ -4729,13 +4707,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -118.24271554610264,  y =  34.05368499865087), shape = 1, color = "#95C623", size = 6, stroke = 2) #LA city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_LA.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_LA.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
 #### 3. RIVERSIDE ####
     #### 3.1. 2019 ####
-    grid_data_PM25_Riverside_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Riverside/1_km_PM25_2019_Riverside.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Riverside_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Riverside/1_km_PM25_2019_Riverside.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_riverside %>%
@@ -4779,7 +4757,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     print(p)
     
     #### 3.2. 2050 HIGH CDR ####
-    grid_data_PM25_Riverside_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Riverside/1_km_PM25_2050_HIGH_Riverside.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Riverside_NAD_2050_high<- st_read("output_data/shapefiles/1km/Riverside/1_km_PM25_2050_HIGH_Riverside.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
   
     grid_data_PM25_Riverside_NAD_2050_high %>%
       left_join(Riverside_pop_total, by = c("Row", "Column")) -> Riverside_pop_PM25_total_2050_high
@@ -4812,12 +4790,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -117.37559005667082,  y =  33.980696653550375), shape = 1, color = "#95C623", size = 6, stroke = 2) #Riverside city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Riverside.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Riverside.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 3.3. 2050 LOW CDR ####
-    grid_data_PM25_Riverside_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Riverside/1_km_PM25_2050_LOW_Riverside.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Riverside_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Riverside/1_km_PM25_2050_LOW_Riverside.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
 
     grid_data_PM25_Riverside_NAD_2050_LOW %>%
       left_join(Riverside_pop_total, by = c("Row", "Column")) -> Riverside_pop_PM25_total_2050_LOW
@@ -4923,7 +4901,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     
 #### 4. PHOENIX ####
     #### 4.1. 2019 ####
-    grid_data_PM25_Phoenix_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Phoenix/1_km_PM25_2019_Phoenix.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Phoenix_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Phoenix/1_km_PM25_2019_Phoenix.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_phoenix %>%
@@ -4962,12 +4940,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Phoenix city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 4.2. 2050 HIGH CDR ####
-    grid_data_PM25_Phoenix_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Phoenix/1_km_PM25_2050_HIGH_Phoenix.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Phoenix_NAD_2050_high<- st_read("output_data/shapefiles/1km/Phoenix/1_km_PM25_2050_HIGH_Phoenix.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Phoenix_NAD_2050_high %>%
       left_join(Phoenix_pop_total, by = c("Row", "Column")) -> Phoenix_pop_PM25_total_2050_high
@@ -5002,12 +4980,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Phoenix city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 4.3. 2050 LOW CDR ####
-    grid_data_PM25_Phoenix_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Phoenix/1_km_PM25_2050_LOW_Phoenix.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Phoenix_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Phoenix/1_km_PM25_2050_LOW_Phoenix.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Phoenix_NAD_2050_LOW %>%
       left_join(Phoenix_pop_total, by = c("Row", "Column")) -> Phoenix_pop_PM25_total_2050_LOW
@@ -5040,13 +5018,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -112.07721684407342,  y =  33.448615125541835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Phoenix city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Phoenix.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Phoenix.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
 #### 5. DALLAS ####
     #### 5.1. 2019 ####
-    grid_data_PM25_Dallas_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Dallas/1_km_PM25_2019_Dallas.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Dallas_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Dallas/1_km_PM25_2019_Dallas.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_dallas %>%
@@ -5085,12 +5063,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Dallas city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 5.2. 2050 HIGH CDR ####
-    grid_data_PM25_Dallas_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Dallas/1_km_PM25_2050_HIGH_Dallas.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Dallas_NAD_2050_high<- st_read("output_data/shapefiles/1km/Dallas/1_km_PM25_2050_HIGH_Dallas.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Dallas_NAD_2050_high %>%
       left_join(Dallas_pop_total, by = c("Row", "Column")) -> Dallas_pop_PM25_total_2050_high
@@ -5123,12 +5101,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Dallas city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 5.3. 2050 LOW CDR ####
-    grid_data_PM25_Dallas_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Dallas/1_km_PM25_2050_LOW_Dallas.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Dallas_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Dallas/1_km_PM25_2050_LOW_Dallas.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Dallas_NAD_2050_LOW %>%
       left_join(Dallas_pop_total, by = c("Row", "Column")) -> Dallas_pop_PM25_total_2050_LOW
@@ -5161,16 +5139,16 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -96.7968013977644,  y =  32.776295519527835), shape = 1, color = "#95C623", size = 6, stroke = 2) #Dallas city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Dallas.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Dallas.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
 
 #### 6. HOUSTON ####
     #### 6.1. 2019 ####
-    grid_data_PM25_Houston_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Houston/1_km_PM25_2019_Houston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Houston_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Houston/1_km_PM25_2019_Houston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
-    population_2019_data_pixel_age_final_houston %>%
+    population_2019_data_pixel_age_final_houston_fix %>%
       group_by(Row, Column) %>%
       summarise(population = sum(Population)) %>%
       ungroup() -> Houston_pop_total
@@ -5206,12 +5184,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "#95C623", size = 6, stroke = 2) #Houston city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 6.2. 2050 HIGH CDR ####
-    grid_data_PM25_Houston_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Houston/1_km_PM25_2050_HIGH_Houston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Houston_NAD_2050_high<- st_read("output_data/shapefiles/1km/Houston/1_km_PM25_2050_HIGH_Houston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Houston_NAD_2050_high %>%
       left_join(Houston_pop_total, by = c("Row", "Column")) -> Houston_pop_PM25_total_2050_high
@@ -5249,7 +5227,7 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
     print(p)
     
     #### 6.3. 2050 LOW CDR ####
-    grid_data_PM25_Houston_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Houston/1_km_PM25_2050_LOW_Houston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Houston_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Houston/1_km_PM25_2050_LOW_Houston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Houston_NAD_2050_LOW %>%
       left_join(Houston_pop_total, by = c("Row", "Column")) -> Houston_pop_PM25_total_2050_LOW
@@ -5282,16 +5260,16 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -95.36946640065364,  y =  29.760080695254256), shape = 1, color = "#95C623", size = 6, stroke = 2) #Houston city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Houston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Houston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)  
     
 #### 7. MIAMI ####
     #### 7.1. 2019 ####
-    grid_data_PM25_Miami_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Miami/1_km_PM25_2019_Miami.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Miami_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Miami/1_km_PM25_2019_Miami.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
-    population_2019_data_pixel_age_final_miami %>%
+    population_2019_data_pixel_age_final_miami_fix %>%
       group_by(Row, Column) %>%
       summarise(population = sum(Population)) %>%
       ungroup() -> Miami_pop_total
@@ -5327,12 +5305,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "#95C623", size = 6, stroke = 2) #Miami city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 7.2. 2050 HIGH CDR ####
-    grid_data_PM25_Miami_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Miami/1_km_PM25_2050_HIGH_Miami.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Miami_NAD_2050_high<- st_read("output_data/shapefiles/1km/Miami/1_km_PM25_2050_HIGH_Miami.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Miami_NAD_2050_high %>%
       left_join(Miami_pop_total, by = c("Row", "Column")) -> Miami_pop_PM25_total_2050_high
@@ -5365,12 +5343,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "#95C623", size = 6, stroke = 2) #Miami city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 7.3. 2050 LOW CDR ####
-    grid_data_PM25_Miami_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Miami/1_km_PM25_2050_LOW_Miami.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Miami_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Miami/1_km_PM25_2050_LOW_Miami.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Miami_NAD_2050_LOW %>%
       left_join(Miami_pop_total, by = c("Row", "Column")) -> Miami_pop_PM25_total_2050_LOW
@@ -5403,13 +5381,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -80.23398527668328,  y =  25.72761157460114), shape = 1, color = "#95C623", size = 6, stroke = 2) #Miami city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Miami.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Miami.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
 #### 8. ATLANTA ####
     #### 8.1. 2019 ####
-    grid_data_PM25_Atlanta_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Atlanta/1_km_PM25_2019_Atlanta.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Atlanta_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Atlanta/1_km_PM25_2019_Atlanta.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_atl%>%
@@ -5448,12 +5426,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "#95C623", size = 6, stroke = 2) #Atlanta city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 8.2. 2050 HIGH CDR ####
-    grid_data_PM25_Atlanta_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Atlanta/1_km_PM25_2050_HIGH_Atlanta.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Atlanta_NAD_2050_high<- st_read("output_data/shapefiles/1km/Atlanta/1_km_PM25_2050_HIGH_Atlanta.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Atlanta_NAD_2050_high %>%
       left_join(Atlanta_pop_total, by = c("Row", "Column")) -> Atlanta_pop_PM25_total_2050_high
@@ -5486,12 +5464,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "#95C623", size = 6, stroke = 2) #Atlanta city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 8.3. 2050 LOW CDR ####
-    grid_data_PM25_Atlanta_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Atlanta/1_km_PM25_2050_LOW_Atlanta.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Atlanta_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Atlanta/1_km_PM25_2050_LOW_Atlanta.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
   
     grid_data_PM25_Atlanta_NAD_2050_LOW %>%
       left_join(Atlanta_pop_total, by = c("Row", "Column")) -> Atlanta_pop_PM25_total_2050_LOW
@@ -5524,16 +5502,16 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -84.39062010249631,  y =  33.74857740874673), shape = 1, color = "#95C623", size = 6, stroke = 2) #Atlanta city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Atlanta.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Atlanta.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)  
 
 #### 9. CHICAGO ####
     #### 9.1. 2019 ####
-    grid_data_PM25_Chicago_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Chicago/1_km_PM25_2019_Chicago.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Chicago_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Chicago/1_km_PM25_2019_Chicago.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
-    population_2019_data_pixel_age_final_chicago%>%
+    population_2019_data_pixel_age_final_chicago_fix %>%
       group_by(Row, Column) %>%
       summarise(population = sum(Population)) %>%
       ungroup() -> Chicago_pop_total
@@ -5569,12 +5547,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "#95C623", size = 6, stroke = 2) #Chicago city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 9.2. 2050 HIGH CDR ####
-    grid_data_PM25_Chicago_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Chicago/1_km_PM25_2050_HIGH_Chicago.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Chicago_NAD_2050_high<- st_read("output_data/shapefiles/1km/Chicago/1_km_PM25_2050_HIGH_Chicago.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Chicago_NAD_2050_high %>%
       left_join(Chicago_pop_total, by = c("Row", "Column")) -> Chicago_pop_PM25_total_2050_high
@@ -5607,12 +5585,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "#95C623", size = 6, stroke = 2) #Chicago city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 9.3. 2050 LOW CDR ####
-    grid_data_PM25_Chicago_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Chicago/1_km_PM25_2050_LOW_Chicago.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Chicago_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Chicago/1_km_PM25_2050_LOW_Chicago.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Chicago_NAD_2050_LOW %>%
       left_join(Chicago_pop_total, by = c("Row", "Column")) -> Chicago_pop_PM25_total_2050_LOW
@@ -5645,13 +5623,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -87.63207808921189,  y =  41.8837839226344), shape = 1, color = "#95C623", size = 6, stroke = 2) #Chicago city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Chicago.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Chicago.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)  
    
 #### 10. DC ####
     #### 10.1. 2019 ####
-    grid_data_PM25_DC_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/DC/1_km_PM25_2019_wash.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_DC_NAD_filtered_final<- st_read("output_data/shapefiles/1km/DC/1_km_PM25_2019_wash.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_wash_fix%>%
@@ -5690,12 +5668,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "#95C623", size = 6, stroke = 2) #The White House
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 10.2. 2050 HIGH CDR ####
-    grid_data_PM25_DC_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/DC/1_km_PM25_2050_high_wash.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_DC_NAD_2050_high<- st_read("output_data/shapefiles/1km/DC/1_km_PM25_2050_high_wash.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_DC_NAD_2050_high %>%
       left_join(DC_pop_total, by = c("Row", "Column")) -> DC_pop_PM25_total_2050_high
@@ -5728,12 +5706,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "#95C623", size = 6, stroke = 2) #The White House
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 10.3. 2050 LOW CDR ####
-    grid_data_PM25_DC_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/DC/1_km_PM25_2050_low_wash.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_DC_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/DC/1_km_PM25_2050_low_wash.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_DC_NAD_2050_LOW %>%
       left_join(DC_pop_total, by = c("Row", "Column")) -> DC_pop_PM25_total_2050_LOW
@@ -5766,13 +5744,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -77.03653714296149,  y =  38.89771345976116), shape = 1, color = "#95C623", size = 6, stroke = 2) #The White House
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_DC.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_DC.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)   
     
 #### 11. Philadelphia ####
     #### 11.1. 2019 ####
-    grid_data_PM25_Philadelphia_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Philadelphia/1_km_PM25_2019_phil.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Philadelphia_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Philadelphia/1_km_PM25_2019_phil.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_phil_fix%>%
@@ -5811,12 +5789,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "#95C623", size = 6, stroke = 2) #Philadelphia city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 11.2. 2050 HIGH CDR ####
-    grid_data_PM25_Philadelphia_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Philadelphia/1_km_PM25_2050_HIGH_phil.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Philadelphia_NAD_2050_high<- st_read("output_data/shapefiles/1km/Philadelphia/1_km_PM25_2050_HIGH_phil.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Philadelphia_NAD_2050_high %>%
       left_join(Philadelphia_pop_total, by = c("Row", "Column")) -> Philadelphia_pop_PM25_total_2050_high
@@ -5849,12 +5827,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "#95C623", size = 6, stroke = 2) #Philadelphia city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 11.3. 2050 LOW CDR ####
-    grid_data_PM25_Philadelphia_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Philadelphia/1_km_PM25_2050_LOW_phil.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Philadelphia_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Philadelphia/1_km_PM25_2050_LOW_phil.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Philadelphia_NAD_2050_LOW %>%
       left_join(Philadelphia_pop_total, by = c("Row", "Column")) -> Philadelphia_pop_PM25_total_2050_LOW
@@ -5887,13 +5865,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -75.16326872597556,  y =  39.95279997140329), shape = 1, color = "#95C623", size = 6, stroke = 2) #Philadelphia city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Philadelphia.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Philadelphia.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)  
   
 #### 12. NY ####
     #### 12.1. 2019 ####
-    grid_data_PM25_NY_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/NY/1_km_PM25_2019_NY.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_NY_NAD_filtered_final<- st_read("output_data/shapefiles/1km/NY/1_km_PM25_2019_NY.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_NY_fix%>%
@@ -5933,12 +5911,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "#95C623", size = 6, stroke = 2) #New York city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 12.2. 2050 HIGH CDR ####
-    grid_data_PM25_NY_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/NY/1_km_PM25_2050_HIGH_NY.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_NY_NAD_2050_high<- st_read("output_data/shapefiles/1km/NY/1_km_PM25_2050_HIGH_NY.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_NY_NAD_2050_high %>%
       left_join(NY_pop_total, by = c("Row", "Column")) %>%
@@ -5972,12 +5950,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "#95C623", size = 6, stroke = 2) #New York city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 12.3. 2050 LOW CDR ####
-    grid_data_PM25_NY_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/NY/1_km_PM25_2050_LOW_NY.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_NY_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/NY/1_km_PM25_2050_LOW_NY.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_NY_NAD_2050_LOW %>%
       left_join(NY_pop_total, by = c("Row", "Column")) %>%
@@ -6011,13 +5989,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -74.00583906157757,  y =  40.71266458461421), shape = 1, color = "#95C623", size = 6, stroke = 2) #New York city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_NY.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_NY.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)    
    
 #### 13. BOSTON ####
     #### 13.1. 2019 ####
-    grid_data_PM25_Boston_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Boston/1_km_PM25_2019_Boston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Boston_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Boston/1_km_PM25_2019_Boston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_boston_fix%>%
@@ -6056,12 +6034,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "#95C623", size = 6, stroke = 2) #Boston city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 13.2. 2050 HIGH CDR ####
-    grid_data_PM25_Boston_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Boston/1_km_PM25_2050_HIGH_Boston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Boston_NAD_2050_high<- st_read("output_data/shapefiles/1km/Boston/1_km_PM25_2050_HIGH_Boston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Boston_NAD_2050_high %>%
       left_join(Boston_pop_total, by = c("Row", "Column")) -> Boston_pop_PM25_total_2050_high
@@ -6094,12 +6072,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "#95C623", size = 6, stroke = 2) #Boston city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 13.3. 2050 LOW CDR ####
-    grid_data_PM25_Boston_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Boston/1_km_PM25_2050_LOW_Boston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Boston_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Boston/1_km_PM25_2050_LOW_Boston.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Boston_NAD_2050_LOW %>%
       left_join(Boston_pop_total, by = c("Row", "Column")) -> Boston_pop_PM25_total_2050_LOW
@@ -6132,13 +6110,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -71.05789998431737,  y =  42.360362270351416), shape = 1, color = "#95C623", size = 6, stroke = 2) #Boston city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Boston.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Boston.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)    
   
 #### 14. DETROIT ####
     #### 14.1. 2019 ####
-    grid_data_PM25_Detroit_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/Detroit/1_km_PM25_2019_Detroit.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Detroit_NAD_filtered_final<- st_read("output_data/shapefiles/1km/Detroit/1_km_PM25_2019_Detroit.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_detroit_fix%>%
@@ -6177,12 +6155,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "#95C623", size = 6, stroke = 2) #Detroit city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 14.2. 2050 HIGH CDR ####
-    grid_data_PM25_Detroit_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/Detroit/1_km_PM25_2050_HIGH_Detroit.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Detroit_NAD_2050_high<- st_read("output_data/shapefiles/1km/Detroit/1_km_PM25_2050_HIGH_Detroit.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Detroit_NAD_2050_high %>%
       left_join(Detroit_pop_total, by = c("Row", "Column")) -> Detroit_pop_PM25_total_2050_high
@@ -6215,12 +6193,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "#95C623", size = 6, stroke = 2) #Detroit city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 14.3. 2050 LOW CDR ####
-    grid_data_PM25_Detroit_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/Detroit/1_km_PM25_2050_LOW_Detroit.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_Detroit_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/Detroit/1_km_PM25_2050_LOW_Detroit.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_Detroit_NAD_2050_LOW %>%
       left_join(Detroit_pop_total, by = c("Row", "Column")) -> Detroit_pop_PM25_total_2050_LOW
@@ -6253,13 +6231,13 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -83.04362102880836,  y =  42.32974049721709), shape = 1, color = "#95C623", size = 6, stroke = 2) #Detroit city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Detroit.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_Detroit.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p) 
  
 #### 15. SAN FRANCISCO ####
     #### 15.1. 2019 ####
-    grid_data_PM25_SF_NAD_filtered_final<- st_read("output_data/shapefiles/1km_V2/SF/1_km_PM25_2019_SF.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_SF_NAD_filtered_final<- st_read("output_data/shapefiles/1km/SF/1_km_PM25_2019_SF.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     #Get national mean (population weighted)
     population_2019_data_pixel_age_final_SF_fix%>%
@@ -6299,12 +6277,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "#95C623", size = 6, stroke = 2) #San Francisco city hall
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM8.1km_PM25_2019_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 15.2. 2050 HIGH CDR ####
-    grid_data_PM25_SF_NAD_2050_high<- st_read("output_data/shapefiles/1km_V2/SF/1_km_PM25_2050_HIGH_SF.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_SF_NAD_2050_high<- st_read("output_data/shapefiles/1km/SF/1_km_PM25_2050_HIGH_SF.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_SF_NAD_2050_high %>%
       left_join(SF_pop_total, by = c("Row", "Column")) %>%
@@ -6338,12 +6316,12 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "#95C623", size = 6, stroke = 2) #San Francisco city hall
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM9.1km_PM25_2050_HIGH_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)
     
     #### 15.3. 2050 LOW CDR ####
-    grid_data_PM25_SF_NAD_2050_LOW<- st_read("output_data/shapefiles/1km_V2/SF/1_km_PM25_2050_LOW_SF.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
+    grid_data_PM25_SF_NAD_2050_LOW<- st_read("output_data/shapefiles/1km/SF/1_km_PM25_2050_LOW_SF.shp") %>% rename(Row = row, Column = col, Values = PM25_AVG) %>% filter(!is.na(Values))
     
     grid_data_PM25_SF_NAD_2050_LOW %>%
       left_join(SF_pop_total, by = c("Row", "Column")) %>%
@@ -6377,8 +6355,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       theme_void() +
       #annotation_scale() +
       geom_point(data = NULL, aes(x = -122.41894505158999,  y =  37.779200252025916), shape = 1, color = "#95C623", size = 6, stroke = 2) #San Francisco city hall
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
-    ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_SF.png", p, width = 16, height = 12, units = "in", dpi = 600)
+    #ggsave("figures/paper_figures/SM10.1km_PM25_2050_LOW_plot_SF.svg", p, width = 16, height = 12, units = "in", dpi = 600)
     print(p)    
     
 
@@ -6404,8 +6382,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
       xlab("Year") +
       ylab("2023$ / tCO2") +
       figure_theme
-    ggsave("figures/paper_figures/SM14._CO2_price.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM14._CO2_price.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM14._CO2_price.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM14._CO2_price.svg", dpi=600/2, width=6000/300, height=3000/300)
 
 #--------------------------------------------------------------- SUPPLEMENTARY FIGURE 15 -------------------------------------------------------------------
     USA_states <- c("AL", "AZ", "AR", "CA", "CO", "CT", "DE", "DC","FL",
@@ -6446,8 +6424,8 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
             legend.title = element_text(size = 20),
             legend.text = element_text(size = 20),
             legend.position = "right")
-    ggsave("figures/paper_figures/SM15.electricity_prices.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM15.electricity_prices.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM15.electricity_prices.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM15.electricity_prices.svg", dpi=600/2, width=6000/300, height=3000/300)
     
     #Now plot percent increase in Low CDR vs High CDR
     elec_prices_states %>%
@@ -6469,6 +6447,6 @@ colors <- rev(brewer.pal(n = 11, name = "RdYlBu"))
             legend.title = element_text(size = 20),
             legend.text = element_text(size = 20),
             legend.position = "right")
-    ggsave("figures/paper_figures/SM15.electricity_price_increase.png", dpi=600/2, width=6000/300, height=3000/300)
-    ggsave("figures/paper_figures/SM15.electricity_price_increase.svg", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM15.electricity_price_increase.png", dpi=600/2, width=6000/300, height=3000/300)
+    #ggsave("figures/paper_figures/SM15.electricity_price_increase.svg", dpi=600/2, width=6000/300, height=3000/300)
     

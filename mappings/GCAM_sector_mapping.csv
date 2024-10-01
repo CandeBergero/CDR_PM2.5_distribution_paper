@@ -1,0 +1,367 @@
+﻿sector,GCAM_Sector,ghg
+Beef,Agriculture,NMVOC_AGR
+Beef,Agriculture,NH3_AGR
+Corn,Agriculture,NOx_AGR
+Dairy,Agriculture,NMVOC_AGR
+Dairy,Agriculture,NH3_AGR
+FiberCrop,Agriculture,NOx_AGR
+FodderGrass,Agriculture,NOx_AGR
+FodderHerb,Agriculture,NOx_AGR
+Fruits,Agriculture,NOx_AGR
+Legumes,Agriculture,NOx_AGR
+MiscCrop,Agriculture,NOx_AGR
+NutsSeeds,Agriculture,NOx_AGR
+OilCrop,Agriculture,NOx_AGR
+OtherGrain,Agriculture,NOx_AGR
+Pork,Agriculture,NMVOC_AGR
+Pork,Agriculture,NH3_AGR
+Poultry,Agriculture,NMVOC_AGR
+Poultry,Agriculture,NH3_AGR
+Rice,Agriculture,NOx_AGR
+RootTuber,Agriculture,NOx_AGR
+SheepGoat,Agriculture,NMVOC_AGR
+SheepGoat,Agriculture,NH3_AGR
+Soybean,Agriculture,NOx_AGR
+SugarCrop,Agriculture,NOx_AGR
+Vegetables,Agriculture,NOx_AGR
+Wheat,Agriculture,NOx_AGR
+Corn,Agriculture,NH3_AGR
+FiberCrop,Agriculture,NH3_AGR
+FodderGrass,Agriculture,NH3_AGR
+FodderHerb,Agriculture,NH3_AGR
+Fruits,Agriculture,NH3_AGR
+Legumes,Agriculture,NH3_AGR
+MiscCrop,Agriculture,NH3_AGR
+NutsSeeds,Agriculture,NH3_AGR
+OilCrop,Agriculture,NH3_AGR
+OtherGrain,Agriculture,NH3_AGR
+Rice,Agriculture,NH3_AGR
+RootTuber,Agriculture,NH3_AGR
+Soybean,Agriculture,NH3_AGR
+SugarCrop,Agriculture,NH3_AGR
+Vegetables,Agriculture,NH3_AGR
+Wheat,Agriculture,NH3_AGR
+oil refining,Refining (oil),NMVOC
+comm cooking,Commercial,BC
+comm cooking,Commercial,CO
+comm cooking,Commercial,NH3
+comm cooking,Commercial,NMVOC
+comm cooking,Commercial,NOx
+comm cooking,Commercial,OC
+comm cooking,Commercial,PM10
+comm cooking,Commercial,PM2.5
+comm cooking,Commercial,SO2_1
+industrial processes,Industrial,CO
+industrial processes,Industrial,NH3
+industrial processes,Industrial,NMVOC
+industrial processes,Industrial,NOx
+industrial processes,Industrial,PM10
+industrial processes,Industrial,PM2.5
+industrial processes,Industrial,SO2_1
+Corn,Agriculture (AWB),BC_AWB
+Corn,Agriculture (AWB),CO_AWB
+Corn,Agriculture (AWB),NH3_AWB
+Corn,Agriculture (AWB),NMVOC_AWB
+Corn,Agriculture (AWB),NOx_AWB
+Corn,Agriculture (AWB),OC_AWB
+Corn,Agriculture (AWB),SO2_1_AWB
+FiberCrop,Agriculture (AWB),BC_AWB
+FiberCrop,Agriculture (AWB),CO_AWB
+FiberCrop,Agriculture (AWB),NH3_AWB
+FiberCrop,Agriculture (AWB),NMVOC_AWB
+FiberCrop,Agriculture (AWB),NOx_AWB
+FiberCrop,Agriculture (AWB),OC_AWB
+FiberCrop,Agriculture (AWB),SO2_1_AWB
+Fruits,Agriculture (AWB),BC_AWB
+Fruits,Agriculture (AWB),CO_AWB
+Fruits,Agriculture (AWB),NH3_AWB
+Fruits,Agriculture (AWB),NMVOC_AWB
+Fruits,Agriculture (AWB),NOx_AWB
+Fruits,Agriculture (AWB),OC_AWB
+Fruits,Agriculture (AWB),SO2_1_AWB
+Legumes,Agriculture (AWB),BC_AWB
+Legumes,Agriculture (AWB),CO_AWB
+Legumes,Agriculture (AWB),NH3_AWB
+Legumes,Agriculture (AWB),NMVOC_AWB
+Legumes,Agriculture (AWB),NOx_AWB
+Legumes,Agriculture (AWB),OC_AWB
+Legumes,Agriculture (AWB),SO2_1_AWB
+MiscCrop,Agriculture (AWB),BC_AWB
+MiscCrop,Agriculture (AWB),CO_AWB
+MiscCrop,Agriculture (AWB),NH3_AWB
+MiscCrop,Agriculture (AWB),NMVOC_AWB
+MiscCrop,Agriculture (AWB),NOx_AWB
+MiscCrop,Agriculture (AWB),OC_AWB
+MiscCrop,Agriculture (AWB),SO2_1_AWB
+NutsSeeds,Agriculture (AWB),BC_AWB
+NutsSeeds,Agriculture (AWB),CO_AWB
+NutsSeeds,Agriculture (AWB),NH3_AWB
+NutsSeeds,Agriculture (AWB),NMVOC_AWB
+NutsSeeds,Agriculture (AWB),NOx_AWB
+NutsSeeds,Agriculture (AWB),OC_AWB
+NutsSeeds,Agriculture (AWB),SO2_1_AWB
+OilCrop,Agriculture (AWB),CO_AWB
+OilCrop,Agriculture (AWB),NOx_AWB
+OilCrop,Agriculture (AWB),SO2_1_AWB
+OilCrop,Agriculture (AWB),BC_AWB
+OilCrop,Agriculture (AWB),NH3_AWB
+OilCrop,Agriculture (AWB),NMVOC_AWB
+OilCrop,Agriculture (AWB),OC_AWB
+OtherGrain,Agriculture (AWB),CO_AWB
+OtherGrain,Agriculture (AWB),NOx_AWB
+OtherGrain,Agriculture (AWB),SO2_1_AWB
+OtherGrain,Agriculture (AWB),BC_AWB
+OtherGrain,Agriculture (AWB),NH3_AWB
+OtherGrain,Agriculture (AWB),NMVOC_AWB
+OtherGrain,Agriculture (AWB),OC_AWB
+Rice,Agriculture (AWB),CO_AWB
+Rice,Agriculture (AWB),NOx_AWB
+Rice,Agriculture (AWB),SO2_1_AWB
+Rice,Agriculture (AWB),BC_AWB
+Rice,Agriculture (AWB),NH3_AWB
+Rice,Agriculture (AWB),NMVOC_AWB
+Rice,Agriculture (AWB),OC_AWB
+RootTuber,Agriculture (AWB),CO_AWB
+RootTuber,Agriculture (AWB),NOx_AWB
+RootTuber,Agriculture (AWB),SO2_1_AWB
+RootTuber,Agriculture (AWB),BC_AWB
+RootTuber,Agriculture (AWB),NH3_AWB
+RootTuber,Agriculture (AWB),NMVOC_AWB
+RootTuber,Agriculture (AWB),OC_AWB
+Soybean,Agriculture (AWB),CO_AWB
+Soybean,Agriculture (AWB),NOx_AWB
+Soybean,Agriculture (AWB),SO2_1_AWB
+Soybean,Agriculture (AWB),BC_AWB
+Soybean,Agriculture (AWB),NH3_AWB
+Soybean,Agriculture (AWB),NMVOC_AWB
+Soybean,Agriculture (AWB),OC_AWB
+SugarCrop,Agriculture (AWB),CO_AWB
+SugarCrop,Agriculture (AWB),NOx_AWB
+SugarCrop,Agriculture (AWB),SO2_1_AWB
+SugarCrop,Agriculture (AWB),BC_AWB
+SugarCrop,Agriculture (AWB),NH3_AWB
+SugarCrop,Agriculture (AWB),NMVOC_AWB
+SugarCrop,Agriculture (AWB),OC_AWB
+Vegetables,Agriculture (AWB),CO_AWB
+Vegetables,Agriculture (AWB),NOx_AWB
+Vegetables,Agriculture (AWB),SO2_1_AWB
+Vegetables,Agriculture (AWB),BC_AWB
+Vegetables,Agriculture (AWB),NH3_AWB
+Vegetables,Agriculture (AWB),NMVOC_AWB
+Vegetables,Agriculture (AWB),OC_AWB
+Wheat,Agriculture (AWB),CO_AWB
+Wheat,Agriculture (AWB),NOx_AWB
+Wheat,Agriculture (AWB),SO2_1_AWB
+Wheat,Agriculture (AWB),BC_AWB
+Wheat,Agriculture (AWB),NH3_AWB
+Wheat,Agriculture (AWB),NMVOC_AWB
+Wheat,Agriculture (AWB),OC_AWB
+UnmanagedLand,Unmanaged land,BC
+UnmanagedLand,Unmanaged land,CO
+UnmanagedLand,Unmanaged land,NH3
+UnmanagedLand,Unmanaged land,NMVOC
+UnmanagedLand,Unmanaged land,NOx
+UnmanagedLand,Unmanaged land,OC
+UnmanagedLand,Unmanaged land,SO2_1
+comm heating,Commercial,BC
+comm heating,Commercial,CO
+comm heating,Commercial,NH3
+comm heating,Commercial,NMVOC
+comm heating,Commercial,NOx
+comm heating,Commercial,OC
+comm heating,Commercial,PM10
+comm heating,Commercial,PM2.5
+comm heating,Commercial,SO2_1
+comm cooling,Commercial,BC
+comm hot water,Commercial,BC
+comm other,Commercial,BC
+comm cooling,Commercial,CO
+comm hot water,Commercial,CO
+comm other,Commercial,CO
+comm cooling,Commercial,NH3
+comm hot water,Commercial,NH3
+comm other,Commercial,NH3
+comm cooling,Commercial,NMVOC
+comm hot water,Commercial,NMVOC
+comm other,Commercial,NMVOC
+comm cooling,Commercial,NOx
+comm hot water,Commercial,NOx
+comm other,Commercial,NOx
+comm cooling,Commercial,OC
+comm hot water,Commercial,OC
+comm other,Commercial,OC
+comm cooling,Commercial,PM10
+comm hot water,Commercial,PM10
+comm other,Commercial,PM10
+comm cooling,Commercial,PM2.5
+comm hot water,Commercial,PM2.5
+comm other,Commercial,PM2.5
+comm cooling,Commercial,SO2_1
+comm hot water,Commercial,SO2_1
+comm other,Commercial,SO2_1
+other industrial energy use,Industrial,BC
+other industrial energy use,Industrial,CO
+other industrial energy use,Industrial,NH3
+other industrial energy use,Industrial,NMVOC
+other industrial energy use,Industrial,NOx
+other industrial energy use,Industrial,OC
+other industrial energy use,Industrial,PM10
+other industrial energy use,Industrial,PM2.5
+other industrial energy use,Industrial,SO2_1
+resid clothes dryers,Residential,BC
+resid cooking,Residential,BC
+resid heating,Residential,BC
+resid hot water,Residential,BC
+resid other,Residential,BC
+resid clothes dryers,Residential,CO
+resid cooking,Residential,CO
+resid heating,Residential,CO
+resid hot water,Residential,CO
+resid other,Residential,CO
+resid clothes dryers,Residential,NH3
+resid cooking,Residential,NH3
+resid heating,Residential,NH3
+resid hot water,Residential,NH3
+resid other,Residential,NH3
+resid clothes dryers,Residential,NMVOC
+resid cooking,Residential,NMVOC
+resid heating,Residential,NMVOC
+resid hot water,Residential,NMVOC
+resid other,Residential,NMVOC
+resid clothes dryers,Residential,NOx
+resid cooking,Residential,NOx
+resid heating,Residential,NOx
+resid hot water,Residential,NOx
+resid other,Residential,NOx
+resid clothes dryers,Residential,OC
+resid cooking,Residential,OC
+resid heating,Residential,OC
+resid hot water,Residential,OC
+resid other,Residential,OC
+resid clothes dryers,Residential,PM10
+resid cooking,Residential,PM10
+resid heating,Residential,PM10
+resid hot water,Residential,PM10
+resid other,Residential,PM10
+resid clothes dryers,Residential,PM2.5
+resid cooking,Residential,PM2.5
+resid heating,Residential,PM2.5
+resid hot water,Residential,PM2.5
+resid other,Residential,PM2.5
+resid clothes dryers,Residential,SO2_1
+resid cooking,Residential,SO2_1
+resid heating,Residential,SO2_1
+resid hot water,Residential,SO2_1
+resid other,Residential,SO2_1
+resource production,Resource production,BC
+resource production,Resource production,CO
+resource production,Resource production,NH3
+resource production,Resource production,NMVOC
+resource production,Resource production,NOx
+resource production,Resource production,OC
+resource production,Resource production,PM10
+resource production,Resource production,PM2.5
+resource production,Resource production,SO2_1
+oil refining,Refining (oil),CO
+oil refining,Refining (oil),NH3
+oil refining,Refining (oil),NOx
+oil refining,Refining (oil),PM10
+oil refining,Refining (oil),PM2.5
+oil refining,Refining (oil),SO2_1
+trn_freight,Transportation,BC
+trn_freight,Transportation,CO
+trn_freight,Transportation,NMVOC
+trn_freight,Transportation,NOx
+trn_freight,Transportation,OC
+trn_freight,Transportation,PM10
+trn_freight,Transportation,PM2.5
+trn_freight,Transportation,SO2_1
+trn_shipping_intl,Transportation,BC
+trn_shipping_intl,Transportation,CO
+trn_shipping_intl,Transportation,NH3
+trn_shipping_intl,Transportation,NMVOC
+trn_shipping_intl,Transportation,NOx
+trn_shipping_intl,Transportation,OC
+trn_shipping_intl,Transportation,PM10
+trn_shipping_intl,Transportation,PM2.5
+trn_shipping_intl,Transportation,SO2_1
+trn_freight,Transportation,NH3
+trn_pass,Transportation,BC
+trn_pass,Transportation,CO
+trn_pass,Transportation,NH3
+trn_pass,Transportation,NMVOC
+trn_pass,Transportation,NOx
+trn_pass,Transportation,OC
+trn_pass,Transportation,PM10
+trn_pass,Transportation,PM2.5
+trn_pass,Transportation,SO2_1
+trn_freight_road,Transportation,BC
+trn_freight_road,Transportation,CO
+trn_freight_road,Transportation,NH3
+trn_freight_road,Transportation,NMVOC
+trn_freight_road,Transportation,NOx
+trn_freight_road,Transportation,OC
+trn_freight_road,Transportation,PM10
+trn_freight_road,Transportation,PM2.5
+trn_freight_road,Transportation,SO2_1
+trn_pass_road,Transportation,BC
+trn_pass_road,Transportation,CO
+trn_pass_road,Transportation,NH3
+trn_pass_road,Transportation,NMVOC
+trn_pass_road,Transportation,NOx
+trn_pass_road,Transportation,OC
+trn_pass_road,Transportation,PM10
+trn_pass_road,Transportation,PM2.5
+trn_pass_road,Transportation,SO2_1
+trn_pass_road_LDV_4W,Transportation,BC
+trn_pass_road_LDV_4W,Transportation,OC
+trn_pass_road_LDV_4W,Transportation,PM10
+trn_pass_road_LDV_4W,Transportation,PM2.5
+trn_pass_road_LDV_4W,Transportation,CO
+trn_pass_road_LDV_4W,Transportation,NH3
+trn_pass_road_LDV_4W,Transportation,NMVOC
+trn_pass_road_LDV_4W,Transportation,NOx
+trn_pass_road_LDV_4W,Transportation,SO2_1
+trn_pass_road_LDV,Transportation,CO
+trn_pass_road_LDV,Transportation,NH3
+trn_pass_road_LDV,Transportation,NMVOC
+trn_pass_road_LDV,Transportation,NOx
+trn_pass_road_LDV,Transportation,PM10
+trn_pass_road_LDV,Transportation,PM2.5
+trn_pass_road_LDV,Transportation,SO2_1
+urban processes,Urban,CO
+urban processes,Urban,NH3
+urban processes,Urban,NMVOC
+urban processes,Urban,NOx
+urban processes,Urban,PM10
+urban processes,Urban,PM2.5
+urban processes,Urban,SO2_1
+urban processes,Urban,BC
+urban processes,Urban,OC
+Beef,Agriculture,NOx_AGR
+Dairy,Agriculture,NOx_AGR
+Pork,Agriculture,NOx_AGR
+Poultry,Agriculture,NOx_AGR
+SheepGoat,Agriculture,NOx_AGR
+cement,Cement,CO
+cement,Cement,NH3
+cement,Cement,NMVOC
+cement,Cement,NOx
+cement,Cement,PM10
+cement,Cement,PM2.5
+cement,Cement,SO2_1
+trn_aviation_intl,Transportation,CO
+trn_aviation_intl,Transportation,NH3
+trn_aviation_intl,Transportation,NMVOC
+trn_aviation_intl,Transportation,NOx
+trn_aviation_intl,Transportation,OC
+trn_aviation_intl,Transportation,PM2.5
+trn_aviation_intl,Transportation,SO2_1
+trn_aviation_intl,Transportation,BC
+biomass liquids,Refining (biomass),CO
+biomass liquids,Refining (biomass),NH3
+biomass liquids,Refining (biomass),NMVOC
+biomass liquids,Refining (biomass),NOx
+biomass liquids,Refining (biomass),PM10
+biomass liquids,Refining (biomass),PM2.5
+biomass liquids,Refining (biomass),SO2_1

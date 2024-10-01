@@ -1,0 +1,90 @@
+FUELG1,PRMVR,gcam_fuel,Technology
+AB,ST,Biomass,biomass (conv)
+BLQ,ST,Biomass,biomass (conv)
+MSW,ST,Biomass,biomass (conv)
+OBS,ST,Biomass,biomass (conv)
+WDL,ST,Biomass,biomass (conv)
+WDS,OT,Biomass,biomass (conv)
+WDS,ST,Biomass,biomass (conv)
+BIT,ST,Coal,coal (conv pul)
+LIG,ST,Coal,coal (conv pul)
+RC,ST,Coal,coal (conv pul)
+SGC,CA,Coal,coal (IGCC)
+SGC,CT,Coal,coal (IGCC)
+SUB,ST,Coal,coal (conv pul)
+WC,ST,Coal,coal (conv pul)
+BFG,OT,Gas,gas (steam/CT)
+BFG,ST,Gas,gas (steam/CT)
+LFG,CA,Gas,gas (CC)
+LFG,CT,Gas,gas (CC)
+LFG,FC,Gas,gas (steam/CT)
+LFG,GT,Gas,gas (steam/CT)
+LFG,IC,Gas,gas (steam/CT)
+LFG,ST,Gas,gas (steam/CT)
+NG,CA,Gas,gas (CC)
+NG,CC,Gas,gas (CC)
+NG,CE,Gas,gas (steam/CT)
+NG,CS,Gas,gas (CC)
+NG,CT,Gas,gas (CC)
+NG,FC,Gas,gas (steam/CT)
+NG,GT,Gas,gas (steam/CT)
+NG,IC,Gas,gas (steam/CT)
+NG,OT,Gas,gas (steam/CT)
+NG,ST,Gas,gas (steam/CT)
+OBG,CA,Gas,gas (CC)
+OBG,CT,Gas,gas (CC)
+OBG,FC,Gas,gas (steam/CT)
+OBG,GT,Gas,gas (steam/CT)
+OBG,IC,Gas,gas (steam/CT)
+OBG,OT,Gas,gas (steam/CT)
+OBG,ST,Gas,gas (steam/CT)
+OG,CA,Gas,gas (CC)
+OG,GT,Gas,gas (steam/CT)
+OG,IC,Gas,gas (steam/CT)
+OG,OT,Gas,gas (steam/CT)
+OG,ST,Gas,gas (steam/CT)
+PG,GT,Gas,gas (steam/CT)
+PRG,GT,Gas,gas (steam/CT)
+PRG,OT,Gas,gas (steam/CT)
+PRG,ST,Gas,gas (steam/CT)
+GEO,BT,geothermal,geothermal
+GEO,ST,geothermal,geothermal
+WAT,HY,hydro,hydro
+WAT,PS,hydro,hydro
+NUC,ST,nuclear,nuclear
+MWH,BA,other,other
+MWH,FW,other,other
+OTH,CA,other,other
+OTH,CC,other,other
+OTH,GT,other,other
+OTH,OT,other,other
+OTH,ST,other,other
+PUR,ST,other,other
+WH,OT,other,other
+WH,ST,other,other
+DFO,CA,Oil,refined liquids (CC)
+DFO,CT,Oil,refined liquids (CC)
+DFO,GT,Oil,refined liquids (steam/CT)
+DFO,IC,Oil,refined liquids (steam/CT)
+DFO,ST,Oil,refined liquids (steam/CT)
+JF,GT,Oil,refined liquids (steam/CT)
+KER,GT,Oil,refined liquids (steam/CT)
+OBL,IC,Oil,refined liquids (steam/CT)
+PC,OT,Oil,refined liquids (steam/CT)
+PC,ST,Oil,refined liquids (steam/CT)
+RFO,CA,Oil,refined liquids (CC)
+RFO,CT,Oil,refined liquids (CC)
+RFO,IC,Oil,refined liquids (steam/CT)
+RFO,ST,Oil,refined liquids (steam/CT)
+SGP,CA,Oil,refined liquids (CC)
+TDF,ST,Oil,refined liquids (steam/CT)
+WO,CA,Oil,refined liquids (CC)
+WO,CT,Oil,refined liquids (CC)
+WO,GT,Oil,refined liquids (steam/CT)
+WO,ST,Oil,refined liquids (steam/CT)
+SUN,CP,solar,solar
+SUN,OT,solar,solar
+SUN,PV,solar,solar
+SUN,ST,solar,solar
+WND,WS,wind,wind
+WND,WT,wind,wind

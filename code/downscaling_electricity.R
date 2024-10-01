@@ -22,25 +22,13 @@
   library(sf)
 
 #### 1.2. Load GCAM scenarios ####
-#Set working directory
-  setwd("~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition")
-
-
-#Connect to the database
-  #conn <- localDBConn('/Users/mariacandelariabergero/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output', 'database_basexdb_FINAL')
-  
-#Load the scenario
-  #prj <- addScenario(conn, 'dat/GCAM_analysis.dat', 'GCAM-USA_REF', 'queries/queries.xml') #Reference
-  #prj <- addScenario(conn, 'dat/GCAM_analysis.dat', 'GCAM-USA_DAC_NZUSA2050ghg_NZROW2060co2_newEFV2_allEF', 'queries/queries.xml') #Net-zero + high CDR
-  #prj <- addScenario(conn, 'dat/GCAM_analysis.dat', 'GCAM-USA_withDAC_NZUSA2050ghg_NZROW2060co2_forest_CCSV3_allEF', 'queries/queries.xml') #Net-zero + lowCDR
-  
 #Load the project
-  prj <- loadProject('dat/GCAM_analysis.dat')
+  prj <- loadProject('data/GCAM/GCAM_analysis.dat')
   listScenarios(prj)
   listQueries(prj)
 
 #Get color schemes
-  source( "~/Documents/GCAM/gcam-v6.0-Mac-Release-Package/output/R_scripts_Just_transition/code/color_schemes.R" ) # some predefined color schemes
+  source( "code/color_schemes.R" ) # some predefined color schemes
   
 #### 1.3. Load mapping files ####
   scenario_mapping <- read_csv("mappings/scenario_mapping.csv")
@@ -288,7 +276,7 @@
 #------------------------------------------------- SECTION 3: eGRID DATA --------------------------------------------------
   #In this section we filter eGRID datasets to keep only relevant generators and plant
 #### 3.1. eGRID 2020 data for generators ####
-      egrid_data_generator_2020_metric <- read_csv("data/egrid_2020_data_generation_generator.csv", skip = 1)
+      egrid_data_generator_2020_metric <- read_csv("data/downscaling/egrid_2020_data_generation_generator.csv", skip = 1)
 
       #Here we want to see each generator, and then take out those that will retire
       #This data is from 2020 EPA egrid https://www.epa.gov/egrid/data-explorer
@@ -314,7 +302,7 @@
     
 #### 3.2. eGRID at the plant level ####
       #Here we want to have a table with 2020 actual generation
-      egrid_data_plant_2020_metric <- read_csv("data/egrid_2020_data_generation_plant.csv", skip = 1)
+      egrid_data_plant_2020_metric <- read_csv("data/downscaling/egrid_2020_data_generation_plant.csv", skip = 1)
 
       generator_prime_mover %>%
         dplyr::select(FUELG1, gcam_fuel) %>%
@@ -547,7 +535,7 @@
         mutate(scaled_net = scaled_sum_additions + scaled_sum_retirements) -> total_scaled
       
       total_GCAM %>%
-        left_join(total_scaled, by = c("Scenario", "Period")) -> total_comparison #This table has comparison of additions, retirements, and net from original GCAM and scaled based on these rules0
+        left_join(total_scaled, by = c("Scenario", "Period")) -> total_comparison #This table has comparison of additions, retirements, and net from original GCAM and scaled based on these rules
 
 #### 4.3. eGRID_generators #####
     #### 4.3.1. Retirements ####
@@ -557,7 +545,7 @@
       
       # eia
       # Here we calculate how many generators is eia retiring between 2021-2050
-      scheduled_retirements <- read_csv("data/Retirements.csv")
+      scheduled_retirements <- read_csv("data/downscaling/Retirements.csv")
       #These are scheduled retirements from https://epa.maps.arcgis.com/apps/dashboards/591b44aa8dd144719e059a39cb625c99
       
       scheduled_retirements %>%
@@ -1008,7 +996,7 @@
                           "Net-zero, Low BECCS, Low DAC")
       
       #Import data
-      egrid_data_plant_2020_metric <- read_csv("data/egrid_2020_data_generation_plant.csv", skip = 1) %>%
+      egrid_data_plant_2020_metric <- read_csv("data/downscaling/egrid_2020_data_generation_plant.csv", skip = 1) %>%
         dplyr::select(PSTATABB, ORISPL, LAT, LON)
       
       # Get map data for the US
@@ -1034,8 +1022,8 @@
                               range = c(1, 5)) +  # Adjust the range according to your data
         coord_fixed(1.3) +
         my_theme
-      ggsave("figures/downscaling_electricity/2020/US_downscaled_electricity_2020.png", dpi=600/2, width=6000/300, height=3000/300)
-      ggsave("figures/downscaling_electricity/2020/US_downscaled_electricity_2020.svg", dpi=600/2, width=6000/300, height=3000/300)
+      #ggsave("figures/downscaling_electricity/2020/US_downscaled_electricity_2020.png", dpi=600/2, width=6000/300, height=3000/300)
+      #ggsave("figures/downscaling_electricity/2020/US_downscaled_electricity_2020.svg", dpi=600/2, width=6000/300, height=3000/300)
       # Display the map plot
       print(map_plot_2020)
       
@@ -1063,10 +1051,10 @@
           my_theme 
         
         # Save the map plot for the current state
-        ggsave(paste("figures/downscaling_electricity/2020/downscaled_electricity_2020_", state_name, ".png", sep = ""), 
-               plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-        ggsave(paste("figures/downscaling_electricity/2020/downscaled_electricity_2020_", state_name, ".svg", sep = ""), 
-               plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        #ggsave(paste("figures/downscaling_electricity/2020/downscaled_electricity_2020_", state_name, ".png", sep = ""), 
+               #plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        #ggsave(paste("figures/downscaling_electricity/2020/downscaled_electricity_2020_", state_name, ".svg", sep = ""), 
+               #plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
     
     #### 5.6.3. Manipulate data future ####
@@ -1103,8 +1091,8 @@
           my_theme
         
         # Save the map plot for the current scenario
-        ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_downscaled_electricity_", scenario, ".png", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-        ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_downscaled_electricity_", scenario, ".svg", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_downscaled_electricity_", scenario, ".png", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_downscaled_electricity_", scenario, ".svg", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
       
       
@@ -1138,10 +1126,10 @@
             my_theme
           
           # Save the map plot for the current scenario and state
-          ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_state_downscaled_electricity_", state, ".png", sep = ""), 
-                 plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-          ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_state_downscaled_electricity_", state, ".svg", sep = ""), 
-                 plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+          # ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_state_downscaled_electricity_", state, ".png", sep = ""), 
+          #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+          # ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_state_downscaled_electricity_", state, ".svg", sep = ""), 
+          #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
     
     #### 5.6.6. Histogram ####
@@ -1157,8 +1145,8 @@
         xlab("Technology") +
         ylab("Total Generation (EJ)")+
         my_theme
-      ggsave("figures/downscaling_electricity/downscaled_electricity_fuels.png", dpi=600/2, width=6000/300, height=3000/300)
-      ggsave("figures/downscaling_electricity/downscaled_electricity_fuels.svg", dpi=600/2, width=6000/300, height=3000/300)
+      # ggsave("figures/downscaling_electricity/downscaled_electricity_fuels.png", dpi=600/2, width=6000/300, height=3000/300)
+      # ggsave("figures/downscaling_electricity/downscaled_electricity_fuels.svg", dpi=600/2, width=6000/300, height=3000/300)
       print(hist_plot_future)
       
     #### 5.6.7. Retired ####
@@ -1193,16 +1181,16 @@
           my_theme
         
         # Save the map plot for the current scenario
-        ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_retired_downscaled_electricity_", scenario, ".png", sep = ""), 
-               plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-        ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_retired_downscaled_electricity_", scenario, ".svg", sep = ""), 
-               plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_retired_downscaled_electricity_", scenario, ".png", sep = ""), 
+        #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/elec_gen/2050_national_retired_downscaled_electricity_", scenario, ".svg", sep = ""), 
+        #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
       
       #Here we want to compare High vs low
       generators_future %>%
         filter(period == 2050) %>%
-        spread(scenario, `Generation (EJ)`) %>%
+        spread(scenario, `Generation (EJ)`) %>% 
         mutate(`Net-zero, Low BECCS, Low DAC` = if_else(is.na(`Net-zero, Low BECCS, Low DAC`), 0, `Net-zero, Low BECCS, Low DAC`),
                `Net-zero, High BECCS, High DAC` = if_else(is.na(`Net-zero, High BECCS, High DAC`), 0, `Net-zero, High BECCS, High DAC`)) -> generators_future_ggplot
       
@@ -1229,8 +1217,8 @@
         ylab("Frequency")+
         scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
         my_theme
-      ggsave("figures/downscaling_electricity/hist_CFACT.png", dpi=600/2, width=6000/300, height=3000/300)
-      ggsave("figures/downscaling_electricity/hist_CFACT.svg", dpi=600/2, width=6000/300, height=3000/300)
+      #ggsave("figures/downscaling_electricity/hist_CFACT.png", dpi=600/2, width=6000/300, height=3000/300)
+      #ggsave("figures/downscaling_electricity/hist_CFACT.svg", dpi=600/2, width=6000/300, height=3000/300)
       print(hist_cap_fact)
       
 #------------------------------------------------- SECTION 6: CALCULATE EMISSION FACTORS --------------------------------------
@@ -1290,8 +1278,8 @@
           facet_grid(Technology ~ ghg, scales = "free_y") +
           theme(legend.position = "bottom",
                 strip.text = element_text(size=8))
-        ggsave("figures/downscaling_electricity/EF_means_historical.png", dpi=600/2, width=6000/300, height=3000/300)
-        ggsave("figures/downscaling_electricity/EF_means_historical.svg", dpi=600/2, width=6000/300, height=3000/300)
+        #ggsave("figures/downscaling_electricity/EF_means_historical.png", dpi=600/2, width=6000/300, height=3000/300)
+        #ggsave("figures/downscaling_electricity/EF_means_historical.svg", dpi=600/2, width=6000/300, height=3000/300)
         
         emission_factors_GCAM %>%
           #Keep only 2020, 2030 and 2050 EF in Tg/EJ
@@ -1407,8 +1395,8 @@
                 legend.text = element_text(size = 15))
         
         # Save the map plot for the current scenario
-        ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/national_downscaled_pollution_PM25_", scenario, ".png", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-        ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/national_downscaled_pollution_PM25_", scenario, ".svg", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/national_downscaled_pollution_PM25_", scenario, ".png", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/national_downscaled_pollution_PM25_", scenario, ".svg", sep = ""), plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
       
       
@@ -1437,12 +1425,13 @@
           my_theme
         
         # Save the map plot for the current scenario and state
-        ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_", state, ".png", sep = ""),  plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-        ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_", state, ".svg", sep = ""),  plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_", state, ".png", sep = ""),  plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+        # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_", state, ".svg", sep = ""),  plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
       
       #Get Texas only, which has the largest PM2.5
       cbsa_shapefile <- st_read("shapefiles/cb_2019_us_cbsa_500k/cb_2019_us_cbsa_500k.shp") %>% dplyr::select(AFFGEOID, NAME, geometry)
+      
       cbsa_shapefile %>%
         filter(AFFGEOID == "310M500US26420")-> cbsa_shapefile_Houston
       
@@ -1472,10 +1461,10 @@
         scale_size(name = "Emissions (Tg)") +  # Adjust the range according to your data
         coord_sf() +  # Set the coordinate system for geom_sf()
         my_theme
-      ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_", current_scenario, ".png"), 
-             plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-      ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_", current_scenario, ".svg"), 
-             plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+      # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_", current_scenario, ".png"), 
+      #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+      # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_", current_scenario, ".svg"), 
+      #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       }
       
       
@@ -1499,10 +1488,10 @@
         scale_size(name = "Percent decrease") +  # Adjust the range according to your data
         coord_sf() +  # Set the coordinate system for geom_sf()
         my_theme
-      ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent.png"), 
-             plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-      ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent.svg"), 
-             plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+      # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent.png"), 
+      #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+      # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent.svg"), 
+      #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
       
       results_emissions_filtered_TX_diff %>%
         filter(LON < -94 & LON > -97, 
@@ -1518,11 +1507,11 @@
         scale_size(name = "Difference in Tg") +  # Adjust the range according to your data
         coord_sf() +  # Set the coordinate system for geom_sf()
         my_theme
-      ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent_HOUSTON.png"), 
-             plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-      ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent_HOUSTON.svg"), 
-             plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
-    
+      # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent_HOUSTON.png"), 
+      #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+      # ggsave(paste("figures/downscaling_electricity/2050/PM25_emissions/2050_state_PM25_emissions_electricity_TEXAS_cities_DIFF_percent_HOUSTON.svg"), 
+      #        plot = map_plot, dpi = 600/2, width = 6000/300, height = 3000/300)
+      # 
       #### 7.1.3. Compare to GCAM ####
       #Here at a state level
       results_emissions_final %>%
@@ -1635,19 +1624,19 @@
 #### 7.3. Here we print output tables ####
       # Get unique scenarios
       scenarios <- unique(results_emissions_final_format_complete$Scenario)
-      periods <- unique(results_emissions_final_format_complete$period)
+      #periods <- unique(results_emissions_final_format_complete$period)
       
-      # Loop through each scenario for 2030
+      # Loop through each scenario for each year
       for (scenario in scenarios) {
-        for (period in periods) {
+        #
         # Filter data for the current scenario
         filtered_data <- results_emissions_final_format_complete %>%
-          filter(Scenario == scenario, period == period)
+          filter(Scenario == scenario, period == 2050)
         
         # Define the file name
-        file_name <- paste("output_data/downscaling/electricity_", period, "_", scenario, ".csv", sep = "")
+        file_name <- paste("output_data/downscaling/electricity_2050_", scenario, ".csv", sep = "")
         
         # Save the filtered data as a CSV file
         write.csv(filtered_data, file_name, row.names = FALSE)
         }
-      }
+      #}

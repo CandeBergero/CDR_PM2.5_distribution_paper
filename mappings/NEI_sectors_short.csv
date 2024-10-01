@@ -1,0 +1,49 @@
+EIS Sector,Sector
+Agriculture - Fertilizer Application,Agriculture
+Agriculture - Livestock Waste,Agriculture
+Bulk Gasoline Terminals,Refining
+Commercial Cooking,Commercial
+Dust - Construction Dust,Dust
+Dust - Paved Road Dust,Dust
+Dust - Unpaved Road Dust,Dust
+Fires - Agricultural Field Burning,Fires
+Fires - Wildfires,Fires
+Fuel Comb - Comm/Institutional - Biomass,Commercial
+Fuel Comb - Comm/Institutional - Coal,Commercial
+Fuel Comb - Comm/Institutional - Natural Gas,Commercial
+Fuel Comb - Comm/Institutional - Oil,Commercial
+Fuel Comb - Comm/Institutional - Other,Commercial
+"Fuel Comb - Industrial Boilers, ICEs - Biomass",Industrial (energy)
+"Fuel Comb - Industrial Boilers, ICEs - Coal",Industrial (energy)
+"Fuel Comb - Industrial Boilers, ICEs - Natural Gas",Industrial (energy)
+"Fuel Comb - Industrial Boilers, ICEs - Oil",Industrial (energy)
+"Fuel Comb - Industrial Boilers, ICEs - Other",Industrial (energy)
+Fuel Comb - Residential - Natural Gas,Residential
+Fuel Comb - Residential - Oil,Residential
+Fuel Comb - Residential - Other,Residential
+Fuel Comb - Residential - Wood,Residential
+Gas Stations,Refining
+Industrial Processes - Chemical Manuf,Industrial (processes)
+Industrial Processes - Mining,Industrial (processes)
+Industrial Processes - Non-ferrous Metals,Industrial (processes)
+Industrial Processes - Not Elsewhere Classified,Industrial (processes)
+Industrial Processes - Oil & Gas Production,Industrial (processes)
+Industrial Processes - Petroleum Refineries,Industrial (processes)
+Industrial Processes - Storage and Transfer,Industrial (processes)
+Miscellaneous Non-Industrial Not Elsewhere Classified,Industrial (processes)
+Mobile - Commercial Marine Vessels,Transportation
+Mobile - Locomotives,Transportation
+Mobile - Non-Road Equipment - Diesel,Transportation
+Mobile - Non-Road Equipment - Gasoline,Transportation
+Mobile - Non-Road Equipment - Other,Transportation
+Mobile - On-Road Diesel Heavy Duty Vehicles,Transportation
+Mobile - On-Road Diesel Light Duty Vehicles,Transportation
+Mobile - On-Road non-Diesel Heavy Duty Vehicles,Transportation
+Mobile - On-Road non-Diesel Light Duty Vehicles,Transportation
+Solvent - Consumer & Commercial Solvent Use,Solvents
+Solvent - Degreasing,Solvents
+Solvent - Dry Cleaning,Solvents
+Solvent - Graphic Arts,Solvents
+Solvent - Industrial Surface Coating & Solvent Use,Solvents
+Solvent - Non-Industrial Surface Coating,Solvents
+Waste Disposal,Waste disposal

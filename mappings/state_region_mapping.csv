@@ -1,0 +1,52 @@
+﻿state_ID,state_name,Region
+_01,Alabama,South
+_02,Alaska,West
+_04,Arizona,West
+_05,Arkansas,South
+_06,California,West
+_08,Colorado,West
+_09,Connecticut,Northeast
+_10,Delaware,South
+_12,Florida,South
+_13,Georgia,South
+_15,Hawaii,West
+_16,Idaho,West
+_17,Illinois,Midwest
+_18,Indiana,Midwest
+_19,Iowa,Midwest
+_20,Kansas,Midwest
+_21,Kentucky,South
+_22,Louisiana,South
+_23,Maine,Northeast
+_24,Maryland,South
+_25,Massachusetts,Northeast
+_26,Michigan,Midwest
+_27,Minnesota,Midwest
+_28,Mississippi,South
+_29,Missouri,Midwest
+_30,Montana,West
+_31,Nebraska,Midwest
+_32,Nevada,West
+_33,New Hampshire,Northeast
+_34,New Jersey,Northeast
+_35,New Mexico,West
+_36,New York,Northeast
+_37,North Carolina,South
+_38,North Dakota,Midwest
+_39,Ohio,Midwest
+_40,Oklahoma,South
+_41,Oregon,West
+_42,Pennsylvania,Northeast
+_44,Rhode Island,Northeast
+_45,South Carolina,South
+_46,South Dakota,Midwest
+_47,Tennessee,South
+_48,Texas,South
+_49,Utah,West
+_50,Vermont,Northeast
+_51,Virginia,South
+_11,Washington DC,South
+_53,Washington,West
+_54,West Virginia,South
+_55,Wisconsin,Midwest
+_56,Wyoming,West
