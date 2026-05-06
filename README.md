@@ -10,13 +10,13 @@ This branch should have the following folders in it:
 - Folder "BenMAP_results" needs to be downloaded from Zenodo and it contains results from BenMAP runs.
 
 - Folder "code" contains all the code used in this project:
-      - 1_GCAM_data_analysis.R is used to analyze GCAM outputs
-      - 2_downscaling_electricity.R is used to downscale electricity generation, and thus emissions, from GCAM at a state level to a point source level with data from eGRID
-      - 3_downscaling_other_sectors.R is used to downscale other energy sectors from state level to a sector level with NEI data
-      - 4_BenMAP_9km_grids_2019.R is used to prepare data for BenMAP for the contiguous U.S. at a 9 km resolution (row/column numbers, population, incidence rate). Code also reads and processes BenMAP mortality results
-      - 5_BenMAP_1km_grids.R is used to prepare data for BenMAP for the 15 cities at a 1 km resolution (row/column numbers, population, incidence rate). Code also reads and processes BenMAP mortality results
-      - 6_paper_figures.R is used to generate figures and data for the paper (based on outputs from previous code)
-      color_schemes.R has color palette
+- 1_GCAM_data_analysis.R is used to analyze GCAM outputs
+- 2_downscaling_electricity.R is used to downscale electricity generation, and thus emissions, from GCAM at a state level to a point source level with data from eGRID
+- 3_downscaling_other_sectors.R is used to downscale other energy sectors from state level to a sector level with NEI data
+- 4_BenMAP_9km_grids_2019.R is used to prepare data for BenMAP for the contiguous U.S. at a 9 km resolution (row/column numbers, population, incidence rate). Code also reads and processes BenMAP mortality results
+- 5_BenMAP_1km_grids.R is used to prepare data for BenMAP for the 15 cities at a 1 km resolution (row/column numbers, population, incidence rate). Code also reads and processes BenMAP mortality results
+- 6_paper_figures.R is used to generate figures and data for the paper (based on outputs from previous code)
+- color_schemes.R has color palette
 
 - Folder "data" needs to be downloaded from Zenodo and it contains input data.
 
