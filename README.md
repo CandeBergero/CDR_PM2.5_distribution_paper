@@ -1,5 +1,5 @@
 # CDR_PM2.5_distribution_paper
-Code for "Residual emissions may perpetuate community-scale inequalities of U.S. air pollution in net-zero scenarios", published at Nature Climate Change (DOI here) 
+Code for "Residual emissions may perpetuate community-scale inequalities in US air pollution", published in Nature Climate Change (https://doi.org/10.1038/s41558-026-02675-0).
 
 Data is located in Zenodo: input shapefiles, input data, and BenMAP results (DOI: 10.5281/zenodo.20045877). It has to be downloaded, unzipped, and placed in this folder to run the code. 
 
